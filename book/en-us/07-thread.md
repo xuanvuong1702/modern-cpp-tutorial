@@ -31,11 +31,11 @@ int main() {
 We have already learned the basics of concurrency technology in the operating system, or the database, and `mutex` is one of the cores.
 C++11 introduces a class related to `mutex`, with all related functions in the `<mutex>` header file.
 
-`std::mutex` is the most basic `mutex` class in C++11, and you can create a mutex by instantiating `std::mutex`.
+`std::mutex` is the most basic mutex class in C++11, and a mutex can be created by constructing a `std::mutex` object.
 It can be locked by its member function `lock()`, and `unlock()` can be unlocked.
 But in the process of actually writing the code, it is best not to directly call the member function,
 Because calling member functions, you need to call `unlock()` at the exit of each critical section, and of course, exceptions.
-At this time, C++11 also provides a template class `std::lock_guard` for the RAII syntax for the mutex.
+At this time, C++11 also provides a template class `std::lock_guard` for the RAII mechanism for the mutex.
 
 RAII guarantees the exceptional security of the code while keeping the simplicity of the code.
 
@@ -67,7 +67,9 @@ int main() {
 ```
 
 Because C++ guarantees that all stack objects will be destroyed at the end of the declaration period, such code is also extremely safe.
-Whether `critical_section()` returns normally or if an exception is thrown in the middle, a stack rollback is thrown, and `unlock()` is automatically called.
+Whether `critical_section()` returns normally or if an exception is thrown in the middle, a stack unwinding is thrown, and `unlock()` is automatically called.
+
+> An exception is thrown and not caught (it is implementation-defined whether any stack unwinding is done in this case).
 
 `std::unique_lock` is more flexible than `std::lock_guard`.
 Objects of `std::unique_lock` manage the locking and unlocking operations on the `mutex` object with exclusive ownership (no other `unique_lock` objects owning the ownership of a `mutex` object). So in concurrent programming, it is recommended to use `std::unique_lock`.
@@ -158,7 +160,7 @@ After encapsulating the target to be called, you can use `get_future()` to get a
 The condition variable `std::condition_variable` was born to solve the deadlock and was introduced when the mutex operation was not enough.
 For example, a thread may need to wait for a condition to be true to continue execution.
 A dead wait loop can cause all other threads to fail to enter the critical section so that when the condition is true, a deadlock occurs.
-Therefore, the `condition_variable` instance is created primarily to wake up the waiting thread and avoid deadlocks.
+Therefore, the `condition_variable` object is created primarily to wake up the waiting thread and avoid deadlocks.
 `notify_one()` of `std::condition_variable` is used to wake up a thread;
 `notify_all()` is to notify all threads. Below is an example of a producer and consumer model:
 
@@ -274,8 +276,8 @@ This is a very strong set of synchronization conditions, in other words when it 
 This seems too harsh for a variable that requires only atomic operations (no intermediate state).
 
 The research on synchronization conditions has a very long history, and we will not go into details here. Readers should understand that under the modern CPU architecture, atomic operations at the CPU instruction level are provided.
-Therefore, in the C++11 multi-threaded shared variable reading and writing, the introduction of the `std::atomic` template, so that we instantiate an atomic type, will be an
-Atomic type read and write operations are minimized from a set of instructions to a single CPU instruction. E.g:
+Therefore, the `std::atomic` template is introduced in C++11 for the topic of multi-threaded shared variable reading and writing, which enables us to instantiate atomic types,
+and minimize an atomic read or write operation from a set of instructions to a single CPU instruction. E.g:
 
 ```cpp
 std::atomic<int> counter;
