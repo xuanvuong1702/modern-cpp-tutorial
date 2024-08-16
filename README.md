@@ -1,63 +1,61 @@
 <img src="assets/cover-2nd-en.png" alt="logo" height="550" align="right" />
 
-# Modern C++ Tutorial: C++11/14/17/20 On the Fly
+# Hướng dẫn C++ Hiện đại: C++11/14/17/20 Ngay lập tức
 
-![](https://img.shields.io/travis/changkun/modern-cpp-tutorial/master?style=flat-square) [![](https://img.shields.io/badge/language-English-blue.svg?style=flat-square)](./README.md) [![](https://img.shields.io/badge/language-简体中文-red.svg?style=flat-square)](./README-zh-cn.md) 
- [![](https://img.shields.io/badge/language-Vietnamese-blue.svg?style=flat-square)](./README-vi-vn.md)[![](https://img.shields.io/badge/€-donate-ff69b4.svg?style=flat-square)](./assets/donate.md)
+![](https://img.shields.io/travis/changkun/modern-cpp-tutorial/master?style=flat-square) [![](https://img.shields.io/badge/language-English-blue.svg?style=flat-square)](./README.md) [![](https://img.shields.io/badge/language-简体中文-red.svg?style=flat-square)](./README-zh-cn.md) [![](https://img.shields.io/badge/€-donate-ff69b4.svg?style=flat-square)](./assets/donate.md)
 
+## Mục đích
 
-## Purpose
+Cuốn sách tự nhận mình là "Ngay lập tức". Mục đích của nó là cung cấp một giới thiệu toàn diện về các tính năng liên quan đến C++ hiện đại (trước thập kỷ 2020).
+Độc giả có thể chọn nội dung thú vị theo bảng nội dung sau để học và nhanh chóng làm quen với các tính năng mới mà bạn muốn học.
+Độc giả nên biết rằng không phải tất cả các tính năng này đều được yêu cầu. Thay vào đó, nó nên được học khi bạn thực sự cần nó.
 
-The book claims to be "On the Fly". Its intent is to provide a comprehensive introduction to the relevant features regarding modern C++ (before 2020s).
-Readers can choose interesting content according to the following table of content to learn and quickly familiarize the new features you would like to learn.
-Readers should be aware that not all of these features are required. Instead, it should be learned when you really need it.
+Đồng thời, thay vì chỉ lập trình, cuốn sách giới thiệu lịch sử phát triển của các yêu cầu kỹ thuật của nó (đơn giản nhất có thể), điều này giúp ích rất lớn trong việc hiểu tại sao những tính năng này ra đời.
 
-At the same time, instead of coding-only, the book introduces the historical background of its technical requirements (as simple as possible), which provides great help in understanding why these features came out.
+Ngoài ra, tác giả muốn khuyến khích độc giả sử dụng trực tiếp C++ hiện đại trong các dự án mới của họ và chuyển dần các dự án cũ của họ sang C++ hiện đại sau khi đọc cuốn sách.
 
-In addition, the author would like to encourage readers to use modern C++ directly in their new projects and  migrate their old projects to modern C++ gradually after reading the book.
+## Mục tiêu
 
-## Targets
+- Cuốn sách này giả định rằng độc giả đã quen thuộc với C++ truyền thống (tức là C++98 hoặc sớm hơn), hoặc ít nhất là họ không gặp bất kỳ khó khăn nào trong việc đọc mã C++ truyền thống. Nói cách khác, những người có kinh nghiệm lâu dài trong C++ truyền thống và những người mong muốn nhanh chóng hiểu các tính năng của C++ hiện đại trong một thời gian ngắn thích hợp để đọc cuốn sách này.
 
-- This book assumes that readers are already familiar with traditional C++ (i.e. C++98 or earlier), or at least that they do not have any difficulty in reading traditional C++ code. In other words, those who have long experience in traditional C++ and people who desire to quickly understand the features of modern C++ in a short period of time are well suited to read the book.
+- Cuốn sách này giới thiệu, đến một mức độ nhất định, ma thuật đen của C++ hiện đại. Tuy nhiên, những trò ma thuật này rất hạn chế, chúng không phù hợp với độc giả muốn học C++ nâng cao. Mục đích của cuốn sách này là cung cấp một khởi đầu nhanh chóng cho C++ hiện đại. Tất nhiên, độc giả nâng cao cũng có thể sử dụng cuốn sách này để ôn tập và tự kiểm tra về C++ hiện đại.
 
-- This book introduces, to a certain extent, the dark magic of modern C++. However, these magic tricks are very limited, they are not suitable for readers who want to learn advanced C++. The purpose of this book is offering a quick start for modern C++. Of course, advanced readers can also use this book to review and examine themselves on modern C++.
+## Bắt đầu
 
-## Start
-
-You can choose from the following reading methods:
+Bạn có thể chọn từ các phương pháp đọc sau:
 
 - [GitHub Online](./book/en-us/toc.md)
-- [PDF document](https://changkun.de/modern-cpp/pdf/modern-cpp-tutorial-en-us.pdf)
-- [EPUB document](https://changkun.de/modern-cpp/epub/modern-cpp-tutorial-en-us.epub)
+- [Tài liệu PDF](https://changkun.de/modern-cpp/pdf/modern-cpp-tutorial-en-us.pdf)
+- [Tài liệu EPUB](https://changkun.de/modern-cpp/epub/modern-cpp-tutorial-en-us.epub)
 - [Website](https://changkun.de/modern-cpp)
 
-## Code
+## Mã
 
-Each chapter of this book contains a lot of code. If you encounter problems while writing your own code with the introductory features of the book, reading the source code attached to the book might be of help. You can find the book [here](./code). All the code is organized by chapter, the folder name is the chapter number.
+Mỗi chương của cuốn sách này chứa rất nhiều mã. Nếu bạn gặp vấn đề khi viết mã của riêng mình với các tính năng giới thiệu của cuốn sách, việc đọc mã nguồn đi kèm với cuốn sách có thể giúp đỡ. Bạn có thể tìm cuốn sách [ở đây](./code). Tất cả mã được tổ chức theo chương, tên thư mục là số chương.
 
-## Exercises
+## Bài tập
 
-There are few exercises at the end of each chapter of the book. These are meant to test whether you have mastered the knowledge in the current chapter. You can find the possible answer to the problem [here](./exercises). Again, the folder name is the chapter number.
+Cuối mỗi chương của cuốn sách có một số bài tập. Những bài tập này nhằm kiểm tra xem bạn đã nắm vững kiến thức trong chương hiện tại hay chưa. Bạn có thể tìm câu trả lời có thể cho vấn đề [ở đây](./exercises). Một lần nữa, tên thư mục là số chương.
 
 ## Website
 
-The source code of the [website](https://changkun.de/modern-cpp) of this book can be found [here](./website), which is built by [hexo](https://hexo.io) and [vuejs](https://vuejs.org). The website provides you another way of reading the book, it also adapts to mobile browsers.
+Mã nguồn của [website](https://changkun.de/modern-cpp) của cuốn sách này có thể tìm thấy [ở đây](./website), được xây dựng bởi [hexo](https://hexo.io) và [vuejs](https://vuejs.org). Website cung cấp cho bạn một cách khác để đọc cuốn sách, nó cũng thích ứng với trình duyệt di động.
 
-## Build
+## Xây dựng
 
-If you are interested in building everything locally, it is recommended using [Docker](https://docs.docker.com/install/). To build, simply run:
+Nếu bạn quan tâm đến việc xây dựng mọi thứ tại chỗ, nên sử dụng [Docker](https://docs.docker.com/install/). Để xây dựng, chỉ cần chạy:
 
 ```bash
 $ make build
 ```
 
-## Acknowledgements
+## Lời cảm ơn
 
-This book was originally written in Chinese by [Changkun Ou](https://changkun.de).
+Cuốn sách này ban đầu được viết bằng tiếng Trung bởi [Changkun Ou](https://changkun.de).
 
-The author has limited time and language skills. If readers find any mistakes in the book or any language improvements, please feel free to open an [Issue](https://github.com/changkun/modern-cpp-tutorial/issues) or start a [Pull request](https://github.com/changkun/modern-cpp-tutorial/pulls). For detailed guidelines and checklist, please refer to [How to contribute](CONTRIBUTING.md).
+Tác giả có thời gian và kỹ năng ngôn ngữ hạn chế. Nếu độc giả tìm thấy bất kỳ lỗi nào trong cuốn sách hoặc bất kỳ cải tiến ngôn ngữ nào, xin vui lòng mở một [Issue](https://github.com/changkun/modern-cpp-tutorial/issues) hoặc bắt đầu một [Pull request](https://github.com/changkun/modern-cpp-tutorial/pulls). Đối với hướng dẫn chi tiết và checklist, vui lòng tham khảo [Cách đóng góp.](CONTRIBUTING.md).
 
-The author is grateful to all contributors, including but not limited to [Contributors](https://github.com/changkun/modern-cpp-tutorial/graphs/contributors).
+Tác giả biết ơn tất cả những người đóng góp, bao gồm nhưng không giới hạn ở [Những người đóng góp.](https://github.com/changkun/modern-cpp-tutorial/graphs/contributors).
 
 <p>This project is also supported by:</p>
 <p>
@@ -66,6 +64,6 @@ The author is grateful to all contributors, including but not limited to [Contri
   </a>
 </p>
 
-## Licenses
+## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](./LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Công trình này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo Giấy phép Quốc tế Creative Commons Attribution-NonCommercial-NoDerivatives 4.0. Mã của kho lưu trữ này được mở nguồn dưới [MIT license](./LICENSE).
