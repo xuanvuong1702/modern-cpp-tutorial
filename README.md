@@ -24,7 +24,7 @@ Ngoài ra, tác giả muốn khuyến khích độc giả sử dụng trực ti�
 
 Bạn có thể chọn từ các phương pháp đọc sau:
 
-- [GitHub Online](./book/en-us/toc.md)
+- [GitHub Online](./book/vi-vn/toc.md)
 - [Tài liệu PDF](https://changkun.de/modern-cpp/pdf/modern-cpp-tutorial-en-us.pdf)
 - [Tài liệu EPUB](https://changkun.de/modern-cpp/epub/modern-cpp-tutorial-en-us.epub)
 - [Website](https://changkun.de/modern-cpp)
