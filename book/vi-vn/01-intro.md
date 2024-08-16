@@ -4,12 +4,12 @@ type: book-en-us
 order: 1
 ---
 
-# Chapter 01: Towards Modern C++
+# Chương 01: Hướng tới C++ hiện đại
 
 [TOC]
 
-**Compilation Environment**: This book will use `clang++` as the only compiler used,
-and always use the `-std=c++2a` compilation flag in your code.
+**Môi trường biên dịch**: Cuốn sách này sẽ sử dụng `clang++` làm trình biên dịch duy nhất được sử dụng,
+và luôn sử dụng cờ biên dịch `-std=c++2a` trong mã của bạn.
 
 ```bash
 > clang++ -v
