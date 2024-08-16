@@ -24,10 +24,10 @@ Ngoài ra, tác giả muốn khuyến khích độc giả sử dụng trực ti�
 
 Bạn có thể chọn từ các phương pháp đọc sau:
 
-- [GitHub Online](./book/vi-vn/toc.md)
-- [Tài liệu PDF](https://changkun.de/modern-cpp/pdf/modern-cpp-tutorial-en-us.pdf)
-- [Tài liệu EPUB](https://changkun.de/modern-cpp/epub/modern-cpp-tutorial-en-us.epub)
-- [Website](https://changkun.de/modern-cpp)
+- [GitHub Online](./book/vi-vn/toc.md) (Tiếng việt)
+- [Tài liệu PDF](https://changkun.de/modern-cpp/pdf/modern-cpp-tutorial-en-us.pdf) (Tiếng Anh)
+- [Tài liệu EPUB](https://changkun.de/modern-cpp/epub/modern-cpp-tutorial-en-us.epub) (Tiếng Anh)
+- [Website](https://changkun.de/modern-cpp) (Tiếng Anh)
 
 ## Mã
 
