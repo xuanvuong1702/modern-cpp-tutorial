@@ -281,7 +281,6 @@ cho phép hàm tạo hoặc các hàm khác sử dụng danh sách khởi tạo
 như một tham số, điều này cung cấp một cầu nối thống nhất
 giữa các phương pháp khởi tạo mảng thông thường và POD,
 chẳng hạn như:
-
 ```cpp
 #include <initializer_list>
 #include <vector>
@@ -297,16 +296,21 @@ public:
     }
 };
 int main() {
-    // after C++11
+    // sau C++11
     MagicFoo magicFoo = {1, 2, 3, 4, 5};
 
     std::cout << "magicFoo: ";
     for (std::vector<int>::iterator it = magicFoo.vec.begin(); 
-        it != magicHàm tạo này được gọi là hàm tạo danh sách khởi tạo, và kiểu dữ liệu có hàm tạo này sẽ được xử lý đặc biệt trong quá trình khởi tạo.
+        it != magicFoo.vec.end(); ++it) 
+        std::cout << *it << std::endl;
+}
+```
 
-Ngoài việc khởi tạo đối tượng, danh sách khởi tạo cũng có thể được sử dụng như một tham số chính thức của một hàm thông thường, ví dụ:
+Hàm khởi tạo này được gọi là hàm khởi tạo danh sách, và kiểu với hàm khởi tạo này sẽ được xử lý đặc biệt trong quá trình khởi tạo.
 
-```Cpp
+Ngoài việc xây dựng đối tượng, danh sách khởi tạo cũng có thể được sử dụng như một tham số chính thức của một hàm thông thường, ví dụ:
+
+```cpp
 public:
     void foo(std::initializer_list<int> list) {
         for (std::initializer_list<int>::iterator it = list.begin();
@@ -327,20 +331,23 @@ Foo foo2 {3, 4};
 Ràng buộc có cấu trúc cung cấp chức năng tương tự như các giá trị trả về nhiều lần trong các ngôn ngữ khác. Trong chương về container, chúng ta sẽ học rằng C++11 đã thêm container std::tuple để xây dựng một tuple bao gồm nhiều giá trị trả về. Nhưng nhược điểm là C++11/14 không cung cấp cách đơn giản để lấy và định nghĩa các phần tử trong tuple từ tuple, mặc dù chúng ta có thể giải nén tuple bằng cách sử dụng std::tie. Nhưng chúng ta vẫn phải rất rõ ràng về số lượng đối tượng mà tuple này chứa, kiểu của từng đối tượng là gì, rất phiền phức.
 
 C++17 hoàn thiện điều này, và ràng buộc có cấu trúc cho phép chúng ta viết mã như sau:
-
 ```cpp
 #include <iostream>
 #include <tuple>
 
 std::tuple<int, double, std::string> f() {
-    return std::make_tuple(1,Kiểu suy diễn `auto` được mô tả trong phần
-[suy diễn kiểu auto](#auto).< z << std::endl;
+    return std::make_tuple(1, 2.3, "456");
+}
+
+int main() {
+    auto [x, y, z] = f();
+    std::cout << x << ", " << y << ", " << z << std::endl;
     return 0;
 }
 ```
 
-Kiểu suy diễn `auto` được mô tả trong phần
-[suy diễn kiểu auto](#auto).
+Kiểu suy luận `auto` được mô tả trong phần
+[suy luận kiểu auto](#auto).
 
 ## 2.3 Suy diễn kiểu
 
@@ -360,7 +367,6 @@ Một trong những ví dụ phổ biến và đáng chú ý nhất về suy di�
 // and therefore it is type vector<int>::const_iterator
 for(vector<int>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it)
 ```
-
 Khi chúng ta có `auto`:
 
 ```cpp
@@ -368,9 +374,18 @@ Khi chúng ta có `auto`:
 #include <vector>
 #include <iostream>
 
-class MagicTừ C++14, `auto` thậm chí có thể được sử dTừ C++14, `auto` thậm chí có thể được sử dụng làm tham số hàm trong các biểu thức lambda tổng quát,
-và chức năng này được tổng quát hóa cho các hàm thông thường trong C++20.
-Xem xét ví dụ sau:icFoo = {1, 2, 3, 4, 5};
+class MagicFoo {
+public:
+    std::vector<int> vec;
+    MagicFoo(std::initializer_list<int> list) {
+        for (auto it = list.begin(); it != list.end(); ++it) {
+            vec.push_back(*it);
+        }
+    }
+};
+
+int main() {
+    MagicFoo magicFoo = {1, 2, 3, 4, 5};
     std::cout << "magicFoo: ";
     for (auto it = magicFoo.vec.begin(); it != magicFoo.vec.end(); ++it) {
         std::cout << *it << ", ";
@@ -380,27 +395,36 @@ Xem xét ví dụ sau:icFoo = {1, 2, 3, 4, 5};
 }
 ```
 
-Một vài ví dụ khác:
+Một số cách sử dụng phổ biến khác:
 
 ```cpp
-auto i = 5;              // i as int
-auto arr = new auto(10); // arr as int *
+auto i = 5;              // i là int
+auto arr = new auto(10); // arr là int *
 ```
-Từ C++14, `auto` thậm chí có thể được sử dụng làm tham số hàm trong các biểu thức lambda tổng quát,
-và chức năng này được tổng quát hóa cho các hàm thông thường trong C++20.
-Xem xét ví dụ sau:
+
+Từ C++ 14, `auto` thậm chí có thể được sử dụng như các tham số hàm trong các biểu thức lambda tổng quát, và chức năng này được mở rộng cho các hàm thông thường trong C++ 20. Hãy xem xét ví dụ sau:
 
 ```cpp
 auto add14 = [](auto x, auto y) -> int {
-    return x+y;
+    return x + y;
 }
 
 int add20(auto x, auto y) {
-  Đôi khi chúng ta cần tính toán kiểu của một biểu thức, ví dụ:j) << std::endl;
-std::cout << add20(i, j) Bạn đã thấy trong ví dụ trước rằng
-`decltype` được sử dụng để suy diễn kiểu của biến.
-Ví dụ sau đây nhằm xác định
-nếu các biến `x, y, z` ở trên có cùng kiểu hay không:19: error: 'auto_arr2' declared as array of 'auto'
+    return x + y;
+}
+
+auto i = 5; // kiểu int
+auto j = 6; // kiểu int
+std::cout << add14(i, j) << std::endl;
+std::cout << add20(i, j) << std::endl;
+```
+
+> **Lưu ý**: `auto` chưa thể được sử dụng để suy luận kiểu mảng:
+>
+> ```cpp
+> auto auto_arr2[10] = {arr};   // không hợp lệ, không thể suy luận kiểu mảng
+>
+> 2.6.auto.cpp:30:19: error: 'auto_arr2' được khai báo như mảng của 'auto'
 >     auto auto_arr2[10] = {arr};
 > ```
 
@@ -413,20 +437,15 @@ chỉ có thể suy diễn kiểu của biến. Cách sử dụng của nó rấ
 decltype(exTrong đó, `std::is_same<T, U>` được sử dụng để xác định
 hai kiểu `T` và `U` có bằng nhau hay không. Kết quả đầu ra là:type(x+y) z;
 ```
-
-Bạn đã thấy trong ví dụ trước rằng
-`decltype` được sử dụng để suy diễn kiểu của biến.
-Ví dụ sau đây nhằm xác định
-nếu các biến `x, y, z` ở trên có cùng kiểu hay không:
+Bạn đã thấy trong ví dụ trước rằng `decltype` được sử dụng để suy luận kiểu dữ liệu. Ví dụ sau đây sẽ xác định xem các biến `x, y, z` ở trên có cùng kiểu hay không:
 
 ```cpp
 if (std::is_same<decltype(x), int>::value)
-    std::cout << "ttemplate<typename T, typename U>
-auto add(T x, U y) {
-    return x+y;
-}::cout << "type x == float" << std::endl;
+    std::cout << "kiểu x == int" << std::endl;
+if (std::is_same<decltype(x), float>::value)
+    std::cout << "kiểu x == float" << std::endl;
 if (std::is_same<decltype(x), decltype(z)>::value)
-    std::cout << "type z == type x" << std::endl;
+    std::cout << "kiểu z == kiểu x" << std::endl;
 ```
 
 Trong đó, `std::is_same<T, U>` được sử dụng để xác định
