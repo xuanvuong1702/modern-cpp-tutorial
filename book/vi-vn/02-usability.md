@@ -8,43 +8,43 @@ order: 2
 
 [TOC]
 
-When we declare, define a variable or constant, and control the flow of code,
-object-oriented functions, template programming, etc., before the runtime,
-it may happen when writing code or compiler compiling code.
-To this end, we usually talk about **language usability**,
-which refers to the language behavior that occurred before the runtime.
+Khi chúng ta khai báo, định nghĩa một biến hoặc hằng số, và kiểm soát luồng mã,
+các hàm hướng đối tượng, lập trình mẫu, v.v., trước khi chương trình chạy,
+nó có thể xảy ra khi viết mã hoặc khi trình biên dịch biên dịch mã.
+Để đạt được điều này, chúng ta thường nói về **khả năng sử dụng ngôn ngữ**,
+điều này đề cập đến hành vi ngôn ngữ xảy ra trước khi chương trình chạy.
 
-## 2.1 Constants
+## 2.1 Hằng số
 
 ### nullptr
 
-The purpose of `nullptr` appears to replace `NULL`. There are **null pointer constants** in the C and C++ languages,
-which can be implicitly converted to null pointer value of any pointer type,
-or null member pointer value of any pointer-to-member type in C++.
-`NULL` is provided by the standard library implementation and defined as an implementation-defined null pointer constant.
-In C, some standard libraries defines `NULL` as `((void*)0)` and some define it as `0`.
+Mục đích của `nullptr` là để thay thế `NULL`. Trong ngôn ngữ C và C++ có các **hằng số con trỏ null**,
+có thể được chuyển đổi ngầm định thành giá trị con trỏ null của bất kỳ kiểu con trỏ nào,
+hoặc giá trị con trỏ thành viên null của bất kỳ kiểu con trỏ thành viên nào trong C++.
+`NULL` được cung cấp bởi thư viện chuẩn và được định nghĩa là một hằng số con trỏ null do việc triển khai định nghĩa.
+Trong C, một số thư viện chuẩn định nghĩa `NULL` là `((void*)0)` và một số định nghĩa nó là `0`.
 
-C++ **does not allow** to implicitly convert `void *` to other types, and thus `((void*)0)` is not a valid implementation
-of `NULL`. If the standard library tries to define `NULL` as `((void*)0)`, then compilation error would occur in the following code:
+C++ **không cho phép** chuyển đổi ngầm định `void *` sang các kiểu khác, do đó `((void*)0)` không phải là một cách triển khai hợp lệ
+của `NULL`. Nếu thư viện chuẩn cố gắng định nghĩa `NULL` là `((void*)0)`, thì lỗi biên dịch sẽ xảy ra trong đoạn mã sau:
 
 ```cpp
 char *ch = NULL;
 ```
 
-C++ without the `void *` implicit conversion has to define `NULL` as `0`.
-This still creates a new problem. Defining `NULL` to `0` will cause the overloading feature in `C++` to be confusing.
-Consider the following two `foo` functions:
+C++ mà không có chuyển đổi ngầm định `void *` phải định nghĩa `NULL` là `0`.
+Điều này vẫn tạo ra một vấn đề mới. Định nghĩa `NULL` là `0` sẽ làm cho tính năng nạp chồng trong C++ trở nên khó hiểu.
+Hãy xem xét hai hàm `foo` sau:
 
 ```cpp
 void foo(char*);
 void foo(int);
 ```
 
-Then the `foo(NULL);` statement will call `foo(int)`, which will cause the code to be counterintuitive.
+Khi đó, câu lệnh `foo(NULL);` sẽ gọi hàm `foo(int)`, điều này sẽ khiến mã trở nên khó hiểu.
 
-To solve this problem, C++11 introduced the `nullptr` keyword, which is specifically used to distinguish null pointers, `0`. The type of `nullptr` is `nullptr_t`, which can be implicitly converted to any pointer or member pointer type, and can be compared equally or unequally with them.
+Để giải quyết vấn đề này, C++11 đã giới thiệu từ khóa `nullptr`, được sử dụng để phân biệt rõ ràng con trỏ null và `0`. Kiểu của `nullptr` là `nullptr_t`, có thể được chuyển đổi ngầm định thành bất kỳ kiểu con trỏ hoặc con trỏ thành viên nào, và có thể so sánh bằng hoặc không bằng với chúng.
 
-You can try to compile the following code using clang++:
+Bạn có thể thử biên dịch đoạn mã sau bằng clang++:
 
 ```cpp
 #include <iostream>
@@ -75,29 +75,29 @@ void foo(int i) {
 }
 ```
 
-The outputs are:
+Kết quả đầu ra là:
 
 ```bash
 foo(int) is called
 foo(char*) is called
 ```
 
-From the output we can see that `NULL` is different from `0` and `nullptr`.
-So, develop the habit of using `nullptr` directly.
+Từ kết quả đầu ra, chúng ta có thể thấy rằng `NULL` khác với `0` và `nullptr`.
+Vì vậy, hãy tập thói quen sử dụng `nullptr` trực tiếp.
 
-In addition, in the above code, we used `decltype` and
-`std::is_same` which are modern C++ syntax.
-In simple terms, `decltype` is used for type derivation,
-and `std::is_same` is used to compare the equality of the two types.
-We will discuss them in detail later in the [decltype](#decltype) section.
+Ngoài ra, trong đoạn mã trên, chúng ta đã sử dụng `decltype` và
+`std::is_same` là cú pháp hiện đại của C++.
+Nói một cách đơn giản, `decltype` được sử dụng để suy luận kiểu,
+và `std::is_same` được sử dụng để so sánh sự bằng nhau của hai kiểu.
+Chúng ta sẽ thảo luận chi tiết về chúng sau trong phần [decltype](#decltype).
 
 ### constexpr
 
-C++ itself already has the concept of constant expressions, such as 1+2,
-3\*4. Such expressions always produce the same result without any side effects.
-If the compiler can directly optimize and embed these expressions into the program at
-compile-time, it will increase the performance of the program. A very obvious example
-is in the definition phase of an array:
+Bản thân C++ đã có khái niệm về các biểu thức hằng, chẳng hạn như 1+2, 3\*4.
+Các biểu thức này luôn cho ra cùng một kết quả mà không có bất kỳ tác dụng phụ nào.
+Nếu trình biên dịch có thể tối ưu hóa trực tiếp và nhúng các biểu thức này vào chương trình
+tại thời điểm biên dịch, nó sẽ tăng hiệu suất của chương trình. Một ví dụ rất rõ ràng
+là trong giai đoạn định nghĩa của một mảng:
 
 ```cpp
 #include <iostream>
@@ -138,25 +138,25 @@ int main() {
 }
 ```
 
-In the above example, `char arr_4[len_2]` may be confusing because `len_2` has been defined as a constant.
-Why is `char arr_4[len_2]` still illegal?
-This is because the length of the array in the C++ standard must be a constant expression,
-and for `len_2`, this is a `const` constant, not a constant expression,
-so even if this behavior is supported by most compilers, but it is an illegal behavior,
-we need to use the `constexpr` feature introduced in C++11, which will be introduced next,
-to solve this problem; for `arr_5`, before C++98 The compiler cannot know that `len_foo()`
-actually returns a constant at runtime, which causes illegal production.
+Trong ví dụ trên, `char arr_4[len_2]` có thể gây nhầm lẫn vì `len_2` đã được định nghĩa là một hằng số.
+Tại sao `char arr_4[len_2]` vẫn không hợp lệ?
+Đó là vì độ dài của mảng trong tiêu chuẩn C++ phải là một biểu thức hằng,
+và đối với `len_2`, đây là một hằng số `const`, không phải là một biểu thức hằng,
+vì vậy ngay cả khi hành vi này được hầu hết các trình biên dịch hỗ trợ, nhưng nó vẫn là một hành vi không hợp lệ.
+Chúng ta cần sử dụng tính năng `constexpr` được giới thiệu trong C++11, sẽ được giới thiệu tiếp theo,
+để giải quyết vấn đề này; đối với `arr_5`, trước C++98, trình biên dịch không thể biết rằng `len_foo()`
+thực sự trả về một hằng số tại thời điểm chạy, điều này gây ra lỗi không hợp lệ.
 
-> Note that most compilers now have their compiler optimizations.
-> Many illegal behaviors become legal under the compiler's optimization.
-> If you need to reproduce the error, you need to use the old version of the compiler.
+> Lưu ý rằng hầu hết các trình biên dịch hiện nay đều có các tối ưu hóa của riêng chúng.
+> Nhiều hành vi không hợp lệ trở nên hợp lệ dưới sự tối ưu hóa của trình biên dịch.
+> Nếu bạn cần tái tạo lỗi, bạn cần sử dụng phiên bản cũ của trình biên dịch.
 
-C++11 provides `constexpr` to let the user explicitly declare that the function or
-object constructor will become a constant expression at compile time.
-This keyword explicitly tells the compiler that it should verify that `len_foo`
-should be a compile-time constant expression.
+C++11 cung cấp từ khóa `constexpr` để cho phép người dùng khai báo rõ ràng rằng hàm hoặc
+hàm tạo đối tượng sẽ trở thành một biểu thức hằng tại thời điểm biên dịch.
+Từ khóa này rõ ràng yêu cầu trình biên dịch xác minh rằng `len_foo`
+phải là một biểu thức hằng tại thời điểm biên dịch.
 
-In addition, the function of `constexpr` can use recursion:
+Ngoài ra, hàm sử dụng `constexpr` có thể sử dụng đệ quy:
 
 ```cpp
 constexpr int fibonacci(const int n) {
@@ -164,10 +164,10 @@ constexpr int fibonacci(const int n) {
 }
 ```
 
-Starting with C++14,
-the constexpr function can use simple statements such as local variables,
-loops, and branches internally.
-For example, the following code cannot be compiled under the C++11 standard:
+Bắt đầu từ C++14,
+hàm `constexpr` có thể sử dụng các câu lệnh đơn giản như biến cục bộ,
+vòng lặp và nhánh bên trong.
+Ví dụ, đoạn mã sau không thể biên dịch được theo tiêu chuẩn C++11:
 
 ```cpp
 constexpr int fibonacci(const int n) {
@@ -177,8 +177,8 @@ constexpr int fibonacci(const int n) {
 }
 ```
 
-To do this, we can write a simplified version like this
-to make the function available from C++11:
+Để làm điều này, chúng ta có thể viết một phiên bản đơn giản hóa như sau
+để hàm có thể sử dụng được từ C++11:
 
 ```cpp
 constexpr int fibonacci(const int n) {
@@ -186,13 +186,13 @@ constexpr int fibonacci(const int n) {
 }
 ```
 
-## 2.2 Variables and initialization
+## 2.2 Biến và khởi tạo
 
 ### if-switch
 
-In traditional C++, the declaration of a variable can declare a temporary variable `int`
-even though it can be located anywhere, even within a `for` statement,
-but there is always no way to declare a temporary variable in the `if` and `switch` statements.
+Trong C++ truyền thống, việc khai báo một biến có thể khai báo một biến tạm thời `int`
+mặc dù nó có thể được đặt ở bất kỳ đâu, thậm chí trong một câu lệnh `for`,
+nhưng luôn không có cách nào để khai báo một biến tạm thời trong các câu lệnh `if` và `switch`.
 E.g:
 
 ```cpp
@@ -221,10 +221,9 @@ int main() {
 }
 ```
 
-In the above code, we can see that the `itr` variable is defined in the scope of
-the entire `main()`, which causes us to rename the other when a variable need to traverse
-the entire `std::vector` again. C++17 eliminates this limitation so that
-we can do this in if(or switch):
+Trong đoạn mã trên, chúng ta có thể thấy rằng biến `itr` được định nghĩa trong phạm vi của toàn bộ hàm `main()`,
+điều này khiến chúng ta phải đổi tên biến khi cần duyệt lại toàn bộ `std::vector`.
+C++17 đã loại bỏ hạn chế này để chúng ta có thể làm điều này trong câu lệnh `if` (hoặc `switch`):
 
 ```cpp
 if (const std::vector<int>::iterator itr = std::find(vec.begin(), vec.end(), 3);
@@ -233,22 +232,21 @@ if (const std::vector<int>::iterator itr = std::find(vec.begin(), vec.end(), 3);
 }
 ```
 
-Is it similar to the Go?
+Nó có giống với Go không?
 
-### Initializer list
+### Danh sách khởi tạo
 
-Initialization is a very important language feature,
-the most common one is when the object is initialized.
-In traditional C++, different objects have different initialization methods,
-such as ordinary arrays, PODs (**P**lain **O**ld **D**ata,
-i.e. classes without constructs, destructors, and virtual functions)
-Or struct type can be initialized with `{}`,
-which is what we call the initialization list.
-For the initialization of the class object,
-you need to use the copy construct,
-or you need to use `()`.
-These different methods are specific to each other and cannot be generic.
-E.g:
+Khởi tạo là một tính năng ngôn ngữ rất quan trọng, phổ biến nhất là khi đối tượng được khởi tạo.
+Trong C++ truyền thống, các đối tượng khác nhau có các phương pháp khởi tạo khác nhau,
+chẳng hạn như mảng thông thường, PODs (**P**lain **O**ld **D**ata,
+tức là các lớp không có hàm tạo, hàm hủy và hàm ảo)
+hoặc kiểu struct có thể được khởi tạo bằng `{}`,
+đây là cái mà chúng ta gọi là danh sách khởi tạo.
+Đối với việc khởi tạo đối tượng của lớp,
+bạn cần sử dụng hàm tạo sao chép,
+hoặc bạn cần sử dụng `()`.
+Những phương pháp khác nhau này là đặc thù và không thể thay thế cho nhau.
+Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -276,13 +274,13 @@ int main() {
 }
 ```
 
-To solve this problem,
-C++11 first binds the concept of the initialization list to the type
-and calls it `std::initializer_list`,
-allowing the constructor or other function to use the initialization list
-like a parameter, which is the initialization of class objects provides
-a unified bridge between normal arrays and POD initialization methods,
-such as:
+Để giải quyết vấn đề này,
+C++11 trước tiên liên kết khái niệm danh sách khởi tạo với kiểu dữ liệu
+và gọi nó là `std::initializer_list`,
+cho phép hàm tạo hoặc các hàm khác sử dụng danh sách khởi tạo
+như một tham số, điều này cung cấp một cầu nối thống nhất
+giữa các phương pháp khởi tạo mảng thông thường và POD,
+chẳng hạn như:
 
 ```cpp
 #include <initializer_list>
@@ -304,16 +302,9 @@ int main() {
 
     std::cout << "magicFoo: ";
     for (std::vector<int>::iterator it = magicFoo.vec.begin(); 
-        it != magicFoo.vec.end(); ++it) 
-        std::cout << *it << std::endl;
-}
-```
+        it != magicHàm tạo này được gọi là hàm tạo danh sách khởi tạo, và kiểu dữ liệu có hàm tạo này sẽ được xử lý đặc biệt trong quá trình khởi tạo.
 
-This constructor is called the initialize list constructor, and the type with
-this constructor will be specially taken care of during initialization.
-
-In addition to the object construction, the initialization list can also
-be used as a formal parameter of a normal function, for example:
+Ngoài việc khởi tạo đối tượng, danh sách khởi tạo cũng có thể được sử dụng như một tham số chính thức của một hàm thông thường, ví dụ:
 
 ```Cpp
 public:
@@ -325,56 +316,43 @@ public:
 magicFoo.foo({6,7,8,9});
 ```
 
-Second, C++11 also provides a uniform syntax for initializing arbitrary objects, such as:
+Thứ hai, C++11 cũng cung cấp một cú pháp thống nhất để khởi tạo các đối tượng tùy ý, chẳng hạn như:
 
 ```cpp
 Foo foo2 {3, 4};
 ```
 
-### Structured binding
+### Ràng buộc có cấu trúc
 
-Structured bindings provide functionality similar to the multiple return values
-provided in other languages. In the chapter on containers,
-we will learn that C++11 has added a `std::tuple` container for
-constructing a tuple that encloses multiple return values. But the flaw
-is that C++11/14 does not provide a simple way to get and define
-the elements in the tuple from the tuple,
-although we can unpack the tuple using `std::tie`
-But we still have to be very clear about how many objects this tuple contains,
-what type of each object is, very troublesome.
+Ràng buộc có cấu trúc cung cấp chức năng tương tự như các giá trị trả về nhiều lần trong các ngôn ngữ khác. Trong chương về container, chúng ta sẽ học rằng C++11 đã thêm container std::tuple để xây dựng một tuple bao gồm nhiều giá trị trả về. Nhưng nhược điểm là C++11/14 không cung cấp cách đơn giản để lấy và định nghĩa các phần tử trong tuple từ tuple, mặc dù chúng ta có thể giải nén tuple bằng cách sử dụng std::tie. Nhưng chúng ta vẫn phải rất rõ ràng về số lượng đối tượng mà tuple này chứa, kiểu của từng đối tượng là gì, rất phiền phức.
 
-C++17 completes this setting,
-and the structured bindings let us write code like this:
+C++17 hoàn thiện điều này, và ràng buộc có cấu trúc cho phép chúng ta viết mã như sau:
 
 ```cpp
 #include <iostream>
 #include <tuple>
 
 std::tuple<int, double, std::string> f() {
-    return std::make_tuple(1, 2.3, "456");
-}
-
-int main() {
-    auto [x, y, z] = f();
-    std::cout << x << ", " << y << ", " << z << std::endl;
+    return std::make_tuple(1,Kiểu suy diễn `auto` được mô tả trong phần
+[suy diễn kiểu auto](#auto).< z << std::endl;
     return 0;
 }
 ```
 
-The `auto` type derivation is described in the
-[auto type inference](#auto) section.
+Kiểu suy diễn `auto` được mô tả trong phần
+[suy diễn kiểu auto](#auto).
 
-## 2.3 Type inference
+## 2.3 Suy diễn kiểu
 
-In traditional C and C++, the types of parameters must be clearly defined, which does not help us to quickly encode, especially when we are faced with a large number of complex template types, we must indicate the type of variables to proceed. Subsequent coding, which not only slows down our development efficiency but also makes the code stinking and long.
+Trong C và C++ truyền thống, các kiểu của tham số phải được định nghĩa rõ ràng, điều này không giúp chúng ta viết chương trình nhanh chóng, đặc biệt khi chúng ta phải đối mặt với một số lượng lớn các kiểu mẫu phức tạp, chúng ta phải chỉ định kiểu của các biến để tiếp tục viết chương trình. Điều này không chỉ làm chậm hiệu quả phát triển của chúng ta mà còn làm cho mã trở nên dài dòng và khó đọc.
 
-C++11 introduces the two keywords `auto` and `decltype` to implement type derivation, letting the compiler worry about the type of the variable. This makes C++ the same as other modern programming languages, in a way that provides the habit of not having to worry about variable types.
+C++11 giới thiệu hai từ khóa `auto` và `decltype` để thực hiện suy diễn kiểu, cho phép trình biên dịch lo lắng về kiểu của biến. Điều này làm cho C++ trở nên giống như các ngôn ngữ lập trình hiện đại khác, theo cách mà chúng ta không cần phải lo lắng về kiểu của biến.
 
 ### auto
 
-`auto` has been in C++ for a long time, but it always exists as an indicator of a storage type, coexisting with `register`. In traditional C++, if a variable is not declared as a `register` variable, it is automatically treated as an `auto` variable. And with `register` being deprecated (used as a reserved keyword in C++17 and later used, it doesn't currently make sense), the semantic change to `auto` is very natural.
+`auto` đã tồn tại trong C++ từ lâu, nhưng nó luôn tồn tại như một chỉ báo của kiểu lưu trữ, cùng tồn tại với `register`. Trong C++ truyền thống, nếu một biến không được khai báo là biến `register`, nó sẽ tự động được coi là biến `auto`. Và với việc `register` bị loại bỏ (được sử dụng như một từ khóa dự trữ trong C++17 và sau này, hiện tại nó không còn ý nghĩa), sự thay đổi ngữ nghĩa của `auto` là rất tự nhiên.
 
-One of the most common and notable examples of type derivation using `auto` is the iterator. You should see the lengthy iterative writing in traditional C++ in the previous section:
+Một trong những ví dụ phổ biến và đáng chú ý nhất về suy diễn kiểu sử dụng `auto` là iterator. Bạn có thể thấy cách viết lặp dài dòng trong C++ truyền thống ở phần trước:
 
 ```cpp
 // before C++11
@@ -383,25 +361,16 @@ One of the most common and notable examples of type derivation using `auto` is t
 for(vector<int>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it)
 ```
 
-When we have `auto`:
+Khi chúng ta có `auto`:
 
 ```cpp
 #include <initializer_list>
 #include <vector>
 #include <iostream>
 
-class MagicFoo {
-public:
-    std::vector<int> vec;
-    MagicFoo(std::initializer_list<int> list) {
-        for (auto it = list.begin(); it != list.end(); ++it) {
-            vec.push_back(*it);
-        }
-    }
-};
-
-int main() {
-    MagicFoo magicFoo = {1, 2, 3, 4, 5};
+class MagicTừ C++14, `auto` thậm chí có thể được sử dTừ C++14, `auto` thậm chí có thể được sử dụng làm tham số hàm trong các biểu thức lambda tổng quát,
+và chức năng này được tổng quát hóa cho các hàm thông thường trong C++20.
+Xem xét ví dụ sau:icFoo = {1, 2, 3, 4, 5};
     std::cout << "magicFoo: ";
     for (auto it = magicFoo.vec.begin(); it != magicFoo.vec.end(); ++it) {
         std::cout << *it << ", ";
@@ -411,16 +380,15 @@ int main() {
 }
 ```
 
-Some other common usages:
+Một vài ví dụ khác:
 
 ```cpp
 auto i = 5;              // i as int
 auto arr = new auto(10); // arr as int *
 ```
-
-Since C++ 14, `auto` can even be used as function arguments in generic lambda expressions,
-and such functionality is generalized to normal functions in C++ 20.
-Consider the following example:
+Từ C++14, `auto` thậm chí có thể được sử dụng làm tham số hàm trong các biểu thức lambda tổng quát,
+và chức năng này được tổng quát hóa cho các hàm thông thường trong C++20.
+Xem xét ví dụ sau:
 
 ```cpp
 auto add14 = [](auto x, auto y) -> int {
@@ -428,66 +396,50 @@ auto add14 = [](auto x, auto y) -> int {
 }
 
 int add20(auto x, auto y) {
-    return x+y;
-}
-
-auto i = 5; // type int
-auto j = 6; // type int
-std::cout << add14(i, j) << std::endl;
-std::cout << add20(i, j) << std::endl;
-```
-
-> **Note**: `auto` cannot be used to derive array types yet:
->
-> ```cpp
-> auto auto_arr2[10] = {arr};   // illegal, can't infer array type
->
-> 2.6.auto.cpp:30:19: error: 'auto_arr2' declared as array of 'auto'
+  Đôi khi chúng ta cần tính toán kiểu của một biểu thức, ví dụ:j) << std::endl;
+std::cout << add20(i, j) Bạn đã thấy trong ví dụ trước rằng
+`decltype` được sử dụng để suy diễn kiểu của biến.
+Ví dụ sau đây nhằm xác định
+nếu các biến `x, y, z` ở trên có cùng kiểu hay không:19: error: 'auto_arr2' declared as array of 'auto'
 >     auto auto_arr2[10] = {arr};
 > ```
 
 ### decltype
 
-The `decltype` keyword is used to solve the defect that the auto keyword
-can only type the variable. Its usage is very similar to `typeof`:
+Từ khóa `decltype` được sử dụng để giải quyết nhược điểm của từ khóa `auto`
+chỉ có thể suy diễn kiểu của biến. Cách sử dụng của nó rất giống với `typeof`:
 
 ```cpp
-decltype(expression)
+decltype(exTrong đó, `std::is_same<T, U>` được sử dụng để xác định
+hai kiểu `T` và `U` có bằng nhau hay không. Kết quả đầu ra là:type(x+y) z;
 ```
 
-Sometimes we may need to calculate the type of an expression, for example:
-
-```cpp
-auto x = 1;
-auto y = 2;
-decltype(x+y) z;
-```
-
-You have seen in the previous example that
-`decltype` is used to infer the usage of the type.
-The following example is to determine
-if the above variables `x, y, z` are of the same type:
+Bạn đã thấy trong ví dụ trước rằng
+`decltype` được sử dụng để suy diễn kiểu của biến.
+Ví dụ sau đây nhằm xác định
+nếu các biến `x, y, z` ở trên có cùng kiểu hay không:
 
 ```cpp
 if (std::is_same<decltype(x), int>::value)
-    std::cout << "type x == int" << std::endl;
-if (std::is_same<decltype(x), float>::value)
-    std::cout << "type x == float" << std::endl;
+    std::cout << "ttemplate<typename T, typename U>
+auto add(T x, U y) {
+    return x+y;
+}::cout << "type x == float" << std::endl;
 if (std::is_same<decltype(x), decltype(z)>::value)
     std::cout << "type z == type x" << std::endl;
 ```
 
-Among them, `std::is_same<T, U>` is used to determine whether
-the two types `T` and `U` are equal. The output is:
+Trong đó, `std::is_same<T, U>` được sử dụng để xác định
+hai kiểu `T` và `U` có bằng nhau hay không. Kết quả đầu ra là:
 
 ```
 type x == int
 type z == type x
 ```
 
-### tail type inference
+### Suy diễn kiểu trả về
 
-You may think that whether `auto` can be used to deduce the return type of a function. Still consider an example of an add function, which we have to write in traditional C++:
+Bạn có thể nghĩ rằng liệu `auto` có thể được sử dụng để suy diễn kiểu trả về của một hàm hay không. Hãy xem xét một ví dụ về hàm cộng, mà chúng ta phải viết trong C++ truyền thống:
 
 ```cpp
 template<typename R, typename T, typename U>
@@ -496,26 +448,17 @@ R add(T x, U y) {
 }
 ```
 
-> Note: There is no difference between typename and class in the template parameter list. Before the keyword typename appears, class is used to define the template parameters. However, when defining a variable with [nested dependency type](https://en.cppreference.com/w/cpp/language/dependent_name#The_typename_disambiguator_for_dependent_names) in the template, you need to use typename to eliminate ambiguity.
+> Lưu ý: Không có sự khác biệt giữa typename và class trong danh sách tham số của template. Trước khi từ khóa typename xuất hiện, class được sử dụng để định nghĩa các tham số của template. Tuy nhiên, khi định nghĩa một biến với [kiểu phụ thuộc lồng nhau](https://en.cppreference.com/w/cpp/language/dependent_name#The_typename_disambiguator_for_dependent_names) trong template, bạn cần sử dụng typename để loại bỏ sự mơ hồ.
 
-Such code is very ugly because the programmer must explicitly
-indicate the return type when using this template function.
-But in fact, we don't know what kind of operation
-the `add()` function will do, and what kind of return type to get.
+Mã này rất xấu vì lập trình viên phải chỉ rõ kiểu trả về khi sử dụng hàm template này. Nhưng thực tế, chúng ta không biết hàm `add()` sẽ thực hiện loại phép toán nào và sẽ có kiểu trả về gì.
 
-This problem was solved in C++11. Although you may immediately
-react to using `decltype` to derive the type of `x+y`,
-write something like this:
+Vấn đề này đã được giải quyết trong C++11. Mặc dù bạn có thể ngay lập tức nghĩ đến việc sử dụng `decltype` để suy diễn kiểu của `x+y`, viết như sau:
 
 ```cpp
 decltype(x+y) add(T x, U y)
 ```
 
-But in fact, this way of writing can not be compiled.
-This is because `x` and `y` have not been defined
-when the compiler reads decltype(x+y).
-To solve this problem, C++11 also introduces a trailing return type,
-which uses the auto keyword to post the return type:
+Nhưng thực tế, cách viết này không thể biên dịch được. Điều này là do `x` và `y` chưa được định nghĩa khi trình biên dịch đọc decltype(x+y). Để giải quyết vấn đề này, C++11 cũng giới thiệu một kiểu trả về theo sau, sử dụng từ khóa auto để chỉ định kiểu trả về:
 
 ```cpp
 template<typename T, typename U>
@@ -523,9 +466,7 @@ auto add2(T x, U y) -> decltype(x+y){
     return x + y;
 }
 ```
-
-The good news is that from C++14 it is possible to directly derive the return value of
-a normal function, so the following way becomes legal:
+Tin tốt là từ C++14, chúng ta có thể trực tiếp suy diễn giá trị trả về của một hàm thông thường, vì vậy cách viết sau đây trở nên hợp lệ:
 
 ```cpp
 template<typename T, typename U>
@@ -534,43 +475,41 @@ auto add3(T x, U y){
 }
 ```
 
-You can check if the type derivation is correct:
+Bạn có thể kiểm tra xem việc suy diễn kiểu có chính xác hay không:
 
 ```cpp
-// after c++11
+// sau c++11
 auto w = add2<int, double>(1, 2.0);
 if (std::is_same<decltype(w), double>::value) {
-    std::cout << "w is double: ";
+    std::cout << "w là double: ";
 }
 std::cout << w << std::endl;
 
-// after c++14
+// sau c++14
 auto q = add3<double, int>(1.0, 2);
 std::cout << "q: " << q << std::endl;
 ```
-
 ### decltype(auto)
 
-`decltype(auto)` is a slightly more complicated use of C++14.
+[`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md") là một cách sử dụng phức tạp hơn một chút của C++14.
 
-> To understand it you need to know the concept of parameter forwarding
-> in C++, which we will cover in detail in the
-> [Language Runtime Enhancements](./03-runtime.md) chapter,
-> and you can come back to the contents of this section later.
+> Để hiểu được nó, bạn cần biết khái niệm chuyển tiếp tham số
+> trong C++, mà chúng ta sẽ đề cập chi tiết trong chương
+> [Cải tiến Runtime Ngôn ngữ](./03-runtime.md),
+> và bạn có thể quay lại nội dung của phần này sau.
 
-In simple terms, `decltype(auto)` is mainly used to derive
-the return type of a forwarding function or package,
-which does not require us to explicitly specify
-the parameter expression of `decltype`.
-Consider the following example, when we need to wrap the following
-two functions:
+Nói một cách đơn giản, [`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md") chủ yếu được sử dụng để suy diễn
+kiểu trả về của một hàm chuyển tiếp hoặc gói,
+mà không yêu cầu chúng ta phải chỉ rõ
+biểu thức tham số của [`decltype`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md").
+Xem xét ví dụ sau, khi chúng ta cần bao bọc hai hàm sau:
 
 ```cpp
 std::string  lookup1();
 std::string& lookup2();
 ```
 
-In C++11:
+Trong C++11:
 
 ```cpp
 std::string look_up_a_string_1() {
@@ -581,7 +520,7 @@ std::string& look_up_a_string_2() {
 }
 ```
 
-With `decltype(auto)`, we can let the compiler do this annoying parameter forwarding:
+Với [`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md"), chúng ta có thể để trình biên dịch thực hiện việc chuyển tiếp tham số phiền phức này:
 
 ```cpp
 decltype(auto) look_up_a_string_1() {
@@ -592,11 +531,11 @@ decltype(auto) look_up_a_string_2() {
 }
 ```
 
-## 2.4 Control flow
+## 2.4 Luồng điều khiển
 
 ### if constexpr
 
-As we saw at the beginning of this chapter, we know that C++11 introduces the `constexpr` keyword, which compiles expressions or functions into constant results. A natural idea is that if we introduce this feature into the conditional judgment, let the code complete the branch judgment at compile-time, can it make the program more efficient? C++17 introduces the `constexpr` keyword into the `if` statement, allowing you to declare the condition of a constant expression in your code. Consider the following code:
+Như chúng ta đã thấy ở đầu chương này, chúng ta biết rằng C++11 giới thiệu từ khóa `constexpr`, từ khóa này biên dịch các biểu thức hoặc hàm thành kết quả hằng. Một ý tưởng tự nhiên là nếu chúng ta giới thiệu tính năng này vào phán đoán điều kiện, để mã hoàn thành phán đoán nhánh tại thời gian biên dịch, liệu nó có thể làm cho chương trình hiệu quả hơn không? C++17 giới thiệu từ khóa `constexpr` vào câu lệnh `if`, cho phép bạn khai báo điều kiện của một biểu thức hằng trong mã của mình. Xem xét đoạn mã sau:
 
 ```cpp
 #include <iostream>
@@ -614,8 +553,7 @@ int main() {
     std::cout << print_type_info(3.14) << std::endl;
 }
 ```
-
-At compile time, the actual code will behave as follows:
+Tại thời gian biên dịch, mã thực tế sẽ hoạt động như sau:
 
 ```cpp
 int print_type_info(const int& t) {
@@ -630,11 +568,9 @@ int main() {
 }
 ```
 
-### Range-based for loop
+### Vòng lặp dựa trên phạm vi
 
-Finally, C++11 introduces a range-based iterative method, and we can write loops that are as concise
-as Python, and we can further simplify the previous example:
-
+Cuối cùng, C++11 giới thiệu một phương pháp lặp dựa trên phạm vi, và chúng ta có thể viết các vòng lặp ngắn gọn như trong Python, và chúng ta có thể đơn giản hóa ví dụ trước:
 ```cpp
 #include <iostream>
 #include <vector>
@@ -644,42 +580,42 @@ int main() {
     std::vector<int> vec = {1, 2, 3, 4};
     if (auto itr = std::find(vec.begin(), vec.end(), 3); itr != vec.end()) *itr = 4;
     for (auto element : vec)
-        std::cout << element << std::endl; // read only
+        std::cout << element << std::endl; // chỉ đọc
     for (auto &element : vec) {
-        element += 1;                      // writeable
+        element += 1;                      // có thể ghi
     }
     for (auto element : vec)
-        std::cout << element << std::endl; // read only
+        std::cout << element << std::endl; // chỉ đọc
 }
 ```
 
 ## 2.5 Templates
 
-C++ templates have always been a special art of the language, and templates can even be used independently as a new language. The philosophy of the template is to throw all the problems that can be processed at compile time into the compile time, and only deal with those core dynamic services at runtime, to greatly optimize the performance of the runtime. Therefore, templates are also regarded by many as one of the black magic of C++.
+Templates trong C++ luôn là một nghệ thuật đặc biệt của ngôn ngữ này, và templates thậm chí có thể được sử dụng độc lập như một ngôn ngữ mới. Triết lý của template là đưa tất cả các vấn đề có thể xử lý tại thời gian biên dịch vào thời gian biên dịch, và chỉ xử lý những dịch vụ động cốt lõi tại thời gian chạy, để tối ưu hóa hiệu suất của thời gian chạy. Do đó, templates cũng được nhiều người coi là một trong những phép thuật đen của C++.
 
 ### Extern templates
 
-In traditional C++, templates are instantiated by the compiler only when they are used. In other words, as long as a fully defined template is encountered in the code compiled in each compilation unit (file), it will be instantiated. This results in an increase in compile time due to repeated instantiations. Also, we have no way to tell the compiler not to trigger the instantiation of the template.
+Trong C++ truyền thống, templates chỉ được khởi tạo bởi trình biên dịch khi chúng được sử dụng. Nói cách khác, miễn là một template được định nghĩa đầy đủ xuất hiện trong mã được biên dịch trong mỗi đơn vị biên dịch (file), nó sẽ được khởi tạo. Điều này dẫn đến việc tăng thời gian biên dịch do khởi tạo lặp lại. Ngoài ra, chúng ta không có cách nào để yêu cầu trình biên dịch không kích hoạt việc khởi tạo template.
 
-To this end, C++11 introduces an external template that extends the syntax of the original mandatory compiler to instantiate a template at a specific location, allowing us to explicitly tell the compiler when to instantiate the template:
+Để giải quyết vấn đề này, C++11 giới thiệu một template bên ngoài mở rộng cú pháp của trình biên dịch bắt buộc để khởi tạo một template tại một vị trí cụ thể, cho phép chúng ta rõ ràng yêu cầu trình biên dịch khi nào nên khởi tạo template:
 
 ```cpp
-template class std::vector<bool>;          // force instantiation
-extern template class std::vector<double>; // should not instantiation in current file
+template class std::vector<bool>;          // bắt buộc khởi tạo
+extern template class std::vector<double>; // không nên khởi tạo trong file hiện tại
 ```
 
-### The ">"
+### Dấu ">"
 
-In the traditional C++ compiler, `>>` is always treated as a right shift operator. But actually we can easily write the code for the nested template:
+Trong trình biên dịch C++ truyền thống, `>>` luôn được coi là toán tử dịch phải. Nhưng thực tế chúng ta có thể dễ dàng viết mã cho template lồng nhau:
 
 ```cpp
 std::vector<std::vector<int>> matrix;
 ```
 
-This is not compiled under the traditional C++ compiler,
-and C++11 starts with continuous right angle brackets that become legal
-and can be compiled successfully.
-Even the following writing can be compiled by:
+Điều này không được biên dịch dưới trình biên dịch C++ truyền thống,
+và từ C++11 trở đi, các dấu ngoặc nhọn liên tiếp trở nên hợp pháp
+và có thể được biên dịch thành công.
+Thậm chí cách viết sau đây cũng có thể được biên dịch:
 
 ```cpp
 template<bool T>
@@ -687,13 +623,13 @@ class MagicType {
     bool magic = T;
 };
 
-// in main function:
-std::vector<MagicType<(1>2)>> magic; // legal, but not recommended
+// trong hàm main:
+std::vector<MagicType<(1>2)>> magic; // hợp pháp, nhưng không khuyến khích
 ```
 
-### Type alias templates
+### Template alias kiểu
 
-Before you understand the type alias template, you need to understand the difference between "template" and "type". Carefully understand this sentence: **Templates are used to generate types.** In traditional C++, `typedef` can define a new name for the type, but there is no way to define a new name for the template. Because the template is not a type. E.g:
+Trước khi bạn hiểu template alias kiểu, bạn cần hiểu sự khác biệt giữa "template" và "kiểu". Hãy hiểu kỹ câu này: **Templates được sử dụng để tạo ra các kiểu.** Trong C++ truyền thống, `typedef` có thể định nghĩa một tên mới cho kiểu, nhưng không có cách nào để định nghĩa một tên mới cho template. Bởi vì template không phải là một kiểu. Ví dụ:
 
 ```cpp
 template<typename T, typename U>
@@ -703,14 +639,15 @@ public:
     U magic;
 };
 
-// not allowed
+```cpp
+// không được phép
 template<typename T>
 typedef MagicType<std::vector<T>, std::string> FakeDarkMagic;
 ```
 
-C++11 uses `using` to introduce the following form of writing, and at the same time supports the same effect as the traditional `typedef`:
+C++11 sử dụng `using` để giới thiệu cách viết sau, và đồng thời hỗ trợ hiệu quả tương tự như `typedef` truyền thống:
 
-> Usually, we use `typedef` to define the alias syntax: `typedef original name new name; `, but the definition syntax for aliases such as function pointers is different, which usually causes a certain degree of difficulty for direct reading.
+> Thông thường, chúng ta sử dụng `typedef` để định nghĩa cú pháp bí danh: `typedef tên gốc tên mới;`, nhưng cú pháp định nghĩa cho các bí danh như con trỏ hàm lại khác, điều này thường gây ra một mức độ khó khăn nhất định cho việc đọc trực tiếp.
 
 ```cpp
 typedef int (*process)(void *);
@@ -722,23 +659,22 @@ int main() {
     TrueDarkMagic<bool> you;
 }
 ```
-
 ### Variadic templates
 
-The template has always been one of C++'s unique **Black Magic**.
-In traditional C++,
-both a class template and a function template could only accept
-a fixed set of template parameters as specified;
-C++11 added a new representation, allowing any number,
-template parameters of any category,
-and there is no need to fix the number of parameters when defining.
+Template luôn là một trong những **Phép Thuật Đen** độc đáo của C++.
+Trong C++ truyền thống,
+cả template lớp và template hàm chỉ có thể chấp nhận
+một tập hợp cố định các tham số template như đã chỉ định;
+C++11 đã thêm một biểu diễn mới, cho phép bất kỳ số lượng,
+tham số template của bất kỳ loại nào,
+và không cần phải cố định số lượng tham số khi định nghĩa.
 
 ```cpp
 template<typename... Ts> class Magic;
 ```
 
-The template class Magic object can accept an unrestricted number of typename as
-a formal parameter of the template, such as the following definition:
+Lớp template Magic có thể chấp nhận một số lượng không giới hạn các typename
+như một tham số chính thức của template, ví dụ như định nghĩa sau:
 
 ```cpp
 class Magic<int,
@@ -747,26 +683,25 @@ class Magic<int,
             std::vector<int>>> darkMagic;
 ```
 
-Since it is arbitrary, a template parameter with a number of 0 is also possible: `class Magic<> nothing;`.
+Vì nó là tùy ý, một tham số template với số lượng 0 cũng có thể: `class Magic<> nothing;`.
 
-If you do not want to generate 0 template parameters, you can manually define at least one template parameter:
+Nếu bạn không muốn tạo ra 0 tham số template, bạn có thể tự định nghĩa ít nhất một tham số template:
 
 ```cpp
 template<typename Require, typename... Args> class Magic;
 ```
 
-The variable length parameter template can also be directly adjusted to the template function.
-The `printf` function in the traditional C, although it can also reach the call of an indefinite number of formal parameters, is not class safe. In addition to the variable-length parameter functions that define class safety, C++11 can also make printf-like functions naturally handle objects that are not self-contained. In addition to the use of `...` in the template parameters to indicate the indefinite length of the template parameters, the function parameters also use the same representation to represent the indefinite length parameters, which provides a convenient means for us to simply write variable length parameter functions, such as:
+Tham số template có độ dài biến cũng có thể được điều chỉnh trực tiếp thành hàm template.
+Hàm `printf` trong C truyền thống, mặc dù cũng có thể gọi với số lượng tham số không xác định, nhưng không an toàn với lớp. Ngoài các hàm tham số có độ dài biến định nghĩa an toàn với lớp, C++11 cũng có thể làm cho các hàm giống như printf xử lý tự nhiên các đối tượng không tự chứa. Ngoài việc sử dụng `...` trong các tham số template để chỉ ra độ dài không xác định của các tham số template, các tham số hàm cũng sử dụng cùng một biểu diễn để đại diện cho các tham số có độ dài không xác định, điều này cung cấp một phương tiện thuận tiện để chúng ta đơn giản viết các hàm tham số có độ dài biến, chẳng hạn như:
 
 ```cpp
 template<typename... Args> void printf(const std::string &str, Args... args);
 ```
 
-Then we define variable length template parameters,
-how to unpack the parameters?
+Sau khi chúng ta định nghĩa các tham số template có độ dài biến,
+làm thế nào để giải nén các tham số?
 
-First, we can use `sizeof...` to calculate the number of arguments:
-
+Trước tiên, chúng ta có thể sử dụng `sizeof...` để tính toán số lượng tham số:
 ```cpp
 #include <iostream>
 template<typename... Ts>
@@ -775,7 +710,7 @@ void magic(Ts... args) {
 }
 ```
 
-We can pass any number of arguments to the `magic` function:
+Chúng ta có thể truyền bất kỳ số lượng tham số nào cho hàm `magic`:
 
 ```cpp
 magic();      // 0
@@ -783,13 +718,12 @@ magic(1);     // 1
 magic(1, ""); // 2
 ```
 
-Second, the parameters are unpacked. So far there is no simple way to process
-the parameter package, but there are two classic processing methods:
+Thứ hai, các tham số được giải nén. Cho đến nay, không có cách đơn giản nào để xử lý
+gói tham số, nhưng có hai phương pháp xử lý kinh điển:
 
-**1. Recursive template function**
+**1. Hàm template đệ quy**
 
-Recursion is a very easy way to think of and the most classic approach. This method continually recursively passes template parameters to the function, thereby achieving the purpose of recursively traversing all template parameters:
-
+Đệ quy là một cách rất dễ nghĩ đến và là phương pháp kinh điển nhất. Phương pháp này liên tục truyền các tham số template cho hàm một cách đệ quy, do đó đạt được mục đích duyệt qua tất cả các tham số template:
 ```cpp
 #include <iostream>
 template<typename T0>
@@ -807,9 +741,9 @@ int main() {
 }
 ```
 
-**2. Variable parameter template expansion**
+**2. Mở rộng template tham số biến**
 
-You should feel that this is very cumbersome. Added support for variable parameter template expansion in C++17, so you can write `printf` in a function:
+Bạn có thể cảm thấy rằng điều này rất phức tạp. C++17 đã thêm hỗ trợ cho việc mở rộng template tham số biến, vì vậy bạn có thể viết `printf` trong một hàm:
 
 ```cpp
 template<typename T0, typename... T>
@@ -818,14 +752,13 @@ void printf2(T0 t0, T... t) {
     if constexpr (sizeof...(t) > 0) printf2(t...);
 }
 ```
+> Thực tế, đôi khi chúng ta sử dụng template tham số biến, nhưng không nhất thiết phải duyệt qua các tham số từng cái một. Chúng ta có thể sử dụng tính năng của `std::bind` và chuyển tiếp hoàn hảo để đạt được việc liên kết các hàm và tham số, từ đó đạt được mục đích gọi hàm.
 
-> In fact, sometimes we use variable parameter templates, but we don't necessarily need to traverse the parameters one by one. We can use the features of `std::bind` and perfect forwarding to achieve the binding of functions and parameters, thus achieving success. The purpose of the call.
+**3. Mở rộng danh sách khởi tạo**
 
-**3. Initialize list expansion**
+Hàm template đệ quy là phương pháp tiêu chuẩn, nhưng nhược điểm rõ ràng là bạn phải định nghĩa một hàm để kết thúc đệ quy.
 
-Recursive template functions are standard practice, but the obvious drawback is that you must define a function that terminates recursion.
-
-Here is a description of the black magic that is expanded using the initialization list:
+Dưới đây là mô tả về phép thuật đen được mở rộng bằng cách sử dụng danh sách khởi tạo:
 
 ```cpp
 template<typename T, typename... Ts>
@@ -837,14 +770,14 @@ auto printf3(T value, Ts... args) {
 }
 ```
 
-In this code, the initialization list provided in C++11 and the properties of the Lambda expression (mentioned in the next section) are additionally used.
+Trong đoạn mã này, danh sách khởi tạo được cung cấp trong C++11 và các thuộc tính của biểu thức Lambda (được đề cập trong phần tiếp theo) cũng được sử dụng thêm.
 
-By initializing the list, `(lambda expression, value)...` will be expanded. Due to the appearance of the comma expression, the previous lambda expression is executed first, and the output of the parameter is completed.
-To avoid compiler warnings, we can explicitly convert `std::initializer_list` to `void`.
+Bằng cách khởi tạo danh sách, `(biểu thức lambda, giá trị)...` sẽ được mở rộng. Do sự xuất hiện của biểu thức dấu phẩy, biểu thức lambda trước đó được thực thi trước, và việc xuất tham số được hoàn thành.
+Để tránh cảnh báo của trình biên dịch, chúng ta có thể chuyển đổi rõ ràng `std::initializer_list` sang `void`.
 
-### Fold expression
+### Biểu thức gấp (Fold expression)
 
-In C++ 17, this feature of the variable length parameter is further brought to the expression, consider the following example:
+Trong C++ 17, tính năng của tham số có độ dài biến được mở rộng thêm vào biểu thức, hãy xem xét ví dụ sau:
 
 ```cpp
 #include <iostream>
@@ -857,20 +790,19 @@ int main() {
 }
 ```
 
-### Non-type template parameter deduction
+### Suy luận tham số template không kiểu
 
-What we mainly mentioned above is a form of template parameters: type template parameters.
+Những gì chúng ta đã đề cập ở trên chủ yếu là một dạng của tham số template: tham số template kiểu.
 
 ```cpp
 template <typename T, typename U>
 auto add(T t, U u) {
-    return t+u;
+    return t + u;
 }
 ```
-
-The parameters of the template `T` and `U` are specific types.
-But there is also a common form of template parameter that allows different literals
-to be template parameters, i.e. non-type template parameters:
+Các tham số của template `T` và `U` là các kiểu cụ thể.
+Nhưng cũng có một dạng phổ biến của tham số template cho phép các literal khác nhau
+làm tham số template, tức là tham số template không kiểu:
 
 ```cpp
 template <typename T, int BufSize>
@@ -882,15 +814,15 @@ private:
     T data[BufSize];
 }
 
-buffer_t<int, 100> buf; // 100 as template parameter
+buffer_t<int, 100> buf; // 100 là tham số template
 ```
 
-In this form of template parameters, we can pass `100` as a parameter to the template.
-After C++11 introduced the feature of type derivation, we will naturally ask, since the template parameters here.
-Passing with a specific literal, can the compiler assist us in type derivation,
-By using the placeholder `auto`, there is no longer a need to explicitly specify the type?
-Fortunately, C++17 introduces this feature, and we can indeed use the `auto` keyword to let the compiler assist in the completion of specific types of derivation.
-E.g:
+Trong dạng tham số template này, chúng ta có thể truyền `100` như một tham số cho template.
+Sau khi C++11 giới thiệu tính năng suy luận kiểu, chúng ta sẽ tự nhiên hỏi, vì các tham số template ở đây.
+Truyền với một literal cụ thể, liệu trình biên dịch có thể hỗ trợ chúng ta trong việc suy luận kiểu,
+Bằng cách sử dụng placeholder `auto`, không còn cần phải chỉ định rõ ràng kiểu nữa?
+May mắn thay, C++17 giới thiệu tính năng này, và chúng ta thực sự có thể sử dụng từ khóa `auto` để cho phép trình biên dịch hỗ trợ hoàn thành việc suy luận kiểu cụ thể.
+Ví dụ:
 
 ```cpp
 template <auto value> void foo() {
@@ -902,13 +834,12 @@ int main() {
     foo<10>();  // value as int
 }
 ```
+## 2.6 Hướng đối tượng
 
-## 2.6 Object-oriented
+### Hàm khởi tạo ủy nhiệm
 
-### Delegate constructor
-
-C++11 introduces the concept of a delegate construct, which allows a constructor to call another constructor
-in a constructor in the same class, thus simplifying the code:
+C++11 giới thiệu khái niệm hàm khởi tạo ủy nhiệm, cho phép một hàm khởi tạo gọi một hàm khởi tạo khác
+trong cùng một lớp, từ đó đơn giản hóa mã:
 
 ```cpp
 #include <iostream>
@@ -919,7 +850,7 @@ public:
     Base() {
         value1 = 1;
     }
-    Base(int value) : Base() { // delegate Base() constructor
+    Base(int value) : Base() { // ủy nhiệm hàm khởi tạo Base()
         value2 = value;
     }
 };
@@ -931,9 +862,9 @@ int main() {
 }
 ```
 
-### Inheritance constructor
+### Hàm khởi tạo kế thừa
 
-In traditional C++, constructors need to pass arguments one by one if they need inheritance, which leads to inefficiency. C++11 introduces the concept of inheritance constructors using the keyword using:
+Trong C++ truyền thống, các hàm khởi tạo cần phải truyền các tham số từng cái một nếu chúng cần kế thừa, điều này dẫn đến sự kém hiệu quả. C++11 giới thiệu khái niệm hàm khởi tạo kế thừa bằng cách sử dụng từ khóa `using`:
 
 ```cpp
 #include <iostream>
@@ -944,13 +875,13 @@ public:
     Base() {
         value1 = 1;
     }
-    Base(int value) : Base() { // delegate Base() constructor
+    Base(int value) : Base() { // ủy nhiệm hàm khởi tạo Base()
         value2 = value;
     }
 };
 class Subclass : public Base {
 public:
-    using Base::Base; // inheritance constructor
+    using Base::Base; // hàm khởi tạo kế thừa
 };
 int main() {
     Subclass s(3);
@@ -959,9 +890,9 @@ int main() {
 }
 ```
 
-### Explicit virtual function overwrite
+### Ghi đè hàm ảo rõ ràng
 
-In traditional C++, it is often prone to accidentally overloading virtual functions. E.g:
+Trong C++ truyền thống, rất dễ xảy ra lỗi khi vô tình nạp chồng các hàm ảo. Ví dụ:
 
 ```cpp
 struct Base {
@@ -972,13 +903,13 @@ struct SubClass: Base {
 };
 ```
 
-`SubClass::foo` may not be a programmer trying to overload a virtual function, just adding a function with the same name. Another possible scenario is that when the virtual function of the base class is deleted, the subclass owns the old function and no longer overloads the virtual function and turns it into a normal class method, which has catastrophic consequences.
+`SubClass::foo` có thể không phải là một lập trình viên cố gắng nạp chồng một hàm ảo, chỉ là thêm một hàm có cùng tên. Một kịch bản khác có thể xảy ra là khi hàm ảo của lớp cơ sở bị xóa, lớp con vẫn giữ hàm cũ và không còn nạp chồng hàm ảo nữa mà biến nó thành một phương thức lớp bình thường, điều này có thể gây ra hậu quả nghiêm trọng.
 
-C++11 introduces the two keywords `override` and `final` to prevent this from happening.
+C++11 giới thiệu hai từ khóa `override` và `final` để ngăn chặn điều này xảy ra.
 
 ### override
 
-When overriding a virtual function, introducing the `override` keyword will explicitly tell the compiler to overload, and the compiler will check if the base function has such a virtual function with consistent function signature, otherwise it will not compile:
+Khi ghi đè một hàm ảo, việc sử dụng từ khóa `override` sẽ rõ ràng thông báo cho trình biên dịch rằng đây là một sự ghi đè, và trình biên dịch sẽ kiểm tra xem lớp cơ sở có hàm ảo với chữ ký hàm tương ứng hay không, nếu không sẽ không biên dịch:
 
 ```cpp
 struct Base {
@@ -989,52 +920,49 @@ struct SubClass: Base {
     virtual void foo(float) override; // illegal, no virtual function in super class
 };
 ```
-
 ### final
 
-`final` is to prevent the class from being continued to inherit and to terminate
-the virtual function to continue to be overloaded.
+[`final`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A923%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md") được sử dụng để ngăn chặn lớp tiếp tục được kế thừa và để chấm dứt việc hàm ảo tiếp tục bị ghi đè.
 
 ```cpp
 struct Base {
     virtual void foo() final;
 };
 struct SubClass1 final: Base {
-}; // legal
+}; // hợp lệ
 
 struct SubClass2 : SubClass1 {
-}; // illegal, SubClass1 has final
+}; // không hợp lệ, SubClass1 có final
 
 struct SubClass3: Base {
-    void foo(); // illegal, foo has final
+    void foo(); // không hợp lệ, foo có final
 };
 ```
 
-### Explicit delete default function
+### Xóa hàm mặc định rõ ràng
 
-In traditional C++, if the programmer does not provide it, the compiler will default to generating default constructors, copy constructs, assignment operators, and destructors for the object. Besides, C++ also defines operators such as `new` `delete` for all classes. This part of the function can be overridden when the programmer needs it.
+Trong C++ truyền thống, nếu lập trình viên không cung cấp, trình biên dịch sẽ mặc định tạo ra các hàm khởi tạo mặc định, hàm sao chép, toán tử gán và hàm hủy cho đối tượng. Ngoài ra, C++ cũng định nghĩa các toán tử như `new` và `delete` cho tất cả các lớp. Phần này của hàm có thể được ghi đè khi lập trình viên cần.
 
-This raises some requirements: the ability to accurately control the generation of default functions cannot be controlled. For example, when copying a class is prohibited, the copy constructor and the assignment operator must be declared as `private`. Trying to use these undefined functions will result in compilation or link errors, which is a very unconventional way.
+Điều này đặt ra một số yêu cầu: khả năng kiểm soát chính xác việc tạo ra các hàm mặc định không thể kiểm soát được. Ví dụ, khi cấm sao chép một lớp, hàm sao chép và toán tử gán phải được khai báo là `private`. Cố gắng sử dụng các hàm không được định nghĩa này sẽ dẫn đến lỗi biên dịch hoặc liên kết, đây là một cách rất không thông thường.
 
-Also, the default constructor generated by the compiler cannot exist at the same time as the user-defined constructor. If the user defines any constructor, the compiler will no longer generate the default constructor, but sometimes we want to have both constructors at the same time, which is awkward.
+Ngoài ra, hàm khởi tạo mặc định do trình biên dịch tạo ra không thể tồn tại cùng lúc với hàm khởi tạo do người dùng định nghĩa. Nếu người dùng định nghĩa bất kỳ hàm khởi tạo nào, trình biên dịch sẽ không còn tạo ra hàm khởi tạo mặc định nữa, nhưng đôi khi chúng ta muốn có cả hai hàm khởi tạo cùng lúc, điều này khá bất tiện.
 
-C++11 provides a solution to the above requirements, allowing explicit declarations to take or reject functions that come with the compiler. E.g:
+C++11 cung cấp một giải pháp cho các yêu cầu trên, cho phép khai báo rõ ràng để chấp nhận hoặc từ chối các hàm đi kèm với trình biên dịch. Ví dụ:
 
 ```cpp
 class Magic {
     public:
-    Magic() = default; // explicit let compiler use default constructor
-    Magic& operator=(const Magic&) = delete; // explicit declare refuse constructor
+    Magic() = default; // rõ ràng cho phép trình biên dịch sử dụng hàm khởi tạo mặc định
+    Magic& operator=(const Magic&) = delete; // rõ ràng từ chối hàm khởi tạo sao chép
     Magic(int magic_number);
 }
 ```
 
-### Strongly typed enumerations
+### Kiểu liệt kê mạnh
 
-In traditional C++, enumerated types are not type-safe, and enumerated types are treated as integers, which allows two completely different enumerated types to be directly compared (although the compiler gives the check, but not all), ** Even the enumeration value names of different enum types in the same namespace cannot be the same**, which is usually not what we want to see.
+Trong C++ truyền thống, các kiểu liệt kê không an toàn về kiểu, và các kiểu liệt kê được coi như số nguyên, điều này cho phép hai kiểu liệt kê hoàn toàn khác nhau có thể so sánh trực tiếp (mặc dù trình biên dịch có kiểm tra, nhưng không phải tất cả), ** Ngay cả tên giá trị liệt kê của các kiểu enum khác nhau trong cùng một không gian tên cũng không thể giống nhau**, điều này thường không phải là điều chúng ta mong muốn.
 
-C++11 introduces an enumeration class and declares it using the syntax of `enum class`:
-
+C++11 giới thiệu một lớp liệt kê và khai báo nó bằng cú pháp `enum class`:
 ```cpp
 enum class new_enum : unsigned int {
     value1,
@@ -1044,7 +972,7 @@ enum class new_enum : unsigned int {
 };
 ```
 
-The enumeration thus defined implements type safety. First, it cannot be implicitly converted to an integer, nor can it be compared to integer numbers, and it is even less likely to compare enumerated values of different enumerated types. But if the values specified are the same between the same enumerated values, then you can compare:
+Kiểu liệt kê được định nghĩa như vậy sẽ đảm bảo an toàn về kiểu. Đầu tiên, nó không thể được chuyển đổi ngầm định sang số nguyên, cũng không thể so sánh với các số nguyên, và càng ít khả năng so sánh các giá trị liệt kê của các kiểu liệt kê khác nhau. Nhưng nếu các giá trị được chỉ định giống nhau giữa các giá trị liệt kê cùng kiểu, thì bạn có thể so sánh:
 
 ```cpp
 if (new_enum::value3 == new_enum::value4) { // true
@@ -1052,10 +980,9 @@ if (new_enum::value3 == new_enum::value4) { // true
 }
 ```
 
-In this syntax, the enumeration type is followed by a colon and a type keyword to specify the type of the enumeration value in the enumeration, which allows us to assign a value to the enumeration (int is used by default when not specified).
+Trong cú pháp này, kiểu liệt kê được theo sau bởi dấu hai chấm và một từ khóa kiểu để chỉ định kiểu của giá trị liệt kê trong kiểu liệt kê, điều này cho phép chúng ta gán giá trị cho kiểu liệt kê (kiểu int được sử dụng mặc định khi không được chỉ định).
 
-And we want to get the value of the enumeration value, we will have to explicitly type conversion, but we can overload the `<<` operator to output, you can collect the following code snippet:
-
+Và nếu chúng ta muốn lấy giá trị của giá trị liệt kê, chúng ta sẽ phải chuyển đổi kiểu một cách rõ ràng, nhưng chúng ta có thể nạp chồng toán tử `<<` để xuất ra, bạn có thể tham khảo đoạn mã sau:
 ```cpp
 #include <iostream>
 template<typename T>
@@ -1067,24 +994,24 @@ std::ostream& operator<<(
 }
 ```
 
-At this point, the following code will be able to be compiled:
+Tại thời điểm này, đoạn mã sau sẽ có thể biên dịch được:
 
 ```cpp
 std::cout << new_enum::value3 << std::endl
 ```
 
-## Conclusion
+## Kết luận
 
-This section introduces the enhancements to language usability in modern C++, which I believe are the most important features that almost everyone needs to know and use:
+Phần này giới thiệu các cải tiến về khả năng sử dụng ngôn ngữ trong C++ hiện đại, mà tôi tin rằng là những tính năng quan trọng nhất mà hầu như ai cũng cần biết và sử dụng:
 
-1. Auto type derivation
-2. Scope for iteration
-3. Initialization list
-4. Variable parameter template
+1. Suy luận kiểu tự động
+2. Phạm vi cho vòng lặp
+3. Danh sách khởi tạo
+4. Mẫu tham số biến
 
-## Exercises
+## Bài tập
 
-1. Using structured binding, implement the following functions with just one line of function code:
+1. Sử dụng ràng buộc cấu trúc, hãy triển khai các hàm sau chỉ với một dòng mã:
 
    ```cpp
    #include <string>
@@ -1109,12 +1036,12 @@ This section introduces the enhancements to language usability in modern C++, wh
    }
    ```
 
-2. Try to implement a function for calculating the mean with [Fold Expression](#Fold-expression), allowing any arguments to be passed in.
+2. Hãy thử triển khai một hàm để tính giá trị trung bình bằng [Fold Expression](#Fold-expression), cho phép truyền vào bất kỳ đối số nào.
 
-> Refer to the answer [see this](../../exercises/2).
+> Tham khảo câu trả lời [xem tại đây](../../exercises/2).
 
-[Table of Content](./toc.md) | [Previous Chapter](./01-intro.md) | [Next Chapter: Language Runtime Enhancements](./03-runtime.md)
+[Table of Content](./toc.md) | [Chương trước](./01-intro.md) | [Chương tiếp theo: Cải tiến Runtime ngôn ngữ](./03-runtime.md)
 
-## Licenses
+## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
