@@ -145,9 +145,9 @@ int main() {
 }
 ```
 
-## 5.4 [`std::weak_ptr`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fen-us%2F05-pointers.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A148%2C%22character%22%3A0%7D%5D "book/en-us/05-pointers.md")
+## 5.4 `std::weak_ptr`
 
-Nếu bạn suy nghĩ kỹ về [`std::shared_ptr`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fen-us%2F05-pointers.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A148%2C%22character%22%3A0%7D%5D "book/en-us/05-pointers.md"), bạn sẽ thấy rằng vẫn còn một vấn đề là tài nguyên không thể được giải phóng. Hãy xem ví dụ sau:
+Nếu bạn suy nghĩ kỹ về `std::shared_ptr`, bạn sẽ thấy rằng vẫn còn một vấn đề là tài nguyên không thể được giải phóng. Hãy xem ví dụ sau:
 
 ```cpp
 #include <iostream>
@@ -182,7 +182,7 @@ int main() {
 
 Kết quả là A và B sẽ không bị hủy. Điều này là do con trỏ bên trong a và b cũng tham chiếu đến `a, b`, làm cho số lượng tham chiếu của `a, b` trở thành 2 khi rời khỏi phạm vi. Khi con trỏ thông minh `a, b` bị hủy, nó chỉ có thể làm giảm số lượng tham chiếu của khu vực này đi một. Điều này khiến số lượng tham chiếu của vùng nhớ được trỏ bởi đối tượng `a, b` không bằng không, nhưng bên ngoài không có cách nào để tìm thấy vùng này, dẫn đến rò rỉ bộ nhớ, như minh họa trong Hình 5.1:
 
-![Hình 5.1](../../assets/figures/pointers1_en.png)
+![Hình 5.1](../../assets/figures/pointers1_vi.png)
 
 Giải pháp cho vấn đề này là sử dụng con trỏ tham chiếu yếu `std::weak_ptr`, đây là một tham chiếu yếu (so với `std::shared_ptr` là một tham chiếu mạnh). Một tham chiếu yếu không làm tăng số lượng tham chiếu. Khi sử dụng tham chiếu yếu, quá trình giải phóng cuối cùng được thể hiện trong Hình 5.2:
 

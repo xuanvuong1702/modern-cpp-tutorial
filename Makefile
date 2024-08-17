@@ -1,7 +1,7 @@
 NAME=modern-cpp-tutorial
 DOCKER_ENV=changkun/$(NAME):build-env
 TARGET = pdf epub
-LANGS = zh-cn en-us
+LANGS = zh-cn en-us vi-vn
 ALL_BUILDS = website $(TARGET)
 
 # dep
@@ -32,6 +32,7 @@ serve:
 clean:
 	cd pdf/zh-cn && make clean
 	cd pdf/en-us && make clean
+	cd pdf/vi-vn && make clean
 	cd website && make clean
 	docker images -f "dangling=true" -q | xargs docker rmi -f
 	docker image prune -f
