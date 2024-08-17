@@ -18,45 +18,42 @@ Target: x86_64-apple-darwin18.6.0
 Thread model: posix
 InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 ```
+## 1.1 Các Tính Năng Đã Bị Loại Bỏ
 
-## 1.1 Deprecated Features
+Trước khi học C++ hiện đại, hãy cùng xem qua các tính năng chính đã bị loại bỏ kể từ C++11:
 
-Before learning modern C++, let's take a look at the main features that have deprecated since C++11:
+> **Lưu ý**: Việc loại bỏ không có nghĩa là không thể sử dụng, mà chỉ nhằm ám chỉ rằng các tính năng này sẽ biến mất trong các tiêu chuẩn tương lai và nên tránh sử dụng. Tuy nhiên, các tính năng bị loại bỏ vẫn là một phần của thư viện chuẩn, và hầu hết các tính năng này thực sự được "dành riêng" vĩnh viễn vì lý do tương thích.
 
-> **Note**: Deprecation is not completely unusable, it is only intended to imply that features will disappear from future standards and should be avoided. But, the deprecated features are still part of the standard library, and most of the features are actually "permanently" reserved for compatibility reasons.
-
-- **The string literal constant is no longer allowed to be assigned to a `char *`. If you need to assign and initialize a `char *` with a string literal constant, you should use `const char *` or `auto`.**
+- **Hằng chuỗi ký tự không còn được phép gán cho `char *`. Nếu bạn cần gán và khởi tạo một `char *` với hằng chuỗi ký tự, bạn nên sử dụng `const char *` hoặc `auto`.**
 
   ```cpp
-  char *str = "hello world!"; // A deprecation warning will appear
+  char *str = "hello world!"; // Sẽ xuất hiện cảnh báo loại bỏ
   ```
 
-- **C++98 exception description, `unexpected_handler`, `set_unexpected()` and other related features are deprecated and should use `noexcept`.**
+- **Mô tả ngoại lệ của C++98, `unexpected_handler`, `set_unexpected()` và các tính năng liên quan khác đã bị loại bỏ và nên sử dụng `noexcept`.**
 
-- **`auto_ptr` is deprecated and `unique_ptr` should be used.**
+- **`auto_ptr` đã bị loại bỏ và nên sử dụng `unique_ptr`.**
 
-- **`register` keyword is deprecated and can be used but no longer has any practical meaning.**
+- **Từ khóa `register` đã bị loại bỏ và có thể sử dụng nhưng không còn ý nghĩa thực tế.**
 
-- **The `++` operation of the `bool` type is deprecated.**
+- **Phép toán `++` của kiểu `bool` đã bị loại bỏ.**
 
-- **If a class has a destructor, the properties for which it generates copy constructors and copy assignment operators are deprecated.**
+- **Nếu một lớp có hàm hủy, các thuộc tính mà nó tạo ra hàm tạo sao chép và toán tử gán sao chép đã bị loại bỏ.**
 
-- **C language style type conversion is deprecated (ie using `(convert_type)`) before variables, and `static_cast`, `reinterpret_cast`, `const_cast` should be used for type conversion.**
+- **Kiểu chuyển đổi kiểu C ngôn ngữ đã bị loại bỏ (tức là sử dụng `(convert_type)`) trước các biến, và nên sử dụng `static_cast`, `reinterpret_cast`, `const_cast` để chuyển đổi kiểu.**
 
-- **In particular, some of the C standard libraries that can be used are deprecated in the latest C++17 standard, such as `<ccomplex>`, `<cstdalign>`, `<cstdbool>` and `<ctgmath>` etc.**
+- **Đặc biệt, một số thư viện chuẩn của C có thể sử dụng đã bị loại bỏ trong tiêu chuẩn C++17 mới nhất, như `<ccomplex>`, `<cstdalign>`, `<cstdbool>` và `<ctgmath>` v.v.**
 
-- ... and many more
+- ... và nhiều hơn nữa
+Cũng có những tính năng khác như ràng buộc tham số (C++11 cung cấp `std::bind` và `std::function`), `export` v.v. cũng đã bị loại bỏ. Những tính năng được đề cập ở trên **Nếu bạn chưa từng sử dụng hoặc nghe về chúng, xin đừng cố gắng hiểu chúng. Bạn nên tiến gần hơn đến tiêu chuẩn mới và học các tính năng mới trực tiếp**. Sau tất cả, công nghệ đang tiến lên phía trước.
 
-There are also other features such as parameter binding (C++11 provides `std::bind` and `std::function`), `export` etc. are also deprecated. These features mentioned above **If you have never used or heard of it, please don't try to understand them. You should move closer to the new standard and learn new features directly**. After all, technology is moving forward.
+## 1.2 Tương Thích Với C
 
-## 1.2 Compatibilities with C
+Vì một số lý do bất khả kháng và lịch sử, chúng ta phải sử dụng một số mã C (thậm chí là mã C cũ) trong C++, ví dụ như các lệnh gọi hệ thống của Linux. Trước khi C++ hiện đại ra đời, hầu hết mọi người đều nói về "sự khác biệt giữa C và C++ là gì". Nói chung, ngoài việc trả lời các tính năng lớp hướng đối tượng và các tính năng mẫu của lập trình tổng quát, không có ý kiến nào khác hoặc thậm chí là một câu trả lời trực tiếp. "Gần như" cũng là câu trả lời của nhiều người. Biểu đồ Venn trong Hình 1.2 trả lời một cách khái quát về sự tương thích giữa C và C++.
 
-For some force majeure and historical reasons, we had to use some C code (even old C code) in C++, for example, Linux system calls. Before the advent of modern C++, most people talked about "what is the difference between C and C++". Generally speaking, in addition to answering the object-oriented class features and the template features of generic programming, there is no other opinion or even a direct answer. "Almost" is also a lot of people. The Venn diagram in Figure 1.2 roughly answers the C and C++ related compatibility.
+![Hình 1.2: Sự tương thích giữa ISO C và ISO C++](../../assets/figures/comparison.png)
 
-![Figure 1.2: Compatabilities between ISO C and ISO C++](../../assets/figures/comparison.png)
-
-From now on, you should have the idea that "C++ is **not** a superset of C" in your mind (and not from the beginning, later [References for further reading](#further-readings) The difference between C++98 and C99 is given). When writing C++, you should also avoid using program styles such as `void*` whenever possible. When you have to use C, you should pay attention to the use of `extern "C"`, separate the C language code from the C++ code, and then unify the link, for instance:
-
+Từ bây giờ, bạn nên có ý tưởng rằng "C++ **không phải** là một siêu tập của C" trong đầu (và không phải từ đầu, sau này [Tham khảo để đọc thêm](#further-readings) Sự khác biệt giữa C++98 và C99 được đưa ra). Khi viết C++, bạn cũng nên tránh sử dụng các kiểu lập trình như `void*` bất cứ khi nào có thể. Khi bạn phải sử dụng C, bạn nên chú ý đến việc sử dụng `extern "C"`, tách biệt mã C khỏi mã C++, và sau đó liên kết chúng lại với nhau, ví dụ:
 ```cpp
 // foo.h
 #ifdef __cplusplus
@@ -80,26 +77,26 @@ int add(int x, int y) {
 #include <functional>
 
 int main() {
-    [out = std::ref(std::cout << "Result from C code: " << add(1, 2))](){
+    [out = std::ref(std::cout << "Kết quả từ mã C: " << add(1, 2))](){
         out.get() << ".\n";
     }();
     return 0;
 }
 ```
 
-You should first compile the C code with `gcc`:
+Bạn nên biên dịch mã C trước bằng `gcc`:
 
 ```bash
 gcc -c foo.c
 ```
 
-Compile and output the `foo.o` file, and link the C++ code to the `.o` file using `clang++` (or both compile to `.o` and then link them together):
+Biên dịch và xuất tệp `foo.o`, sau đó liên kết mã C++ với tệp `.o` bằng `clang++` (hoặc cả hai biên dịch thành `.o` và sau đó liên kết chúng lại):
 
 ```bash
 clang++ 1.1.cpp foo.o -std=c++2a -o 1.1
 ```
 
-Of course, you can use `Makefile` to compile the above code:
+Tất nhiên, bạn có thể sử dụng `Makefile` để biên dịch mã trên:
 
 ```makefile
 C = gcc
@@ -114,36 +111,35 @@ TARGET = 1.1
 LDFLAGS_COMMON = -std=c++2a
 
 all:
-	$(C) -c $(SOURCE_C)
-	$(CXX) $(SOURCE_CXX) $(OBJECTS_C) $(LDFLAGS_COMMON) -o $(TARGET)
+    $(C) -c $(SOURCE_C)
+    $(CXX) $(SOURCE_CXX) $(OBJECTS_C) $(LDFLAGS_COMMON) -o $(TARGET)
 
 clean:
-	rm -rf *.o $(TARGET)
+    rm -rf *.o $(TARGET)
 ```
 
-> **Note**: Indentation in `Makefile` is a tab instead of a space character. If you copy this code directly into your editor, the tab may be automatically replaced. Please ensure the indentation in the `Makefile` is done by tabs.
+> **Lưu ý**: Thụt lề trong [`Makefile`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2FMakefile%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding/modern-cpp-tutorial/Makefile") là một ký tự tab thay vì ký tự khoảng trắng. Nếu bạn sao chép mã này trực tiếp vào trình soạn thảo của mình, tab có thể bị thay thế tự động. Hãy đảm bảo thụt lề trong [`Makefile`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2FMakefile%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding/modern-cpp-tutorial/Makefile") được thực hiện bằng tab.
 >
-> If you don't know the use of `Makefile`, it doesn't matter. In this tutorial, you won't build code that is written too complicated. You can also read this book by simply using `clang++ -std=c++2a` on the command line.
+> Nếu bạn không biết cách sử dụng [`Makefile`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2FMakefile%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding/modern-cpp-tutorial/Makefile"), không sao cả. Trong hướng dẫn này, bạn sẽ không xây dựng mã quá phức tạp. Bạn cũng có thể đọc cuốn sách này bằng cách đơn giản sử dụng `clang++ -std=c++2a` trên dòng lệnh.
 
-If you are new to modern C++, you probably still don't understand the following small piece of code above, namely:
+Nếu bạn mới làm quen với C++ hiện đại, có lẽ bạn vẫn chưa hiểu đoạn mã nhỏ sau đây:
 
 ```cpp
-[out = std::ref(std::cout << "Result from C code: " << add(1, 2))](){
+[out = std::ref(std::cout << "Kết quả từ mã C: " << add(1, 2))](){
     out.get() << ".\n";
 }();
 ```
 
-Don't worry at the moment, we will come to meet them in our later chapters.
+Đừng lo lắng vào lúc này, chúng ta sẽ gặp lại chúng trong các chương sau.
 
-[Table of Content](./toc.md) | [Previous Chapter](./00-preface.md) | [Next Chapter: Language Usability Enhancements](./02-usability.md)
+[Mục lục](./toc.md) | [Chương trước](./00-preface.md) | [Chương tiếp theo: Cải tiến khả năng sử dụng ngôn ngữ](./02-usability.md)
+## Đọc Thêm
 
-## Further Readings
+- [A Tour of C++ (Ấn bản thứ 2) Bjarne Stroustrup](https://www.amazon.com/dp/0134997832/ref=cm_sw_em_r_mt_dp_U_GogjDbHE2H53B)
+  [Lịch sử của C++](http://en.cppreference.com/w/cpp/language/history)
+- [Hỗ trợ trình biên dịch C++](https://en.cppreference.com/w/cpp/compiler_support)
+- [Sự không tương thích giữa ISO C và ISO C++](http://david.tribble.com/text/cdiffs.htm#C99-vs-CPP98)
 
-- [A Tour of C++ (2nd Edition) Bjarne Stroustrup](https://www.amazon.com/dp/0134997832/ref=cm_sw_em_r_mt_dp_U_GogjDbHE2H53B)
-  [History of C++](http://en.cppreference.com/w/cpp/language/history)
-- [C++ compiler support](https://en.cppreference.com/w/cpp/compiler_support)
-- [Incompatibilities Between ISO C and ISO C++](http://david.tribble.com/text/cdiffs.htm#C99-vs-CPP98)
+## Giấy Phép
 
-## Licenses
-
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Ghi Công-Phi Thương Mại-Không Phát Sinh 4.0 Quốc Tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
