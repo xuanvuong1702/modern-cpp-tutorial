@@ -1,10 +1,10 @@
 ---
-title: "Chapter 02: Language Usability Enhancements"
-type: book-en-us
+title: "Chương 02: Cải Tiến Khả Năng Sử Dụng Ngôn Ngữ"
+type: book-vi-vn
 order: 2
 ---
 
-# Chapter 02: Language Usability Enhancements
+# Chương 02: Cải Tiến Khả Năng Sử Dụng Ngôn Ngữ
 
 [TOC]
 
