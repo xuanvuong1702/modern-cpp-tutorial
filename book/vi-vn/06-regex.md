@@ -1,81 +1,79 @@
 ---
-title: "Chapter 06 Regular Expression"
-type: book-en-us
+title: "Chương 06 Biểu thức chính quy"
+type: book-vi-vn
 order: 6
 ---
 
-# Chapter 06 Regular Expression
+# Chương 06 Biểu thức chính quy
 
 [TOC]
 
-## 6.1 Introduction
+## 6.1 Giới thiệu
 
-Regular expressions are not part of the C++ language and therefore we only briefly
-introduced it here.
+Biểu thức chính quy không phải là một phần của ngôn ngữ C++ và do đó chúng tôi chỉ giới thiệu ngắn gọn ở đây.
 
-Regular expressions describe a pattern of string matching.
-The general use of regular expressions is mainly to achieve
-the following three requirements:
+Biểu thức chính quy mô tả một mẫu của việc khớp chuỗi.
+Việc sử dụng chung của biểu thức chính quy chủ yếu để đạt được
+ba yêu cầu sau:
 
-1. Check if a string contains some form of substring;
-2. Replace the matching substrings;
-3. Take the eligible substring from a string.
+1. Kiểm tra xem một chuỗi có chứa một dạng chuỗi con nào đó hay không;
+2. Thay thế các chuỗi con khớp;
+3. Lấy chuỗi con đủ điều kiện từ một chuỗi.
 
-Regular expressions are text patterns consisting of ordinary characters (such as a to z)
-and special characters. A pattern describes one or more strings to match when searching for text.
-Regular expressions act as a template to match a character pattern to the string being searched.
+Biểu thức chính quy là các mẫu văn bản bao gồm các ký tự thông thường (như a đến z)
+và các ký tự đặc biệt. Một mẫu mô tả một hoặc nhiều chuỗi để khớp khi tìm kiếm văn bản.
+Biểu thức chính quy hoạt động như một mẫu để khớp một mẫu ký tự với chuỗi đang được tìm kiếm.
 
-### Ordinary characters
+### Ký tự thông thường
 
-Normal characters include all printable and unprintable characters that are not explicitly specified as metacharacters. This includes all uppercase
-and lowercase letters, all numbers, all punctuation, and some other symbols.
+Ký tự thông thường bao gồm tất cả các ký tự có thể in và không thể in mà không được chỉ định rõ ràng là ký tự đặc biệt. Điều này bao gồm tất cả các chữ cái viết hoa và viết thường, tất cả các số, tất cả các dấu câu và một số ký hiệu khác.
 
-### Special characters
+### Ký tự đặc biệt
 
-A special character is a character with special meaning in a regular expression and is also the core matching syntax of a regular expression. See the table below:
+Ký tự đặc biệt là ký tự có ý nghĩa đặc biệt trong biểu thức chính quy và cũng là cú pháp khớp lõi của biểu thức chính quy. Xem bảng dưới đây:
 
-| Symbol | Description |
+| Ký hiệu | Mô tả |
 |:----------------:|:---|
-| `$` | Matches the end position of the input string.|
-| `(`,`)` | Marks the start and end of a subexpression. Subexpressions can be obtained for later use.|
-| `*` | Matches the previous subexpression zero or more times. |
-| `+` | Matches the previous subexpression one or more times.|
-| `.` | Matches any single character except the newline character `\n`.|
-| `[` | Marks the beginning of a bracket expression.|
-| `?` | Matches the previous subexpression zero or one time, or indicates a non-greedy qualifier.|
-| `\` | Marks the next character as either a special character, or a literal character, or a backward reference, or an octal escape character. For example, `n` Matches the character `n`. `\n` matches newline characters. The sequence `\\` Matches the `'\'` character, while `\(` matches the `'('` character. |
-| `^` | Matches the beginning of the input string, unless it is used in a square bracket expression, at which point it indicates that the set of characters is not accepted.|
-| `{` | Marks the beginning of a qualifier expression.|
-| `\|` | Indicates a choice between the two.|
+| `$` | Khớp với vị trí kết thúc của chuỗi đầu vào.|
+| `(`,`)` | Đánh dấu bắt đầu và kết thúc của một biểu thức con. Các biểu thức con có thể được lấy ra để sử dụng sau.|
+| `*` | Khớp với biểu thức con trước đó không hoặc nhiều lần. |
+| `+` | Khớp với biểu thức con trước đó một hoặc nhiều lần.|
+| `.` | Khớp với bất kỳ ký tự đơn nào ngoại trừ ký tự xuống dòng `\n`.|
+| `[` | Đánh dấu bắt đầu của một biểu thức ngoặc vuông.|
+| `?` | Khớp với biểu thức con trước đó không hoặc một lần, hoặc chỉ định một bộ định lượng không tham lam.|
+| `\` | Đánh dấu ký tự tiếp theo là ký tự đặc biệt, ký tự gốc, tham chiếu ngược hoặc ký tự thoát bát phân. Ví dụ, `n` khớp với ký tự `n`. `\n` khớp với ký tự xuống dòng. Chuỗi `\\` khớp với ký tự `'\'`, trong khi `\(` khớp với ký tự `'('`. |
+| `^` | Khớp với vị trí bắt đầu của chuỗi đầu vào, trừ khi nó được sử dụng trong biểu thức ngoặc vuông, lúc đó nó chỉ định rằng tập hợp các ký tự không được chấp nhận.|
+| `{` | Đánh dấu bắt đầu của một biểu thức định lượng.|
+| `\|` | Chỉ định một lựa chọn giữa hai. |
 
-### Quantifiers
+### Bộ định lượng
 
-The qualifier is used to specify how many times a given component of a regular expression must appear to satisfy the match. See the table below:
+Bộ định lượng được sử dụng để chỉ định số lần một thành phần nhất định của biểu thức chính quy phải xuất hiện để thỏa mãn khớp. Xem bảng dưới đây:
 
-| Symbol | Description |
+| Ký hiệu | Mô tả |
 |:-------:|:-----|
-| `*` | matches the previous subexpression zero or more times. For example, `foo*` matches `fo` and `foooo`. `*` is equivalent to `{0,}`.|
-| `+` | matches the previous subexpression one or more times. For example, `foo+` matches `foo` and `foooo` but does not match `fo`. `+` is equivalent to `{1,}`.|
-| `?` | matches the previous subexpression zero or one time. For example, `Your(s)?` can match `Your` in `Your` or `Yours`. `?` is equivalent to `{0,1}`.|
-| `{n}` | `n` is a non-negative integer. Matches the determined `n` times. For example, `o{2}` cannot match `o` in `for`, but can match two `o` in `foo`.|
-| `{n,}` | `n` is a non-negative integer. Match at least `n` times. For example, `o{2,}` cannot match `o` in `for`, but matches all `o` in `foooooo`. `o{1,}` is equivalent to `o+`. `o{0,}` is equivalent to `o*`.|
-| `{n,m}` | `m` and `n` are non-negative integers, where `n` is less than or equal to `m`. Matches at least `n` times and matches up to `m` times. For example, `o{1,3}` will match the first three `o` in `foooooo`. `o{0,1}` is equivalent to `o?`. Note that there can be no spaces between the comma and the two numbers. |
+| `*` | khớp với biểu thức con trước đó không hoặc nhiều lần. Ví dụ, `foo*` khớp với `fo` và `foooo`. `*` tương đương với `{0,}`.|
+| `+` | khớp với biểu thức con trước đó một hoặc nhiều lần. Ví dụ, `foo+` khớp với `foo` và `foooo` nhưng không khớp với `fo`. `+` tương đương với `{1,}`.|
+| `?` | khớp với biểu thức con trước đó không hoặc một lần. Ví dụ, `Your(s)?` có thể khớp với `Your` trong `Your` hoặc `Yours`. `?` tương đương với `{0,1}`.|
+| `{n}` | `n` là một số nguyên không âm. Khớp đúng `n` lần. Ví dụ, `o{2}` không thể khớp với `o` trong `for`, nhưng có thể khớp với hai `o` trong `foo`.|
+| `{n,}` | `n` là một số nguyên không âm. Khớp ít nhất `n` lần. Ví dụ, `o{2,}` không thể khớp với `o` trong `for`, nhưng khớp với tất cả `o` trong `foooooo`. `o{1,}` tương đương với `o+`. `o{0,}` tương đương với `o*`.|
+| `{n,m}` | `m` và `n` là các số nguyên không âm, trong đó `n` nhỏ hơn hoặc bằng `m`. Khớp ít nhất `n` lần và tối đa `m` lần. Ví dụ, `o{1,3}` sẽ khớp với ba `o` đầu tiên trong `foooooo`. `o{0,1}` tương đương với `o?`. Lưu ý rằng không có khoảng trắng giữa dấu phẩy và hai số. |
 
-With these two tables, we can usually read almost all regular expressions.
+Với hai bảng này, chúng ta có thể đọc hầu hết các biểu thức chính quy.
 
-## 6.2 `std::regex` and Its Related
+## 6.2 `std::regex` và Liên Quan
 
-The most common way to match string content is to use regular expressions. Unfortunately, in traditional C++, regular expressions have not been supported by the language level, and are not included in the standard library. C++ is a high-performance language. In the development of background services, the use of regular expressions is also used when judging URL resource links. The most mature and common practice in the industry.
+Cách phổ biến nhất để khớp nội dung chuỗi là sử dụng biểu thức chính quy. Đáng tiếc là, trong C++ truyền thống, biểu thức chính quy không được hỗ trợ ở mức ngôn ngữ và không được bao gồm trong thư viện chuẩn. C++ là một ngôn ngữ hiệu suất cao. Trong phát triển dịch vụ nền, việc sử dụng biểu thức chính quy cũng được sử dụng khi đánh giá các liên kết tài nguyên URL. Đây là một thực tiễn trưởng thành và phổ biến trong ngành.
 
-The general solution is to use the regular expression library of `boost`. C++11 officially incorporates the processing of regular expressions into the standard library, providing standard support from the language level and no longer relying on third parties.
+Giải pháp chung là sử dụng thư viện biểu thức chính quy của `boost`. C++11 chính thức đưa việc xử lý biểu thức chính quy vào thư viện chuẩn, cung cấp hỗ trợ chuẩn từ mức ngôn ngữ và không còn phụ thuộc vào bên thứ ba.
 
-The regular expression library provided by C++11 operates on the `std::string` object, and the pattern `std::regex` (essentially `std::basic_regex`) is initialized and matched by `std::regex_match` Produces `std::smatch` (essentially the `std::match_results` object).
+Thư viện biểu thức chính quy được cung cấp bởi C++11 hoạt động trên đối tượng `std::string`, và mẫu `std::regex` (thực chất là `std::basic_regex`) được khởi tạo và khớp bởi `std::regex_match`, tạo ra `std::smatch` (thực chất là đối tượng `std::match_results`).
 
-We use a simple example to briefly introduce the use of this library. Consider the following regular expression:
+Chúng ta sẽ sử dụng một ví dụ đơn giản để giới thiệu ngắn gọn về cách sử dụng thư viện này. Hãy xem xét biểu thức chính quy sau:
 
-- `[az]+\.txt`: In this regular expression, `[az]` means matching a lowercase letter, `+` can match the previous expression multiple times, so `[az]+` can Matches a string of lowercase letters. In the regular expression, a `.` means to match any character, and `\.` means to match the character `.`, and the last `txt` means to match `txt` exactly three letters. So the content of this regular expression to match is a text file consisting of pure lowercase letters.
+- `[a-z]+\.txt`: Trong biểu thức chính quy này, `[a-z]` có nghĩa là khớp với một chữ cái thường, `+` có thể khớp với biểu thức trước đó nhiều lần, vì vậy `[a-z]+` có thể khớp với một chuỗi các chữ cái thường. Trong biểu thức chính quy, [`.`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding/modern-cpp-tutorial") có nghĩa là khớp với bất kỳ ký tự nào, và `\.` có nghĩa là khớp với ký tự [`.`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding/modern-cpp-tutorial") cụ thể, và cuối cùng `txt` có nghĩa là khớp chính xác với ba chữ cái `txt`. Vì vậy, nội dung của biểu thức chính quy này là để khớp với một tệp văn bản bao gồm các chữ cái thường.
 
-`std::regex_match` is used to match strings and regular expressions, and there are many different overloaded forms. The simplest form is to pass `std::string` and a `std::regex` to match. When the match is successful, it will return `true`, otherwise, it will return `false`. For example:
+`std::regex_match` được sử dụng để khớp chuỗi và biểu thức chính quy, và có nhiều dạng quá tải khác nhau. Dạng đơn giản nhất là truyền `std::string` và một `std::regex` để khớp. Khi khớp thành công, nó sẽ trả về `true`, ngược lại, nó sẽ trả về `false`. Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -84,29 +82,29 @@ We use a simple example to briefly introduce the use of this library. Consider t
 
 int main() {
     std::string fnames[] = {"foo.txt", "bar.txt", "test", "a0.txt", "AAA.txt"};
-    // In C++, `\` will be used as an escape character in the string.
-    // In order for `\.` to be passed as a regular expression,
-    // it is necessary to perform second escaping of `\`, thus we have `\\.`
+    // Trong C++, `\` sẽ được sử dụng như một ký tự thoát trong chuỗi.
+    // Để `\.` được truyền như một biểu thức chính quy,
+    // cần phải thực hiện thoát lần thứ hai cho `\`, do đó chúng ta có `\\.`
     std::regex txt_regex("[a-z]+\\.txt");
     for (const auto &fname: fnames)
         std::cout << fname << ": " << std::regex_match(fname, txt_regex) << std::endl;
 }
 ```
 
-Another common form is to pass in the three arguments `std::string`/`std::smatch`/`std::regex`.
-The essence of `std::smatch` is actually `std::match_results`.
-In the standard library, `std::smatch` is defined as `std::match_results<std::string::const_iterator>`,
-which means `match_results` of a substring iterator type.
-Use `std::smatch` to easily get the matching results, for example:
+Một dạng phổ biến khác là truyền vào ba đối số `std::string`/`std::smatch`/`std::regex`.
+Bản chất của `std::smatch` thực ra là `std::match_results`.
+Trong thư viện chuẩn, `std::smatch` được định nghĩa là `std::match_results<std::string::const_iterator>`,
+có nghĩa là `match_results` của một kiểu iterator chuỗi con.
+Sử dụng `std::smatch` để dễ dàng lấy kết quả khớp, ví dụ:
 
 ```cpp
 std::regex base_regex("([a-z]+)\\.txt");
 std::smatch base_match;
 for(const auto &fname: fnames) {
     if (std::regex_match(fname, base_match, base_regex)) {
-        // the first element of std::smatch matches the entire string
-        // the second element of std::smatch matches the first expression
-        // with brackets
+        // phần tử đầu tiên của std::smatch khớp với toàn bộ chuỗi
+        // phần tử thứ hai của std::smatch khớp với biểu thức đầu tiên
+        // có dấu ngoặc
         if (base_match.size() == 2) {
             std::string base = base_match[1].str();
             std::cout << "sub-match[0]: " << base_match[0].str() << std::endl;
@@ -116,7 +114,7 @@ for(const auto &fname: fnames) {
 }
 ```
 
-The output of the above two code snippets is:
+Kết quả đầu ra của hai đoạn mã trên là:
 
 ```
 foo.txt: 1
@@ -130,33 +128,33 @@ sub-match[0]: bar.txt
 bar.txt sub-match[1]: bar
 ```
 
-## Conclusion
+## Kết luận
 
-This section briefly introduces the regular expression itself,
-and then introduces the use of the regular expression library
-through a practical example based on the main requirements of
-using regular expressions.
+Phần này giới thiệu ngắn gọn về biểu thức chính quy,
+sau đó giới thiệu cách sử dụng thư viện biểu thức chính quy
+thông qua một ví dụ thực tế dựa trên các yêu cầu chính
+khi sử dụng biểu thức chính quy.
 
-## Exercise
+## Bài tập
 
-In web server development, we usually want to serve some routes that satisfy a certain condition.
-Regular expressions are one of the tools to accomplish this.
-Given the following request structure:
+Trong phát triển máy chủ web, chúng ta thường muốn phục vụ một số tuyến đường thỏa mãn một điều kiện nhất định.
+Biểu thức chính quy là một trong những công cụ để thực hiện điều này.
+Dựa vào cấu trúc yêu cầu sau:
 
 ```cpp
 struct Request {
-    // request method, POST, GET; path; HTTP version
+    // phương thức request, POST, GET; đường dẫn; phiên bản HTTP
     std::string method, path, http_version;
-    // use smart pointer for reference counting of content
+    // sử dụng smart pointer để đếm tham chiếu của nội dung
     std::shared_ptr<std::istream> content;
-    // hash container, key-value dict
+    // container băm, từ điển key-value
     std::unordered_map<std::string, std::string> header;
-    // use regular expression for path match
+    // sử dụng biểu thức chính quy để khớp đường dẫn
     std::smatch path_match;
 };
 ```
 
-Requested resource type:
+Loại tài nguyên được yêu cầu:
 
 ```cpp
 typedef std::map<
@@ -164,7 +162,7 @@ typedef std::map<
         std::string,std::function<void(std::ostream&, Request&)>>> resource_type;
 ```
 
-And server template:
+Và mẫu máy chủ:
 
 ```cpp
 template <typename socket_type>
@@ -183,14 +181,14 @@ protected:
 }
 ```
 
-Please implement the member functions `start()` and `parse_request`. Enable server template users to specify routes as follows:
+Vui lòng triển khai các hàm thành viên `start()` và `parse_request`. Cho phép người dùng mẫu máy chủ chỉ định các tuyến đường như sau:
 
 ```cpp
 template<typename SERVER_TYPE>
 void start_server(SERVER_TYPE &server) {
 
-    // process GET request for /match/[digit+numbers],
-    // e.g. GET request is /match/abc123, will return abc123
+    // xử lý yêu cầu GET cho /match/[digit+numbers],
+    // ví dụ: yêu cầu GET là /match/abc123, sẽ trả về abc123
     server.resource["fill_your_reg_ex"]["GET"] =
         [](ostream& response, Request& request)
     {
@@ -199,10 +197,10 @@ void start_server(SERVER_TYPE &server) {
             << "\r\n\r\n" << number;
     };
 
-    // peocess default GET request;
-    // anonymous function will be called
-    // if no other matches response files in folder web/
-    // default: index.html
+    // xử lý yêu cầu GET mặc định;
+    // hàm ẩn danh sẽ được gọi
+    // nếu không có khớp nào khác, trả về các tệp trong thư mục web/
+    // mặc định: index.html
     server.default_resource["fill_your_reg_ex"]["GET"] =
         [](ostream& response, Request& request)
     {
@@ -210,7 +208,7 @@ void start_server(SERVER_TYPE &server) {
 
         string path = request.path_match[1];
 
-        // forbidden use `..` access content outside folder web/
+        // cấm sử dụng [`..`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "/Users/phungvuong/Documents/coding") để truy cập nội dung ngoài thư mục web/
         size_t last_pos = path.rfind(".");
         size_t current_pos = 0;
         size_t pos;
@@ -227,15 +225,15 @@ void start_server(SERVER_TYPE &server) {
 }
 ```
 
-An suggested solution can be found [here](../../exercises/6).
+Một giải pháp gợi ý có thể được tìm thấy [tại đây](../../exercises/6).
 
-[Table of Content](./toc.md) | [Previous Chapter](./05-pointers.md) | [Next Chapter: Threads and Concurrency](./07-thread.md)
+[Table of Content](./toc.md) | [Chương trước](./05-pointers.md) | [Chương tiếp theo: Threads and Concurrency](./07-thread.md)
 
-## Further Readings
+## Đọc thêm
 
-1. [Comments from `std::regex`'s author](https://zhihu.com/question/23070203/answer/84248248)
-2. [Library document of Regular Expression](https://en.cppreference.com/w/cpp/regex)
+1. [Bình luận từ tác giả của `std::regex`](https://zhihu.com/question/23070203/answer/84248248)
+2. [Tài liệu thư viện về Biểu thức chính quy](https://en.cppreference.com/w/cpp/regex)
 
-## Licenses
+## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Quốc tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
