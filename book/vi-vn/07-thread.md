@@ -1,17 +1,17 @@
 ---
-title: "Chapter 07 Parallelism and Concurrency"
-type: book-en-us
+title: "Chương 07 Song song và Đồng thời"
+type: book-vi-vn
 order: 7
 ---
 
-# Chapter 07 Parallelism and Concurrency
+# Chương 07 Song song và Đồng thời
 
 [TOC]
 
-## 7.1 Basic of Parallelism
+## 7.1 Cơ bản về Song song
 
-`std::thread` is used to create an execution thread instance, so it is the basis for all concurrent programming. It needs to include the `<thread>` header file when using it.
-It provides a number of basic thread operations, such as `get_id()` to get the thread ID of the thread being created, use `join()` to join a thread, etc., for example:
+`std::thread` được sử dụng để tạo một instance luồng thực thi, vì vậy nó là cơ sở cho tất cả lập trình đồng thời. Khi sử dụng, cần bao gồm tệp tiêu đề `<thread>`.
+Nó cung cấp một số thao tác luồng cơ bản, chẳng hạn như `get_id()` để lấy ID của luồng đang được tạo, sử dụng `join()` để kết hợp một luồng, v.v., ví dụ:
 
 ```cpp
 #include <iostream>
@@ -26,18 +26,18 @@ int main() {
 }
 ```
 
-## 7.2 Mutex and Critical Section
+## 7.2 Mutex và Vùng phê bình
 
-We have already learned the basics of concurrency technology in the operating system, or the database, and `mutex` is one of the cores.
-C++11 introduces a class related to `mutex`, with all related functions in the `<mutex>` header file.
+Chúng ta đã học các kiến thức cơ bản về công nghệ đồng thời trong hệ điều hành hoặc cơ sở dữ liệu, và `mutex` là một trong những lõi.
+C++11 giới thiệu một lớp liên quan đến `mutex`, với tất cả các chức năng liên quan trong tệp tiêu đề `<mutex>`.
 
-`std::mutex` is the most basic mutex class in C++11, and a mutex can be created by constructing a `std::mutex` object.
-It can be locked by its member function `lock()`, and `unlock()` can be unlocked.
-But in the process of actually writing the code, it is best not to directly call the member function,
-Because calling member functions, you need to call `unlock()` at the exit of each critical section, and of course, exceptions.
-At this time, C++11 also provides a template class `std::lock_guard` for the RAII mechanism for the mutex.
+`std::mutex` là lớp mutex cơ bản nhất trong C++11, và một mutex có thể được tạo bằng cách xây dựng một đối tượng `std::mutex`.
+Nó có thể được khóa bằng hàm thành viên `lock()`, và `unlock()` có thể mở khóa.
+Nhưng trong quá trình viết mã thực tế, tốt nhất không nên gọi trực tiếp hàm thành viên,
+Bởi vì khi gọi hàm thành viên, bạn cần gọi `unlock()` tại lối ra của mỗi vùng phê bình, và tất nhiên, ngoại lệ.
+Lúc này, C++11 cũng cung cấp một lớp mẫu `std::lock_guard` cho cơ chế RAII cho mutex.
 
-RAII guarantees the exceptional security of the code while keeping the simplicity of the code.
+RAII đảm bảo tính an toàn ngoại lệ của mã trong khi giữ cho mã đơn giản.
 
 ```cpp
 #include <iostream>
@@ -50,10 +50,10 @@ void critical_section(int change_v) {
     static std::mutex mtx;
     std::lock_guard<std::mutex> lock(mtx);
 
-    // execute contention works
+    // thực hiện công việc tranh chấp
     v = change_v;
 
-    // mtx will be released after leaving the scope
+    // mtx sẽ được giải phóng sau khi ra khỏi phạm vi
 }
 
 int main() {
@@ -66,20 +66,20 @@ int main() {
 }
 ```
 
-Because C++ guarantees that all stack objects will be destroyed at the end of the declaration period, such code is also extremely safe.
-Whether `critical_section()` returns normally or if an exception is thrown in the middle, a stack unwinding is thrown, and `unlock()` is automatically called.
+Vì C++ đảm bảo rằng tất cả các đối tượng stack sẽ bị hủy vào cuối thời gian khai báo, nên mã như vậy cũng cực kỳ an toàn.
+Dù `critical_section()` trả về bình thường hay nếu một ngoại lệ được ném ra giữa chừng, một quá trình giải phóng stack sẽ được thực hiện, và `unlock()` sẽ được gọi tự động.
 
-> An exception is thrown and not caught (it is implementation-defined whether any stack unwinding is done in this case).
+> Một ngoại lệ được ném ra và không được bắt (việc có thực hiện giải phóng stack hay không là do triển khai định nghĩa).
 
-`std::unique_lock` is more flexible than `std::lock_guard`.
-Objects of `std::unique_lock` manage the locking and unlocking operations on the `mutex` object with exclusive ownership (no other `unique_lock` objects owning the ownership of a `mutex` object). So in concurrent programming, it is recommended to use `std::unique_lock`.
+`std::unique_lock` linh hoạt hơn `std::lock_guard`.
+Các đối tượng của `std::unique_lock` quản lý các thao tác khóa và mở khóa trên đối tượng `mutex` với quyền sở hữu độc quyền (không có đối tượng `unique_lock` nào khác sở hữu quyền sở hữu của một đối tượng `mutex`). Vì vậy, trong lập trình đồng thời, nên sử dụng `std::unique_lock`.
 
-`std::lock_guard` cannot explicitly call `lock` and `unlock`, and `std::unique_lock` can be called anywhere after the declaration.
-It can reduce the scope of the lock and provide higher concurrency.
+`std::lock_guard` không thể gọi `lock` và `unlock` một cách rõ ràng, còn `std::unique_lock` có thể được gọi ở bất kỳ đâu sau khi khai báo.
+Nó có thể giảm phạm vi của khóa và cung cấp mức độ đồng thời cao hơn.
 
-If you use the condition variable `std::condition_variable::wait` you must use `std::unique_lock` as a parameter.
+Nếu bạn sử dụng biến điều kiện `std::condition_variable::wait`, bạn phải sử dụng `std::unique_lock` làm tham số.
 
-For instance:
+Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -91,17 +91,17 @@ int v = 1;
 void critical_section(int change_v) {
     static std::mutex mtx;
     std::unique_lock<std::mutex> lock(mtx);
-    // do contention operations
+    // thực hiện các thao tác tranh chấp
     v = change_v;
     std::cout << v << std::endl;
-    // release the lock
+    // giải phóng khóa
     lock.unlock();
 
-    // during this period,
-    // others are allowed to acquire v
+    // trong khoảng thời gian này,
+    // các luồng khác được phép truy cập v
 
-    // start another group of contention operations
-    // lock again
+    // bắt đầu một nhóm thao tác tranh chấp khác
+    // khóa lại
     lock.lock();
     v += 1;
     std::cout << v << std::endl;
@@ -117,21 +117,21 @@ int main() {
 
 ## 7.3 Future
 
-The Future is represented by `std::future`, which provides a way to access the results of asynchronous operations. This sentence is very difficult to understand.
-To understand this feature, we need to understand the multi-threaded behavior before C++11.
+Future được đại diện bởi `std::future`, cung cấp một cách để truy cập kết quả của các hoạt động bất đồng bộ. Câu này rất khó hiểu.
+Để hiểu tính năng này, chúng ta cần hiểu hành vi đa luồng trước C++11.
 
-Imagine if our main thread A wants to open a new thread B to perform some of our expected tasks and return me a result.
-At this time, thread A may be busy with other things and have no time to take into account the results of B.
-So we naturally hope to get the result of thread B at a certain time.
+Hãy tưởng tượng nếu luồng chính của chúng ta A muốn mở một luồng mới B để thực hiện một số nhiệm vụ mà chúng ta mong đợi và trả lại cho chúng ta một kết quả.
+Lúc này, luồng A có thể đang bận rộn với những việc khác và không có thời gian để quan tâm đến kết quả của B.
+Vì vậy, chúng ta tự nhiên hy vọng có thể nhận được kết quả của luồng B vào một thời điểm nào đó.
 
-Before the introduction of `std::future` in C++11, the usual practice is:
-Create a thread A, start task B in thread A, send an event when it is ready, and save the result in a global variable.
-The main function thread A is doing other things. When the result is needed, a thread is called to wait for the function to get the result of the execution.
+Trước khi giới thiệu `std::future` trong C++11, cách làm thông thường là:
+Tạo một luồng A, bắt đầu nhiệm vụ B trong luồng A, gửi một sự kiện khi nó sẵn sàng và lưu kết quả vào một biến toàn cục.
+Luồng chính A đang làm những việc khác. Khi cần kết quả, một luồng được gọi để chờ hàm lấy kết quả của việc thực thi.
 
-The `std::future` provided by C++11 simplifies this process and can be used to get the results of asynchronous tasks.
-Naturally, we can easily imagine it as a simple means of thread synchronization, namely the barrier.
+`std::future` được cung cấp bởi C++11 đơn giản hóa quá trình này và có thể được sử dụng để lấy kết quả của các nhiệm vụ bất đồng bộ.
+Tự nhiên, chúng ta có thể dễ dàng tưởng tượng nó như một phương tiện đơn giản của đồng bộ hóa luồng, tức là rào chắn.
 
-To see an example, we use extra `std::packaged_task`, which can be used to wrap any target that can be called for asynchronous calls. For example:
+Để xem một ví dụ, chúng ta sử dụng thêm `std::packaged_task`, có thể được sử dụng để bao bọc bất kỳ mục tiêu nào có thể được gọi cho các cuộc gọi bất đồng bộ. Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -139,30 +139,25 @@ To see an example, we use extra `std::packaged_task`, which can be used to wrap 
 #include <future>
 
 int main() {
-    // pack a lambda expression that returns 7 into a std::packaged_task
+    // đóng gói một biểu thức lambda trả về 7 vào std::packaged_task
     std::packaged_task<int()> task([](){return 7;});
-    // get the future of task
-    std::future<int> result = task.get_future();    // run task in a thread
+    // lấy đối tượng future của task
+    std::future<int> result = task.get_future();    // chạy task trong một luồng
     std::thread(std::move(task)).detach();
-    std::cout << "waiting...";
-    result.wait(); // block until future has arrived
-    // output result
-    std::cout << "done!" << std:: endl << "future result is " 
+    std::cout << "đang chờ...";
+    result.wait(); // chặn cho đến khi future có kết quả
+    // xuất kết quả
+    std::cout << "xong!" << std::endl << "kết quả future là " 
               << result.get() << std::endl;
     return 0;
 }
 ```
 
-After encapsulating the target to be called, you can use `get_future()` to get a `std::future` object to implement thread synchronization later.
+Sau khi đóng gói mục tiêu cần gọi, bạn có thể sử dụng `get_future()` để lấy một đối tượng `std::future` nhằm thực hiện đồng bộ hóa luồng sau này.
 
-## 7.4 Condition Variable
+## 7.4 Biến Điều Kiện
 
-The condition variable `std::condition_variable` was born to solve the deadlock and was introduced when the mutex operation was not enough.
-For example, a thread may need to wait for a condition to be true to continue execution.
-A dead wait loop can cause all other threads to fail to enter the critical section so that when the condition is true, a deadlock occurs.
-Therefore, the `condition_variable` object is created primarily to wake up the waiting thread and avoid deadlocks.
-`notify_one()` of `std::condition_variable` is used to wake up a thread;
-`notify_all()` is to notify all threads. Below is an example of a producer and consumer model:
+Biến điều kiện `std::condition_variable` được tạo ra để giải quyết vấn đề deadlock và được giới thiệu khi các thao tác với mutex không đủ. Ví dụ, một luồng có thể cần phải chờ một điều kiện nào đó trở thành đúng để tiếp tục thực thi. Một vòng lặp chờ đợi vô tận có thể khiến tất cả các luồng khác không thể vào được vùng quan trọng, dẫn đến deadlock khi điều kiện trở thành đúng. Do đó, đối tượng `condition_variable` được tạo ra chủ yếu để đánh thức các luồng đang chờ và tránh deadlock. `notify_one()` của `std::condition_variable` được sử dụng để đánh thức một luồng; `notify_all()` là để thông báo cho tất cả các luồng. Dưới đây là một ví dụ về mô hình nhà sản xuất và người tiêu dùng:
 
 ```cpp
 #include <queue>
@@ -172,18 +167,17 @@ Therefore, the `condition_variable` object is created primarily to wake up the w
 #include <iostream>
 #include <condition_variable>
 
-
 int main() {
     std::queue<int> produced_nums;
     std::mutex mtx;
     std::condition_variable cv;
-    bool notified = false;  // notification sign
+    bool notified = false;  // dấu hiệu thông báo
 
     auto producer = [&]() {
         for (int i = 0; ; i++) {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
             std::unique_lock<std::mutex> lock(mtx);
-            std::cout << "producing " << i << std::endl;
+            std::cout << "đang sản xuất " << i << std::endl;
             produced_nums.push(i);
             notified = true;
             cv.notify_all();
@@ -192,18 +186,18 @@ int main() {
     auto consumer = [&]() {
         while (true) {
             std::unique_lock<std::mutex> lock(mtx);
-            while (!notified) {  // avoid spurious wakeup
+            while (!notified) {  // tránh đánh thức giả
                 cv.wait(lock);
             }
 
-            // temporal unlock to allow producer produces more rather than
-            // let consumer hold the lock until its consumed.
+            // tạm thời mở khóa để cho phép nhà sản xuất sản xuất thêm
+            // thay vì để người tiêu dùng giữ khóa cho đến khi tiêu thụ xong.
             lock.unlock();
-            // consumer is slower
+            // người tiêu dùng chậm hơn
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             lock.lock();
             if (!produced_nums.empty()) {
-                std::cout << "consuming " << produced_nums.front() << std::endl;
+                std::cout << "đang tiêu thụ " << produced_nums.front() << std::endl;
                 produced_nums.pop();
             }
             notified = false;
@@ -223,15 +217,13 @@ int main() {
 }
 ```
 
-It is worth mentioning that although we can use `notify_one()` in the producer, it is not recommended to use it here.
-Because in the case of multiple consumers, our consumer implementation simply gives up the lock holding, which makes it possible for other consumers to compete for this lock, to better utilize the concurrency between multiple consumers. Having said that, but in fact because of the exclusivity of `std::mutex`,
-We simply can't expect multiple consumers to be able to produce content in a parallel consumer queue, and we still need a more granular approach.
+Đáng chú ý là mặc dù chúng ta có thể sử dụng `notify_one()` trong nhà sản xuất, nhưng không nên sử dụng nó ở đây. Bởi vì trong trường hợp có nhiều người tiêu dùng, việc triển khai người tiêu dùng của chúng ta đơn giản là từ bỏ việc giữ khóa, điều này khiến các người tiêu dùng khác có thể cạnh tranh để giành khóa này, nhằm tận dụng tốt hơn sự đồng thời giữa nhiều người tiêu dùng. Nói như vậy, nhưng thực tế vì tính độc quyền của `std::mutex`, chúng ta không thể mong đợi nhiều người tiêu dùng có thể tiêu thụ nội dung trong hàng đợi tiêu dùng song song, và chúng ta vẫn cần một phương pháp chi tiết hơn.
 
-## 7.5 Atomic Operation and Memory Model
+## 7.5 Hoạt Động Nguyên Tử và Mô Hình Bộ Nhớ
 
-Careful readers may be tempted by the fact that the example of the producer-consumer model in the previous section may have compiler optimizations that cause program errors.
-For example, the compiler may have optimizations for the variable `notified`, such as the value of a register.
-As a result, the consumer thread can never observe the change of this value. This is a good question. To explain this problem, we need to further discuss the concept of the memory model introduced from C++11. Let's first look at a question. What is the output of the following code?
+Những độc giả cẩn thận có thể nhận thấy rằng ví dụ về mô hình nhà sản xuất-người tiêu dùng trong phần trước có thể gặp phải các tối ưu hóa của trình biên dịch gây ra lỗi chương trình.
+Ví dụ, trình biên dịch có thể tối ưu hóa biến `notified`, chẳng hạn như giá trị của một thanh ghi.
+Kết quả là, luồng người tiêu dùng có thể không bao giờ quan sát được sự thay đổi của giá trị này. Đây là một câu hỏi hay. Để giải thích vấn đề này, chúng ta cần thảo luận thêm về khái niệm mô hình bộ nhớ được giới thiệu từ C++11. Hãy cùng xem một câu hỏi. Đầu ra của đoạn mã sau là gì?
 
 ```cpp
 #include <thread>
@@ -259,33 +251,33 @@ int main() {
 }
 ```
 
-Intuitively, it  seems that `a = 5;` in `t2` always executes before `flag = 1;` and `while (flag != 1)` in `t1`. It looks like there is a guarantee the line `std ::cout << "b = " << b << std::endl;` will not be executed before the mark is changed. Logically, it seems that the value of `b` should be equal to 5.
-But the actual situation is much more complicated than this, or the code itself is undefined behavior because, for `a` and `flag`, they are read and written in two parallel threads.
-There has been competition. Also, even if we ignore competing for reading and writing, it is still possible to receive out-of-order execution of the CPU and the impact of the compiler on the rearrangement of instructions.
-Cause `a = 5` to occur after `flag = 1`. Thus `b` may output 0.
+Trực quan mà nói, có vẻ như `a = 5;` trong `t2` luôn thực thi trước `flag = 1;` và `while (flag != 1)` trong `t1`. Có vẻ như có một đảm bảo rằng dòng `std::cout << "b = " << b << std::endl;` sẽ không được thực thi trước khi dấu hiệu được thay đổi. Về mặt logic, có vẻ như giá trị của `b` nên bằng 5.
+Nhưng tình huống thực tế phức tạp hơn nhiều, hoặc mã này tự nó là hành vi không xác định vì, đối với `a` và `flag`, chúng được đọc và ghi trong hai luồng song song.
+Đã có sự cạnh tranh. Ngoài ra, ngay cả khi chúng ta bỏ qua việc cạnh tranh đọc và ghi, vẫn có thể xảy ra việc thực thi không theo thứ tự của CPU và tác động của trình biên dịch lên việc sắp xếp lại các lệnh.
+Khiến `a = 5` xảy ra sau `flag = 1`. Do đó, `b` có thể xuất ra 0.
 
-### Atomic Operation
+### Hoạt Động Nguyên Tử
 
-`std::mutex` can solve the problem of concurrent read and write, but the mutex is an operating system-level function.
-This is because the implementation of a mutex usually contains two basic principles:
+`std::mutex` có thể giải quyết vấn đề đọc và ghi đồng thời, nhưng mutex là một chức năng cấp hệ điều hành.
+Điều này là do việc triển khai một mutex thường bao gồm hai nguyên tắc cơ bản:
 
-1. Provide automatic state transition between threads, that is, "lock" state
-2. Ensure that the memory of the manipulated variable is isolated from the critical section during the mutex operation
+1. Cung cấp chuyển đổi trạng thái tự động giữa các luồng, tức là trạng thái "khóa"
+2. Đảm bảo rằng bộ nhớ của biến bị thao tác được cách ly khỏi vùng quan trọng trong quá trình hoạt động của mutex
 
-This is a very strong set of synchronization conditions, in other words when it is finally compiled into a CPU instruction, it will behave like a lot of instructions (we will look at how to implement a simple mutex later).
-This seems too harsh for a variable that requires only atomic operations (no intermediate state).
+Đây là một tập hợp các điều kiện đồng bộ hóa rất mạnh mẽ, nói cách khác khi nó cuối cùng được biên dịch thành một lệnh CPU, nó sẽ hoạt động như nhiều lệnh (chúng ta sẽ xem cách triển khai một mutex đơn giản sau).
+Điều này có vẻ quá khắt khe đối với một biến chỉ yêu cầu các thao tác nguyên tử (không có trạng thái trung gian).
 
-The research on synchronization conditions has a very long history, and we will not go into details here. Readers should understand that under the modern CPU architecture, atomic operations at the CPU instruction level are provided.
-Therefore, the `std::atomic` template is introduced in C++11 for the topic of multi-threaded shared variable reading and writing, which enables us to instantiate atomic types,
-and minimize an atomic read or write operation from a set of instructions to a single CPU instruction. E.g:
+Nghiên cứu về các điều kiện đồng bộ hóa đã có một lịch sử rất lâu đời, và chúng ta sẽ không đi vào chi tiết ở đây. Độc giả nên hiểu rằng dưới kiến trúc CPU hiện đại, các thao tác nguyên tử ở cấp độ lệnh CPU được cung cấp.
+Do đó, mẫu `std::atomic` được giới thiệu trong C++11 cho chủ đề đọc và ghi biến chia sẻ đa luồng, cho phép chúng ta khởi tạo các kiểu nguyên tử,
+và giảm thiểu một thao tác đọc hoặc ghi nguyên tử từ một tập hợp các lệnh xuống một lệnh CPU duy nhất. Ví dụ:
 
 ```cpp
 std::atomic<int> counter;
 ```
 
-And provides basic numeric member functions for atomic types of integers or floating-point numbers, for example,
-Including `fetch_add`, `fetch_sub`, etc., and the corresponding `+`, `-` version is provided by overload.
-For example, the following example:
+Và cung cấp các hàm thành viên số học cơ bản cho các kiểu nguyên tử của số nguyên hoặc số thực, chẳng hạn như,
+bao gồm `fetch_add`, `fetch_sub`, v.v., và phiên bản tương ứng của `+`, `-` được cung cấp bởi overload.
+Ví dụ, ví dụ sau:
 
 ```cpp
 #include <atomic>
@@ -299,8 +291,8 @@ int main() {
         count.fetch_add(1);
     });
     std::thread t2([](){
-        count++;        // identical to fetch_add
-        count += 1;     // identical to fetch_add
+        count++;        // tương tự như fetch_add
+        count += 1;     // tương tự như fetch_add
     });
     t1.join();
     t2.join();
@@ -309,7 +301,7 @@ int main() {
 }
 ```
 
-Of course, not all types provide atomic operations because the feasibility of atomic operations depends on the architecture of the CPU and whether the type structure being instantiated satisfies the memory alignment requirements of the architecture, so we can always pass `std::atomic<T>::is_lock_free` to check if the atom type needs to support atomic operations, for example:
+Tất nhiên, không phải tất cả các kiểu đều cung cấp các thao tác nguyên tử vì tính khả thi của các thao tác nguyên tử phụ thuộc vào kiến trúc của CPU và liệu cấu trúc kiểu được khởi tạo có đáp ứng các yêu cầu căn chỉnh bộ nhớ của kiến trúc hay không, vì vậy chúng ta luôn có thể sử dụng `std::atomic<T>::is_lock_free` để kiểm tra xem kiểu nguyên tử có cần hỗ trợ các thao tác nguyên tử hay không, ví dụ:
 
 ```cpp
 #include <atomic>
@@ -328,18 +320,18 @@ int main() {
 }
 ```
 
-### Consistency Model
+### Mô Hình Nhất Quán
 
-Multiple threads executing in parallel, discussed at some macro level, can be roughly considered a distributed system.
-In a distributed system, any communication or even local operation takes a certain amount of time, and even unreliable communication occurs.
+Nhiều luồng thực thi song song, khi được thảo luận ở một mức độ vĩ mô, có thể được coi là một hệ thống phân tán.
+Trong một hệ thống phân tán, bất kỳ giao tiếp hoặc thậm chí là hoạt động cục bộ nào cũng mất một khoảng thời gian nhất định, và thậm chí có thể xảy ra giao tiếp không đáng tin cậy.
 
-If we force the operation of a variable `v` between multiple threads to be atomic, that is, any thread after the operation of `v`
-Other threads can **synchronize** to perceive changes in `v`, for the variable `v`, which appears as a sequential execution of the program, it does not have any efficiency gains due to the introduction of multithreading. Is there any way to accelerate this properly? The answer is to weaken the synchronization conditions between processes in atomic operations.
+Nếu chúng ta buộc hoạt động của một biến `v` giữa nhiều luồng phải là nguyên tử, tức là bất kỳ luồng nào sau khi thực hiện thao tác trên `v`
+Các luồng khác có thể **đồng bộ hóa** để nhận biết sự thay đổi của `v`, đối với biến `v`, điều này xuất hiện như một chương trình thực thi tuần tự, nó không có bất kỳ lợi ích hiệu suất nào do việc giới thiệu đa luồng. Có cách nào để tăng tốc điều này một cách hợp lý không? Câu trả lời là làm suy yếu các điều kiện đồng bộ hóa giữa các tiến trình trong các thao tác nguyên tử.
 
-In principle, each thread can correspond to a cluster node, and communication between threads is almost equivalent to communication between cluster nodes.
-Weakening the synchronization conditions between processes, usually we will consider four different consistency models:
+Về nguyên tắc, mỗi luồng có thể tương ứng với một nút cụm, và giao tiếp giữa các luồng gần như tương đương với giao tiếp giữa các nút cụm.
+Làm suy yếu các điều kiện đồng bộ hóa giữa các tiến trình, thường chúng ta sẽ xem xét bốn mô hình nhất quán khác nhau:
 
-1. Linear consistency: Also known as strong consistency or atomic consistency. It requires that any read operation can read the most recent write of a certain data, and the order of operation of all threads is consistent with the order under the global clock.
+1. Nhất quán tuyến tính: Còn được gọi là nhất quán mạnh hoặc nhất quán nguyên tử. Nó yêu cầu bất kỳ thao tác đọc nào cũng có thể đọc được lần ghi gần nhất của một dữ liệu nhất định, và thứ tự thao tác của tất cả các luồng phải nhất quán với thứ tự dưới đồng hồ toàn cục.
 
    ```
            x.store(1)      x.load()
@@ -350,9 +342,9 @@ Weakening the synchronization conditions between processes, usually we will cons
                    x.store(2)
    ```
 
-   In this case, thread `T1`, `T2` is twice atomic to `x`, and `x.store(1)` is strictly before `x.store(2)`. `x.store(2)` strictly occurs before `x.load()`. It is worth mentioning that linear consistency requirements for global clocks are difficult to achieve, which is why people continue to study other consistent algorithms under this weaker consistency.
+   Trong trường hợp này, luồng `T1`, `T2` thực hiện hai lần thao tác nguyên tử lên `x`, và `x.store(1)` xảy ra trước `x.store(2)`. `x.store(2)` xảy ra trước `x.load()`. Đáng chú ý là yêu cầu nhất quán tuyến tính đối với đồng hồ toàn cục rất khó đạt được, đó là lý do tại sao người ta tiếp tục nghiên cứu các thuật toán nhất quán khác dưới điều kiện nhất quán yếu hơn.
 
-2. Sequential consistency: It is also required that any read operation can read the last data written by the data, but it is not required to be consistent with the order of the global clock.
+2. Nhất quán tuần tự: Cũng yêu cầu bất kỳ thao tác đọc nào cũng có thể đọc được dữ liệu cuối cùng được ghi bởi dữ liệu đó, nhưng không yêu cầu phải nhất quán với thứ tự của đồng hồ toàn cục.
 
    ```
            x.store(1)  x.store(3)   x.load()
@@ -362,7 +354,7 @@ Weakening the synchronization conditions between processes, usually we will cons
    T2 ---------------+---------------------->
                  x.store(2)
 
-   or
+   hoặc
 
            x.store(1)  x.store(3)   x.load()
    T1 ---------+-----------+----------+----->
@@ -372,9 +364,9 @@ Weakening the synchronization conditions between processes, usually we will cons
          x.store(2)
    ```
 
-   Under the order consistency requirement, `x.load()` must read the last written data, so `x.store(2)` and `x.store(1)` do not have any guarantees, as long as `x.store(2)` of `T2` occurs before `x.store(3)`.
+   Dưới yêu cầu nhất quán tuần tự, `x.load()` phải đọc dữ liệu cuối cùng được ghi, vì vậy `x.store(2)` và `x.store(1)` không có bất kỳ đảm bảo nào, miễn là `x.store(2)` của `T2` xảy ra trước `x.store(3)`.
 
-3. Causal consistency: its requirements are further reduced, only the sequence of causal operations is guaranteed, and the order of non-causal operations is not required.
+3. Nhất quán nhân quả: Yêu cầu của nó được giảm bớt hơn nữa, chỉ đảm bảo thứ tự của các thao tác nhân quả, và không yêu cầu thứ tự của các thao tác không nhân quả.
 
    ```
          a = 1      b = 2
@@ -384,7 +376,7 @@ Weakening the synchronization conditions between processes, usually we will cons
    T2 ------+--------------------+--------+-------->
          x.store(3)         c = a + b    y.load()
 
-   or
+   hoặc
 
          a = 1      b = 2
    T1 ----+-----------+---------------------------->
@@ -393,7 +385,7 @@ Weakening the synchronization conditions between processes, usually we will cons
    T2 ------+--------------------+--------+-------->
          x.store(3)          y.load()   c = a + b
 
-   or
+   hoặc
 
         b = 2       a = 1
    T1 ----+-----------+---------------------------->
@@ -403,9 +395,10 @@ Weakening the synchronization conditions between processes, usually we will cons
          y.load()            c = a + b  x.store(3)
    ```
 
-   The three examples given above are all causal consistent because, in the whole process, only `c` has a dependency on `a` and `b`, and `x` and `y` are not related in this example. (But in actual situations we need more detailed information to determine that `x` is not related to `y`)
+   Ba ví dụ trên đều nhất quán nhân quả vì, trong toàn bộ quá trình, chỉ có `c` phụ thuộc vào `a` và `b`, và `x` và `y` không liên quan trong ví dụ này. (Nhưng trong tình huống thực tế, chúng ta cần thông tin chi tiết hơn để xác định rằng `x` không liên quan đến `y`)
 
-4. Final Consistency: It is the weakest consistency requirement. It only guarantees that an operation will be observed at a certain point in the future, but does not require the observed time. So we can even strengthen this condition a bit, for example, to specify that the time observed for an operation is always bounded. Of course, this is no longer within our discussion.
+
+   4. Nhất Quán Cuối Cùng: Đây là yêu cầu nhất quán yếu nhất. Nó chỉ đảm bảo rằng một thao tác sẽ được quan sát tại một thời điểm nào đó trong tương lai, nhưng không yêu cầu thời gian quan sát cụ thể. Vì vậy, chúng ta thậm chí có thể tăng cường điều kiện này một chút, ví dụ, để chỉ định rằng thời gian quan sát cho một thao tác luôn bị giới hạn. Tất nhiên, điều này không còn nằm trong phạm vi thảo luận của chúng ta.
 
    ```
        x.store(3)  x.store(4)
@@ -416,23 +409,23 @@ Weakening the synchronization conditions between processes, usually we will cons
             x.read()      x.read()           x.read()   x.read()
    ```
 
-   In the above case, if we assume that the initial value of x is 0, then the four times ``x.read()` in `T2` may be but not limited to the following:
+   Trong trường hợp trên, nếu chúng ta giả định rằng giá trị ban đầu của x là 0, thì bốn lần ``x.read()` trong `T2` có thể nhưng không giới hạn ở các kết quả sau:
 
    ```
-   3 4 4 4 // The write operation of x was quickly observed
-   0 3 3 4 // There is a delay in the observed time of the x write operation
-   0 0 0 4 // The last read read the final value of x, 
-           // but the previous changes were not observed.
-   0 0 0 0 // The write operation of x is not observed in the current time period, 
-           // but the situation that x is 4 can be observed 
-           // at some point in the future.
+   3 4 4 4 // Thao tác ghi của x được quan sát nhanh chóng
+   0 3 3 4 // Có độ trễ trong thời gian quan sát thao tác ghi của x
+   0 0 0 4 // Lần đọc cuối cùng đọc giá trị cuối cùng của x,
+           // nhưng các thay đổi trước đó không được quan sát.
+   0 0 0 0 // Thao tác ghi của x không được quan sát trong khoảng thời gian hiện tại,
+           // nhưng tình huống x là 4 có thể được quan sát
+           // tại một thời điểm nào đó trong tương lai.
    ```
 
-### Memory Orders
+   ### Thứ Tự Bộ Nhớ
 
-To achieve the ultimate performance and achieve consistency of various strength requirements, C++11 defines six different memory sequences for atomic operations. The option `std::memory_order` expresses four synchronization models between multiple threads:
+Để đạt được hiệu suất tối ưu và đảm bảo tính nhất quán với các yêu cầu khác nhau, C++11 định nghĩa sáu thứ tự bộ nhớ khác nhau cho các thao tác nguyên tử. Tùy chọn `std::memory_order` biểu thị bốn mô hình đồng bộ hóa giữa nhiều luồng:
 
-1. Relaxed model: Under this model, atomic operations within a single thread are executed sequentially, and instruction reordering is not allowed, but the order of atomic operations between different threads is arbitrary. The type is specified by `std::memory_order_relaxed`. Let's look at an example:
+1. Mô hình thư giãn: Trong mô hình này, các thao tác nguyên tử trong một luồng được thực hiện tuần tự và không cho phép sắp xếp lại lệnh, nhưng thứ tự của các thao tác nguyên tử giữa các luồng khác nhau là tùy ý. Kiểu này được chỉ định bởi `std::memory_order_relaxed`. Hãy xem một ví dụ:
 
    ```cpp
    std::atomic<int> counter = {0};
@@ -449,10 +442,11 @@ To achieve the ultimate performance and achieve consistency of various strength 
    std::cout << "current counter:" << counter << std::endl;
    ```
 
-2. Release/consumption model: In this model, we begin to limit the order of operations between processes. If a thread needs to modify a value, but another thread will have a dependency on that operation of the value, that is, the latter depends on the former. Specifically, thread A has completed three writes to `x`, and thread `B` relies only on the third `x` write operation, regardless of the first two write behaviors of `x`, then `A ` When active `x.release()` (ie using `std::memory_order_release`), the option `std::memory_order_consume` ensures that `B` observes `A` when calling `x.load()` Three writes to `x`. Let's look at an example:
+2. Mô hình phát hành/tiêu thụ: Trong mô hình này, chúng ta bắt đầu giới hạn thứ tự các thao tác giữa các tiến trình. Nếu một luồng cần sửa đổi một giá trị, nhưng một luồng khác sẽ phụ thuộc vào thao tác đó của giá trị, tức là, luồng sau phụ thuộc vào luồng trước. Cụ thể, luồng A đã hoàn thành ba lần ghi vào `x`, và luồng `B` chỉ phụ thuộc vào thao tác ghi thứ ba của `x`, không quan tâm đến hai thao tác ghi đầu tiên của `x`, thì khi `A` thực hiện `x.release()` (tức là sử dụng `std::memory_order_release`), tùy chọn `std::memory_order_consume` đảm bảo rằng `B` quan sát thấy ba lần ghi vào `x` của `A` khi gọi `x.load()`. Hãy xem một ví dụ:
+
 
    ```cpp
-   // initialize as nullptr to prevent consumer load a dangling pointer
+   // khởi tạo là nullptr để ngăn người tiêu dùng tải một con trỏ lủng lẳng
    std::atomic<int*> ptr(nullptr);
    int v;
    std::thread producer([&]() {
@@ -471,12 +465,12 @@ To achieve the ultimate performance and achieve consistency of various strength 
    consumer.join();
    ```
 
-3. Release/Acquire model: Under this model, we can further tighten the order of atomic operations between different threads, specifying the timing between releasing `std::memory_order_release` and getting `std::memory_order_acquire`. **All** write operations before the release operation is visible to any other thread, i.e., happens before.
+3. Mô hình Phát hành/Đạt được: Dưới mô hình này, chúng ta có thể thắt chặt hơn thứ tự của các thao tác nguyên tử giữa các luồng khác nhau, bằng cách chỉ định thời điểm giữa phát hành `std::memory_order_release` và đạt được `std::memory_order_acquire`. **Tất cả** các thao tác ghi trước thao tác phát hành sẽ hiển thị cho bất kỳ luồng nào khác, tức là xảy ra trước.
 
-   As you can see, `std::memory_order_release` ensures that a write before a release does not occur after the release operation, which is a **backward barrier**, and `std::memory_order_acquire` ensures that a subsequent read or write after a acquire does not occur before the acquire operation, which is a **forward barrier**.
-   For the `std::memory_order_acq_rel` option, combines the characteristics of the two barriers and determines a unique memory barrier, such that reads and writes of the current thread will not be rearranged across the barrier.
+   Như bạn có thể thấy, `std::memory_order_release` đảm bảo rằng một thao tác ghi trước khi phát hành không xảy ra sau thao tác phát hành, đây là một **rào cản ngược**, và `std::memory_order_acquire` đảm bảo rằng một thao tác đọc hoặc ghi sau khi đạt được không xảy ra trước thao tác đạt được, đây là một **rào cản tiến**.
+   Đối với tùy chọn `std::memory_order_acq_rel`, nó kết hợp các đặc điểm của cả hai rào cản và xác định một rào cản bộ nhớ duy nhất, sao cho các thao tác đọc và ghi của luồng hiện tại sẽ không bị sắp xếp lại qua rào cản.
 
-   Let's check an example:
+   Hãy xem một ví dụ:
 
    ```cpp
    std::vector<int> v;
@@ -486,24 +480,24 @@ To achieve the ultimate performance and achieve consistency of various strength 
        flag.store(1, std::memory_order_release);
    });
    std::thread acqrel([&]() {
-       int expected = 1; // must before compare_exchange_strong
+       int expected = 1; // phải trước compare_exchange_strong
        while(!flag.compare_exchange_strong(expected, 2, std::memory_order_acq_rel)) 
-           expected = 1; // must after compare_exchange_strong
-       // flag has changed to 2
+           expected = 1; // phải sau compare_exchange_strong
+       // flag đã thay đổi thành 2
    });
    std::thread acquire([&]() {
        while(flag.load(std::memory_order_acquire) < 2);
 
-       std::cout << v.at(0) << std::endl; // must be 42
+       std::cout << v.at(0) << std::endl; // phải là 42
    });
    release.join();
    acqrel.join();
    acquire.join();
    ```
 
-   In this case we used `compare_exchange_strong`, which is the Compare-and-swap primitive, which has a weaker version, `compare_exchange_weak`, which allows a failure to be returned even if the exchange is successful. The reason is due to a false failure on some platforms, specifically when the CPU performs a context switch, another thread loads the same address to produce an inconsistency. In addition, the performance of `compare_exchange_strong` may be slightly worse than `compare_exchange_weak`. However, in most cases, `compare_exchange_weak` is discouraged due to the complexity of its usage.
+   Trong trường hợp này, chúng ta đã sử dụng `compare_exchange_strong`, đây là nguyên thủy So sánh và Hoán đổi, có một phiên bản yếu hơn là `compare_exchange_weak`, cho phép trả về thất bại ngay cả khi hoán đổi thành công. Lý do là do một thất bại giả trên một số nền tảng, cụ thể là khi CPU thực hiện chuyển đổi ngữ cảnh, một luồng khác tải cùng địa chỉ để tạo ra sự không nhất quán. Ngoài ra, hiệu suất của `compare_exchange_strong` có thể hơi kém hơn so với `compare_exchange_weak`. Tuy nhiên, trong hầu hết các trường hợp, `compare_exchange_weak` không được khuyến khích do sự phức tạp trong việc sử dụng nó.
 
-4. Sequential Consistent Model: Under this model, atomic operations satisfy sequence consistency, which in turn can cause performance loss. It can be specified explicitly by `std::memory_order_seq_cst`. Let's look at a final example:
+ 4. Mô hình Nhất Quán Tuần Tự: Dưới mô hình này, các thao tác nguyên tử đảm bảo tính nhất quán tuần tự, điều này có thể gây ra mất hiệu suất. Nó có thể được chỉ định rõ ràng bằng `std::memory_order_seq_cst`. Hãy xem một ví dụ cuối cùng:
 
    ```cpp
    std::atomic<int> counter = {0};
@@ -520,40 +514,39 @@ To achieve the ultimate performance and achieve consistency of various strength 
    std::cout << "current counter:" << counter << std::endl;
    ```
 
-   This example is essentially the same as the first loose model example. Just change the memory order of the atomic operation to `memory_order_seq_cst`. Interested readers can write their own programs to measure the performance difference caused by these two different memory sequences.
+   Ví dụ này về cơ bản giống với ví dụ mô hình lỏng lẻo đầu tiên. Chỉ cần thay đổi thứ tự bộ nhớ của thao tác nguyên tử thành `memory_order_seq_cst`. Độc giả quan tâm có thể tự viết chương trình để đo lường sự khác biệt về hiệu suất do hai thứ tự bộ nhớ khác nhau này gây ra.
 
-## Conclusion
+## Kết Luận
 
-The C++11 language layer provides support for concurrent programming. This section briefly introduces `std::thread`/`std::mutex`/`std::future`, an important tool that can't be avoided in concurrent programming.
-In addition, we also introduced the "memory model" as one of the most important features of C++11.
-They provide a critical foundation for standardized high-performance computing for C++.
+Ngôn ngữ C++11 cung cấp hỗ trợ cho lập trình đồng thời. Phần này giới thiệu ngắn gọn về `std::thread`/`std::mutex`/`std::future`, những công cụ quan trọng không thể tránh khỏi trong lập trình đồng thời.
+Ngoài ra, chúng ta cũng đã giới thiệu "mô hình bộ nhớ" như một trong những tính năng quan trọng nhất của C++11.
+Chúng cung cấp nền tảng quan trọng cho tính toán hiệu suất cao tiêu chuẩn hóa cho C++.
+## Bài Tập
 
-## Exercises
-
-1. Write a simple thread pool that provides the following features:
+1. Viết một thread pool đơn giản cung cấp các tính năng sau:
 
    ```cpp
-   ThreadPool p(4); // specify four work thread
+   ThreadPool p(4); // chỉ định bốn luồng làm việc
 
-   // enqueue a task, and return a std::future
+   // đưa một tác vụ vào hàng đợi và trả về một std::future
    auto f = pool.enqueue([](int life) {
        return meaning;
    }, 42);
 
-   // fetch result from future
+   // lấy kết quả từ future
    std::cout << f.get() << std::endl;
    ```
 
-2. Use `std::atomic<bool>` to implement a mutex.
+2. Sử dụng `std::atomic<bool>` để triển khai một mutex.
 
-[Table of Content](./toc.md) | [Previous Chapter](./06-regex.md) | [Next Chapter: File System](./08-filesystem.md)
+[Table of Content](./toc.md) | [Chương Trước](./06-regex.md) | [Chương Tiếp Theo: Hệ Thống Tập Tin](./08-filesystem.md)
 
-## Further Readings
+## Đọc Thêm
 
 - [C++ Concurrency in Action](https://www.amazon.com/dp/1617294691/ref=cm_sw_em_r_mt_dp_U_siEmDbRMMF960)
-- [Thread document](https://en.cppreference.com/w/cpp/thread)
+- [Tài liệu về Thread](https://en.cppreference.com/w/cpp/thread)
 - Herlihy, M. P., & Wing, J. M. (1990). Linearizability: a correctness condition for concurrent objects. ACM Transactions on Programming Languages and Systems, 12(3), 463–492. https://doi.org/10.1145/78969.78972
 
-## Licenses
+## Giấy Phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).`
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
