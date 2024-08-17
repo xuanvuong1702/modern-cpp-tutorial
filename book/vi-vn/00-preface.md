@@ -1,6 +1,6 @@
 ---
 title: Preface
-type: book-en-us
+type: book-vi-vn
 order: 0
 ---
 # Lời mở đầu

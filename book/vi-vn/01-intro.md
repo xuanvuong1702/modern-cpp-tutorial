@@ -1,6 +1,6 @@
 ---
 title: "Chapter 01: Towards Modern C++"
-type: book-en-us
+type: book-vi-vn
 order: 1
 ---
 
