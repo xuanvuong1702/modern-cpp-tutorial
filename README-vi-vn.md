@@ -1,4 +1,4 @@
-<img src="assets/cover-2nd-en.png" alt="logo" height="550" align="right" />
+<img src="assets/cover-2nd-vi.png" alt="logo" height="550" align="right" />
 
 # Hướng dẫn C++ Hiện đại: C++11/14/17/20 Ngay lập tức
 
