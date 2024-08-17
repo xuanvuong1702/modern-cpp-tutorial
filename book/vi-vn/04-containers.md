@@ -1,89 +1,89 @@
 ---
-title: "Chapter 04 Containers"
-type: book-en-us
+title: "Chương 04: Containers"
+type: book-vi-vn
 order: 4
 ---
 
-# Chapter 04 Containers
+# Chương 04: Containers
 
 [TOC]
 
-## 4.1 Linear Container
+## 4.1 Container Tuyến Tính
 
 ### `std::array`
 
-When you see this container, you will have this problem:
+Khi bạn thấy container này, bạn sẽ có những câu hỏi sau:
 
-1. Why introduce `std::array` instead of `std::vector` directly?
-2. Already have a traditional array, why use `std::array`?
+1. Tại sao lại giới thiệu `std::array` thay vì sử dụng trực tiếp `std::vector`?
+2. Đã có mảng truyền thống, tại sao lại sử dụng `std::array`?
 
-First, answer the first question. Unlike `std::vector`, the size of the `std::array` object is fixed. If the container size is fixed, then the `std::array` container can be used first.
-Also, since `std::vector` is automatically expanded, when a large amount of data is stored, and the container is deleted,
-The container does not automatically return the corresponding memory of the deleted element. In this case, you need to manually run `shrink_to_fit()` to release this part of the memory.
+Đầu tiên, trả lời câu hỏi thứ nhất. Không giống như `std::vector`, kích thước của đối tượng `std::array` là cố định. Nếu kích thước của container là cố định, thì bạn có thể sử dụng `std::array` trước.
+Ngoài ra, vì `std::vector` tự động mở rộng, khi lưu trữ một lượng lớn dữ liệu và sau đó xóa container,
+container không tự động trả lại bộ nhớ tương ứng của phần tử đã xóa. Trong trường hợp này, bạn cần chạy thủ công `shrink_to_fit()` để giải phóng phần bộ nhớ này.
 
 ```cpp
 std::vector<int> v;
 std::cout << "size:" << v.size() << std::endl;         // output 0
 std::cout << "capacity:" << v.capacity() << std::endl; // output 0
 
-// As you can see, the storage of std::vector is automatically managed and
-// automatically expanded as needed.
-// But if there is not enough space, you need to redistribute more memory,
-// and reallocating memory is usually a performance-intensive operation.
+// Như bạn thấy, bộ nhớ của std::vector được quản lý tự động và
+// tự động mở rộng khi cần thiết.
+// Nhưng nếu không đủ không gian, bạn cần phân bổ thêm bộ nhớ,
+// và việc phân bổ lại bộ nhớ thường là một thao tác tốn kém về hiệu suất.
 v.push_back(1);
 v.push_back(2);
 v.push_back(3);
 std::cout << "size:" << v.size() << std::endl;         // output 3
 std::cout << "capacity:" << v.capacity() << std::endl; // output 4
 
-// The auto-expansion logic here is very similar to Golang's slice.
+// Logic tự động mở rộng ở đây rất giống với slice của Golang.
 v.push_back(4);
 v.push_back(5);
 std::cout << "size:" << v.size() << std::endl;         // output 5
 std::cout << "capacity:" << v.capacity() << std::endl; // output 8
 
-// As can be seen below, although the container empties the element,
-// the memory of the emptied element is not returned.
+// Như có thể thấy dưới đây, mặc dù container đã xóa các phần tử,
+// bộ nhớ của các phần tử đã xóa không được trả lại.
 v.clear();
 std::cout << "size:" << v.size() << std::endl;         // output 0
 std::cout << "capacity:" << v.capacity() << std::endl; // output 8
 
-// Additional memory can be returned to the system via the shrink_to_fit() call
+// Bộ nhớ bổ sung có thể được trả lại hệ thống thông qua lệnh shrink_to_fit()
 v.shrink_to_fit();
 std::cout << "size:" << v.size() << std::endl;         // output 0
 std::cout << "capacity:" << v.capacity() << std::endl; // output 0
 ```
 
-The second problem is much simpler. Using `std::array` can make the code more "modern" and encapsulate some manipulation functions, such as getting the array size and checking if it is not empty, and also using the standard friendly. Container algorithms in the library, such as `std::sort`.
+Vấn đề thứ hai đơn giản hơn nhiều. Sử dụng `std::array` có thể làm cho mã trở nên "hiện đại" hơn và đóng gói một số hàm thao tác, chẳng hạn như lấy kích thước mảng và kiểm tra xem nó có rỗng không, và cũng sử dụng các thuật toán container thân thiện với tiêu chuẩn trong thư viện, chẳng hạn như `std::sort`.
 
-Using `std::array` is as simple as specifying its type and size:
+Sử dụng `std::array` đơn giản như việc chỉ định kiểu và kích thước của nó:
 
 ```cpp
 std::array<int, 4> arr = {1, 2, 3, 4};
 
-arr.empty(); // check if container is empty
-arr.size();  // return the size of the container
+arr.empty(); // kiểm tra xem container có rỗng không
+arr.size();  // trả về kích thước của container
 
-// iterator support
+// hỗ trợ iterator
 for (auto &i : arr)
 {
     // ...
 }
 
-// use lambda expression for sort
+// sử dụng biểu thức lambda để sắp xếp
 std::sort(arr.begin(), arr.end(), [](int a, int b) {
     return b < a;
 });
 
-// array size must be constexpr
+// kích thước mảng phải là constexpr
 constexpr int len = 4;
 std::array<int, len> arr = {1, 2, 3, 4};
 
-// illegal, different than C-style array, std::array will not deduce to T*
+// không hợp lệ, khác với mảng kiểu C, std::array sẽ không suy diễn thành T*
 // int *arr_p = arr;
 ```
 
-When we started using `std::array`, it was inevitable that we would encounter a C-style compatible interface. There are three ways to do this:
+Khi chúng ta bắt đầu sử dụng `std::array`, không thể tránh khỏi việc chúng ta sẽ gặp phải giao diện tương thích kiểu C. Có ba cách để làm điều này:
 
 ```cpp
 void foo(int *p, int len) {
@@ -92,37 +92,37 @@ void foo(int *p, int len) {
 
 std::array<int, 4> arr = {1,2,3,4};
 
-// C-stype parameter passing
-// foo(arr, arr.size()); // illegal, cannot convert implicitly
+// truyền tham số kiểu C
+// foo(arr, arr.size()); // không hợp lệ, không thể chuyển đổi ngầm định
 foo(&arr[0], arr.size());
 foo(arr.data(), arr.size());
 
-// use `std::sort`
+// sử dụng `std::sort`
 std::sort(arr.begin(), arr.end());
 ```
 
 ### `std::forward_list`
 
-`std::forward_list` is a list container, and the usage is similar to `std::list`, so we don't spend a lot of time introducing it.
+`std::forward_list` là một container danh sách, và cách sử dụng tương tự như `std::list`, vì vậy chúng ta không dành nhiều thời gian để giới thiệu nó.
 
-Need to know is that, unlike the implementation of the doubly linked list of `std::list`, `std::forward_list` is implemented using a singly linked list.
-Provides element insertion of `O(1)` complexity, does not support fast random access (this is also a feature of linked lists),
-It is also the only container in the standard library container that does not provide the `size()` method. Has a higher space utilization than `std::list` when bidirectional iteration is not required.
+Điều cần biết là, không giống như việc triển khai danh sách liên kết kép của `std::list`, `std::forward_list` được triển khai bằng cách sử dụng danh sách liên kết đơn.
+Cung cấp việc chèn phần tử với độ phức tạp `O(1)`, không hỗ trợ truy cập ngẫu nhiên nhanh (đây cũng là một đặc điểm của danh sách liên kết),
+Nó cũng là container duy nhất trong thư viện chuẩn không cung cấp phương thức `size()`. Có hiệu suất sử dụng không gian cao hơn `std::list` khi không cần lặp lại hai chiều.
 
-## 4.2 Unordered Container
+## 4.2 Container Không Có Thứ Tự
 
-We are already familiar with the ordered container `std::map`/`std::set` in traditional C++. These elements are internally implemented by red-black trees.
-The average complexity of inserts and searches is `O(log(size))`. When inserting an element, the element size is compared according to the `<` operator and the element is determined to be the same.
-And select the appropriate location to insert into the container. When traversing the elements in this container, the output will be traversed one by one in the order of the `<` operator.
+Chúng ta đã quen thuộc với container có thứ tự `std::map`/`std::set` trong C++ truyền thống. Các phần tử này được triển khai nội bộ bằng cây đỏ-đen.
+Độ phức tạp trung bình của việc chèn và tìm kiếm là `O(log(size))`. Khi chèn một phần tử, kích thước phần tử được so sánh theo toán tử `<` và phần tử được xác định là giống nhau.
+Và chọn vị trí thích hợp để chèn vào container. Khi duyệt qua các phần tử trong container này, đầu ra sẽ được duyệt từng cái một theo thứ tự của toán tử `<`.
 
-The elements in the unordered container are not sorted, and the internals is implemented by the Hash table. The average complexity of inserting and searching for elements is `O(constant)`,
-Significant performance gains can be achieved without concern for the order of the elements inside the container.
+Các phần tử trong container không có thứ tự không được sắp xếp, và nội bộ được triển khai bằng bảng băm. Độ phức tạp trung bình của việc chèn và tìm kiếm phần tử là `O(constant)`,
+Có thể đạt được hiệu suất đáng kể mà không cần quan tâm đến thứ tự của các phần tử bên trong container.
 
-C++11 introduces two unordered containers: `std::unordered_map`/`std::unordered_multimap` and
+C++11 giới thiệu hai container không có thứ tự: `std::unordered_map`/`std::unordered_multimap` và
 `std::unordered_set`/`std::unordered_multiset`.
 
-Their usage is basically similar to the original `std::map`/`std::multimap`/`std::set`/`set::multiset`
-Since these containers are already familiar to us, we will not compare them one by one. Let's compare `std::map` and `std::unordered_map` directly:
+Cách sử dụng của chúng về cơ bản tương tự như `std::map`/`std::multimap`/`std::set`/`set::multiset` ban đầu.
+Vì chúng ta đã quen thuộc với các container này, chúng ta sẽ không so sánh từng cái một. Hãy so sánh trực tiếp `std::map` và `std::unordered_map`:
 
 ```cpp
 #include <iostream>
@@ -131,7 +131,7 @@ Since these containers are already familiar to us, we will not compare them one 
 #include <map>
 
 int main() {
-    // initialized in same order
+    // khởi tạo theo cùng thứ tự
     std::unordered_map<int, std::string> u = {
         {1, "1"},
         {3, "3"},
@@ -143,7 +143,7 @@ int main() {
         {2, "2"}
     };
 
-    // iterates in the same way
+    // duyệt qua các phần tử theo cùng cách
     std::cout << "std::unordered_map" << std::endl;
     for( const auto & n : u)
         std::cout << "Key:[" << n.first << "] Value:[" << n.second << "]\n";
@@ -155,7 +155,7 @@ int main() {
 }
 ```
 
-The final output is:
+Kết quả cuối cùng là:
 
 ```txt
 std::unordered_map
@@ -171,17 +171,16 @@ Key:[3] Value:[3]
 
 ## 4.3 Tuples
 
-Programmers who have known Python should be aware of the concept of tuples. Looking at the containers in traditional C++, except for `std::pair`
-there seems to be no ready-made structure to store different types of data (usually we will define the structure ourselves).
-But the flaw of `std::pair` is obvious, only two elements can be saved.
+Các lập trình viên đã quen thuộc với Python chắc chắn sẽ biết đến khái niệm tuples. Nhìn vào các container trong C++ truyền thống, ngoại trừ `std::pair`
+dường như không có cấu trúc sẵn có nào để lưu trữ các loại dữ liệu khác nhau (thường thì chúng ta sẽ tự định nghĩa cấu trúc).
+Nhưng nhược điểm của `std::pair` là rõ ràng, chỉ có thể lưu trữ hai phần tử.
+### Các thao tác cơ bản
 
-### Basic Operations
+Có ba hàm chính để sử dụng tuples:
 
-There are three core functions for the use of tuples:
-
-1. `std::make_tuple`: construct tuple
-2. `std::get`: Get the value of a position in the tuple
-3. `std::tie`: tuple unpacking
+1. `std::make_tuple`: tạo tuple
+2. `std::get`: Lấy giá trị của một vị trí trong tuple
+3. `std::tie`: giải nén tuple
 
 ```cpp
 #include <tuple>
@@ -195,8 +194,8 @@ auto get_student(int id) {
     if (id == 2)
         return std::make_tuple(1.7, 'D', "Ive");
 
-    // it is not allowed to return 0 directly
-    // return type is std::tuple<double, char, std::string>
+    // không được phép trả về 0 trực tiếp
+    // kiểu trả về là std::tuple<double, char, std::string>
     return std::make_tuple(0.0, 'D', "null");
 }
 
@@ -211,7 +210,7 @@ int main() {
     char grade;
     std::string name;
 
-    // unpack tuples
+    // giải nén tuples
     std::tie(gpa, grade, name) = get_student(1);
     std::cout << "ID: 1, "
               << "GPA: "   << gpa << ", "
@@ -220,33 +219,33 @@ int main() {
 }
 ```
 
-`std::get` In addition to using constants to get tuple objects, C++14 adds usage types to get objects in tuples:
+`std::get` Ngoài việc sử dụng hằng số để lấy đối tượng tuple, C++14 còn thêm kiểu sử dụng để lấy đối tượng trong tuples:
 
 ```cpp
 std::tuple<std::string, double, double, int> t("123", 4.5, 6.7, 8);
 std::cout << std::get<std::string>(t) << std::endl;
-std::cout << std::get<double>(t) << std::endl; // illegal, runtime error
+std::cout << std::get<double>(t) << std::endl; // không hợp lệ, lỗi runtime
 std::cout << std::get<3>(t) << std::endl;
 ```
 
-### Runtime Indexing
+### Chỉ mục thời gian chạy
 
-If you think about it, you might find the problem with the above code. `std::get<>` depends on a compile-time constant, so the following is not legal:
+Nếu bạn suy nghĩ kỹ, bạn có thể thấy vấn đề với đoạn mã trên. `std::get<>` phụ thuộc vào hằng số thời gian biên dịch, vì vậy đoạn mã sau không hợp lệ:
 
 ```cpp
 int index = 1;
 std::get<index>(t);
 ```
 
-So what do you do? The answer is to use `std::variant<>` (introduced by C++ 17) to provide type template parameters for `variant<>`
-You can have a `variant<>` to accommodate several types of variables provided (in other languages, such as Python/JavaScript, etc., as dynamic types):
+Vậy bạn phải làm gì? Câu trả lời là sử dụng `std::variant<>` (được giới thiệu từ C++ 17) để cung cấp các tham số mẫu kiểu cho `variant<>`.
+Bạn có thể có một `variant<>` để chứa nhiều loại biến khác nhau (trong các ngôn ngữ khác, như Python/JavaScript, v.v., như các kiểu động):
 
 ```cpp
 #include <variant>
 template <size_t n, typename... T>
 constexpr std::variant<T...> _tuple_index(const std::tuple<T...>& tpl, size_t i) {
     if constexpr (n >= sizeof...(T))
-        throw std::out_of_range("越界.");
+        throw std::out_of_range("Vượt quá giới hạn.");
     if (i == n)
         return std::variant<T...>{ std::in_place_index<n>, std::get<n>(tpl) };
     return _tuple_index<(n < sizeof...(T)-1 ? n+1 : 0)>(tpl, i);
@@ -262,23 +261,23 @@ std::ostream & operator<< (std::ostream & s, std::variant<T0, Ts...> const & v) 
 }
 ```
 
-So we can:
+Vì vậy chúng ta có thể:
 
 ```cpp
 int i = 1;
 std::cout << tuple_index(t, i) << std::endl;
 ```
 
-### Merge and Iteration
+### Gộp và Duyệt
 
-Another common requirement is to merge two tuples, which can be done with `std::tuple_cat`:
+Một yêu cầu phổ biến khác là gộp hai tuple, điều này có thể thực hiện với `std::tuple_cat`:
 
 ```cpp
 auto new_tuple = std::tuple_cat(get_student(1), std::move(t));
 ```
 
-You can immediately see how quickly you can traverse a tuple? But we just introduced how to index a `tuple` by a very number at runtime, then the traversal becomes simpler.
-First, we need to know the length of a tuple, which can:
+Bạn có thể thấy ngay cách duyệt qua một tuple nhanh chóng như thế nào? Nhưng chúng ta vừa giới thiệu cách để đánh chỉ mục một `tuple` bằng một số tại thời gian chạy, thì việc duyệt trở nên đơn giản hơn.
+Đầu tiên, chúng ta cần biết độ dài của một tuple, điều này có thể thực hiện như sau:
 
 ```cpp
 template <typename T>
@@ -287,22 +286,22 @@ auto tuple_len(T &tpl) {
 }
 ```
 
-This will iterate over the tuple:
+Đoạn mã sau sẽ duyệt qua tuple:
 
 ```cpp
 for(int i = 0; i != tuple_len(new_tuple); ++i)
-    // runtime indexing
+    // đánh chỉ mục tại thời gian chạy
     std::cout << tuple_index(new_tuple, i) << std::endl;
 ```
 
-## Conclusion
+## Kết luận
 
-This chapter briefly introduces the new containers in modern C++. Their usage is similar to that of the existing containers in C++. It is relatively simple, and you can choose the containers you need to use according to the actual scene, to get better performance.
+Chương này giới thiệu ngắn gọn về các container mới trong C++ hiện đại. Cách sử dụng của chúng tương tự như các container hiện có trong C++. Nó khá đơn giản, và bạn có thể chọn các container cần sử dụng tùy theo tình huống thực tế để đạt được hiệu suất tốt hơn.
 
-Although `std::tuple` is effective, the standard library provides limited functionality and there is no way to meet the requirements of runtime indexing and iteration. Fortunately, we have other methods that we can implement on our own.
+Mặc dù `std::tuple` hiệu quả, thư viện chuẩn cung cấp chức năng hạn chế và không có cách nào để đáp ứng yêu cầu về đánh chỉ mục và duyệt tại thời gian chạy. May mắn thay, chúng ta có các phương pháp khác mà chúng ta có thể tự triển khai.
 
 [Table of Content](./toc.md) | [Previous Chapter](./03-runtime.md) | [Next Chapter: Smart Pointers and Memory Management](./05-pointers.md)
 
-## Licenses
+## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
