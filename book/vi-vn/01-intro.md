@@ -1,5 +1,5 @@
 ---
-title: "Chapter 01: Towards Modern C++"
+title: "Chương 01: Hướng Tới C++ Hiện Đại"
 type: book-vi-vn
 order: 1
 ---
