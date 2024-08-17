@@ -1,51 +1,51 @@
 ---
-title: Chapter 09 Minor Features
-type: book-en-us
+title: Chương 09 Các Tính Năng Nhỏ
+type: book-vi-vn
 order: 9
 ---
 
-# Chapter 09 Minor Features
+# Chương 09 Các Tính Năng Nhỏ
 
 [TOC]
 
-## 9.1 New Type
+## 9.1 Kiểu Dữ Liệu Mới
 
 ### `long long int`
 
-`long long int` is not the first to be introduced in C++11.
-As early as C99, `long long int` has been included in the C standard,
-so most compilers already support it.
-C++11 now formally incorporate it into the standard library,
-specifying a `long long int` type with at least 64 bits.
+`long long int` không phải lần đầu tiên được giới thiệu trong C++11.
+Ngay từ C99, `long long int` đã được bao gồm trong tiêu chuẩn C,
+vì vậy hầu hết các trình biên dịch đã hỗ trợ nó.
+C++11 hiện nay chính thức tích hợp nó vào thư viện chuẩn,
+quy định một kiểu `long long int` với ít nhất 64 bit.
 
-## 9.2 `noexcept` and Its Operations
+## 9.2 `noexcept` và Các Hoạt Động Của Nó
 
-One of the big advantages of C++ over C is that
-C++ itself defines a complete set of exception handling mechanisms.
-However, before C++11, almost no one used to write an exception declaration expression after the function name.
-Starting from C++11, this mechanism was deprecated,
-so we will not discuss or introduce the previous mechanism.
-How to work and how to use it, you should not take the initiative to understand it.
+Một trong những lợi thế lớn của C++ so với C là
+C++ tự định nghĩa một bộ cơ chế xử lý ngoại lệ hoàn chỉnh.
+Tuy nhiên, trước C++11, hầu như không ai sử dụng biểu thức khai báo ngoại lệ sau tên hàm.
+Bắt đầu từ C++11, cơ chế này đã bị loại bỏ,
+vì vậy chúng ta sẽ không thảo luận hoặc giới thiệu cơ chế trước đó.
+Cách hoạt động và cách sử dụng nó, bạn không nên chủ động tìm hiểu.
 
-C++11 simplifies exception declarations into two cases:
+C++11 đơn giản hóa các khai báo ngoại lệ thành hai trường hợp:
 
-1. The function may throw any exceptions
-2. The function can't throw any exceptions
+1. Hàm có thể ném bất kỳ ngoại lệ nào
+2. Hàm không thể ném bất kỳ ngoại lệ nào
 
-And use `noexcept` to limit these two behaviors, for example:
+Và sử dụng `noexcept` để giới hạn hai hành vi này, ví dụ:
 
 ```cpp
-void may_throw();           // May throw any exception
-void no_throw() noexcept;   // Cannot throw any exception
+void may_throw();           // Có thể ném bất kỳ ngoại lệ nào
+void no_throw() noexcept;   // Không thể ném bất kỳ ngoại lệ nào
 ```
 
-If a function modified with `noexcept` is thrown,
-the compiler will use `std::terminate()` to
-immediately terminate the program.
+Nếu một hàm được sửa đổi với `noexcept` mà ném ngoại lệ,
+trình biên dịch sẽ sử dụng `std::terminate()`
+để ngay lập tức kết thúc chương trình.
 
-`noexcept` can also be used as an operator to manipulate an expression.
-When the expression has no exception, it returns `true`,
-otherwise, it returns `false`.
+`noexcept` cũng có thể được sử dụng như một toán tử để thao tác một biểu thức.
+Khi biểu thức không có ngoại lệ, nó trả về `true`,
+ngược lại, nó trả về `false`.
 
 ```cpp
 #include <iostream>
@@ -73,47 +73,47 @@ int main()
 }
 ```
 
-`noexcept` can modify the function of blocking exceptions
-after modifying a function. If an exception is generated internally,
-the external will not trigger. For instance:
+`noexcept` có thể thay đổi chức năng của việc chặn ngoại lệ
+sau khi sửa đổi một hàm. Nếu một ngoại lệ được tạo ra bên trong,
+bên ngoài sẽ không kích hoạt. Ví dụ:
 
 ```cpp
 try {
     may_throw();
 } catch (...) {
-    std::cout << "exception captured from may_throw()" << std::endl;
+    std::cout << "bắt được ngoại lệ từ may_throw()" << std::endl;
 }
 try {
     non_block_throw();
 } catch (...) {
-    std::cout << "exception captured from non_block_throw()" << std::endl;
+    std::cout << "bắt được ngoại lệ từ non_block_throw()" << std::endl;
 }
 try {
     block_throw();
 } catch (...) {
-    std::cout << "exception captured from block_throw()" << std::endl;
+    std::cout << "bắt được ngoại lệ từ block_throw()" << std::endl;
 }
 ```
 
-The final output is:
+Kết quả đầu ra cuối cùng là:
 
 ```
-exception captured, from may_throw()
-exception captured, from non_block_throw()
+bắt được ngoại lệ từ may_throw()
+bắt được ngoại lệ từ non_block_throw()
 ```
 
 ## 9.3 Literal
 
 ### Raw String Literal
 
-In traditional C++, it is very painful to write a string full of
-special characters. For example, a string containing HTML ontology
-needs to add a large number of escape characters.
-For example, a file path on Windows often as: `C:\\Path\\To\\File`.
+Trong C++ truyền thống, việc viết một chuỗi đầy đủ các ký tự đặc biệt
+rất khó khăn. Ví dụ, một chuỗi chứa HTML ontology
+cần phải thêm một số lượng lớn các ký tự thoát.
+Ví dụ, một đường dẫn tệp trên Windows thường như sau: `C:\\Path\\To\\File`.
 
-C++11 provides the original string literals,
-which can be decorated with `R` in front of a string,
-and the original string is wrapped in parentheses, for example:
+C++11 cung cấp các literal chuỗi gốc,
+có thể được trang trí với `R` ở phía trước một chuỗi,
+và chuỗi gốc được bao bọc trong dấu ngoặc đơn, ví dụ:
 
 ```cpp
 #include <iostream>
@@ -126,13 +126,13 @@ int main() {
 }
 ```
 
-### Custom Literal
+### Literal Tùy Chỉnh
 
-C++11 introduces the ability to customize literals by
-overloading the double quotes suffix operator:
+C++11 giới thiệu khả năng tùy chỉnh literals bằng cách
+nạp chồng toán tử hậu tố dấu ngoặc kép:
 
 ```cpp
-// String literal customization must be set to the following parameter list
+// Tùy chỉnh literal chuỗi phải được đặt theo danh sách tham số sau
 std::string operator"" _wow1(const char *wow1, size_t len) {
     return std::string(wow1)+"woooooooooow, amazing";
 }
@@ -150,19 +150,19 @@ int main() {
 }
 ```
 
-Custom literals support four literals:
+Literal tùy chỉnh hỗ trợ bốn loại literals:
 
-1. Integer literal: When overloading, you must use `unsigned long long`, `const char *`, and template literal operator parameters. The former is used in the above code;
-2. Floating-point literals: You must use `long double`, `const char *`, and template literals when overloading;
-3. String literals: A parameter table of the form `(const char *, size_t)` must be used;
-4. Character literals: Parameters can only be `char`, `wchar_t`, `char16_t`, `char32_t`.
+1. Literal số nguyên: Khi nạp chồng, bạn phải sử dụng `unsigned long long`, `const char *`, và các tham số toán tử literal mẫu. Loại đầu tiên được sử dụng trong mã trên;
+2. Literal số thực: Bạn phải sử dụng `long double`, `const char *`, và các literal mẫu khi nạp chồng;
+3. Literal chuỗi: Một bảng tham số dạng `(const char *, size_t)` phải được sử dụng;
+4. Literal ký tự: Tham số chỉ có thể là `char`, `wchar_t`, `char16_t`, `char32_t`.
 
-## 9.4 Memory Alignment
+## 9.4 Căn Chỉnh Bộ Nhớ
 
-C++ 11 introduces two new keywords, `alignof` and `alignas`, to support control of memory alignment.
-The `alignof` keyword can get a platform-dependent value of type `std::size_t` to query the alignment of the platform.
-Of course, we are sometimes not satisfied with this, and even want to customize the alignment of the structure. Similarly, C++ 11 introduces `alignas`.
-To reshape the alignment of a structure. Let's look at two examples:
+C++ 11 giới thiệu hai từ khóa mới, `alignof` và `alignas`, để hỗ trợ kiểm soát căn chỉnh bộ nhớ.
+Từ khóa `alignof` có thể lấy giá trị phụ thuộc vào nền tảng của kiểu `std::size_t` để truy vấn căn chỉnh của nền tảng.
+Tất nhiên, đôi khi chúng ta không hài lòng với điều này và thậm chí muốn tùy chỉnh căn chỉnh của cấu trúc. Tương tự, C++ 11 giới thiệu `alignas`.
+Để định hình lại căn chỉnh của một cấu trúc. Hãy xem hai ví dụ sau:
 
 ```cpp
 #include <iostream>
@@ -188,19 +188,19 @@ int main() {
 }
 ```
 
-where `std::max_align_t` requires the same alignment for each scalar type, so it has almost no difference in maximum scalars.
-In turn, the result on most platforms is `long double`, so the alignment requirement for `AlignasStorage` we get here is 8 or 16.
+trong đó `std::max_align_t` yêu cầu cùng một căn chỉnh cho mỗi kiểu số học, vì vậy nó hầu như không có sự khác biệt trong các kiểu số học lớn nhất.
+Ngược lại, kết quả trên hầu hết các nền tảng là `long double`, vì vậy yêu cầu căn chỉnh cho `AlignasStorage` mà chúng ta nhận được ở đây là 8 hoặc 16.
 
-## Conclusion
+## Kết Luận
 
-Several of the features introduced in this section are those that
-use more frequent features from modern C++ features that
-have not yet been introduced. `noexcept` is the most important feature.
-One of its features is to prevent the spread of anomalies,
-effective Let the compiler optimize our code to the maximum extent possible.
+Một số tính năng được giới thiệu trong phần này là những tính năng
+sử dụng các tính năng hiện đại của C++ thường xuyên hơn mà
+chưa được giới thiệu. `noexcept` là tính năng quan trọng nhất.
+Một trong những tính năng của nó là ngăn chặn sự lan truyền của các ngoại lệ,
+hiệu quả cho phép trình biên dịch tối ưu hóa mã của chúng ta đến mức tối đa.
 
 [Table of Content](./toc.md) | [Previous Chapter](./08-filesystem.md) | [Next Chapter: Outlook: Introduction of C++20](./10-cpp20.md)
 
-## Licenses
+## Giấy Phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Ghi Công-Phi Thương Mại-Không Phái Sinh 4.0 Quốc Tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).

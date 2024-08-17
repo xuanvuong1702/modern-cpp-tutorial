@@ -1,39 +1,39 @@
 ---
-title: "Appendix 2: Modern C++ Best Practices"
-type: book-en-us
+title: "Phụ Lục 2: Thực Hành Tốt Nhất C++ Hiện Đại"
+type: book-vi-vn
 order: 12
 ---
 
-# Appendix 2: Modern C++ Best Practices
+# Phụ Lục 2: Thực Hành Tốt Nhất C++ Hiện Đại
 
-In this appendix we will briefly talk about the best practices of modern C++. In general, the author's thoughts on C++'s best practices are mainly absorbed from [Effective Modern C++](https://www.amazon.com/dp/1491903996/ref=cm_sw_em_r_mt_dp_U_-ZgjDb81ERBNP) and [C++ Style Guide](https://google.github.io/styleguide/cppguide.html). In this appendix, we will briefly discuss and use the actual examples to illustrate the methods, and introduce some of **the author's personal**, **non-common**, **non-sensible** best practices, and how to ensure the overall quality of the code.
+Trong phụ lục này, chúng ta sẽ nói ngắn gọn về các thực hành tốt nhất của C++ hiện đại. Nhìn chung, những suy nghĩ của tác giả về các thực hành tốt nhất của C++ chủ yếu được hấp thụ từ [Effective Modern C++](https://www.amazon.com/dp/1491903996/ref=cm_sw_em_r_mt_dp_U_-ZgjDb81ERBNP) và [C++ Style Guide](https://google.github.io/styleguide/cppguide.html). Trong phụ lục này, chúng ta sẽ thảo luận ngắn gọn và sử dụng các ví dụ thực tế để minh họa các phương pháp, và giới thiệu một số thực hành tốt nhất **cá nhân của tác giả**, **không phổ biến**, **không hợp lý**, và cách đảm bảo chất lượng tổng thể của mã nguồn.
 
-## Common Tools
-
-TODO:
-
-## Coding Style
+## Công Cụ Thông Dụng
 
 TODO:
 
-## Overall Performance
+## Phong Cách Viết Mã
 
 TODO:
 
-## Code Security
+## Hiệu Suất Tổng Thể
 
 TODO:
 
-## Maintainability
+## Bảo Mật Mã
 
 TODO:
 
-## Portability
+## Khả Năng Bảo Trì
+
+TODO:
+
+## Tính Di Động
 
 TODO:
 
 [Table of Content](./toc.md) | [Previous Chapter](./appendix1.md)
 
-## Licenses
+## Giấy Phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Ghi Công-Phi Thương Mại-Không Phái Sinh 4.0 Quốc Tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).

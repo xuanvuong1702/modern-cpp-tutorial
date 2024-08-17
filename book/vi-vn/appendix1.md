@@ -1,22 +1,22 @@
 ---
-title: "Appendix 1: Further Study Materials"
-type: book-en-us
+title: "Phụ Lục 1: Tài Liệu Học Tập Thêm"
+type: book-vi-vn
 order: 11
 ---
 
-# Appendix 1: Further Study Materials
+# Phụ Lục 1: Tài Liệu Học Tập Thêm
 
-First of all, congratulations 🎉 on reading this book! I hope this book has raised your interest in modern C++.
+Trước hết, xin chúc mừng 🎉 bạn đã đọc xong cuốn sách này! Hy vọng cuốn sách này đã khơi dậy sự quan tâm của bạn đối với C++ hiện đại.
 
-As mentioned in the introduction to this book, this book is just a book that takes you quickly to the new features of modern C++ 11/14/17/20, rather than the advanced learning practice of C++ "Black Magic". The author of course also thinks about this demand, but the content is very difficult and there are few audiences. Here, the author lists some materials that can help you learn more about modern C++ based on this book. I hope I can help you:
+Như đã đề cập trong phần giới thiệu của cuốn sách, đây chỉ là một cuốn sách giúp bạn nhanh chóng tiếp cận các tính năng mới của C++ 11/14/17/20 hiện đại, chứ không phải là một tài liệu học tập nâng cao về "Phép Thuật Đen" của C++. Tác giả tất nhiên cũng nghĩ đến nhu cầu này, nhưng nội dung rất khó và ít người quan tâm. Dưới đây, tác giả liệt kê một số tài liệu có thể giúp bạn học thêm về C++ hiện đại dựa trên cuốn sách này. Hy vọng có thể giúp bạn:
 
 - [C++ Reference](https://en.cppreference.com/w)
-- [CppCon YouTube Channel](https://www.youtube.com/user/CppCon/videos)
-- [Ulrich Drepper. What Every Programmer Should Know About Memory. 2007](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
-- to be added
+- [Kênh YouTube CppCon](https://www.youtube.com/user/CppCon/videos)
+- [Ulrich Drepper. Những Điều Mọi Lập Trình Viên Cần Biết Về Bộ Nhớ. 2007](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
+- sẽ được bổ sung
 
 [Table of Content](./toc.md) | [Previous Chapter](./10-cpp20.md) | [Next Chapter](./appendix2.md)
 
-## Licenses
+## Giấy Phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Ghi Công-Phi Thương Mại-Không Phái Sinh 4.0 Quốc Tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).

@@ -1,19 +1,19 @@
 ---
-title: "Chapter 08 File System"
-type: book-en-us
+title: "Chương 08 Hệ Thống Tập Tin"
+type: book-vi-vn
 order: 8
 ---
 
-# Chapter 08 File System
+# Chương 08 Hệ Thống Tập Tin
 
 [TOC]
 
-The file system library provides functions related to 
-the operation of the file system, path, regular files, directories, and so on. 
-Similar to the regular expression library, it was one of the first libraries 
-to be launched by boost and eventually merged into the C++ standard.
+Thư viện hệ thống tập tin cung cấp các hàm liên quan đến 
+hoạt động của hệ thống tập tin, đường dẫn, tập tin thường, thư mục, v.v. 
+Tương tự như thư viện biểu thức chính quy, đây là một trong những thư viện đầu tiên 
+được ra mắt bởi boost và cuối cùng được tích hợp vào tiêu chuẩn C++.
 
-## 8.1 Document and Link
+## 8.1 Tài Liệu và Liên Kết
 
 TODO:
 
@@ -21,10 +21,10 @@ TODO:
 
 TODO:
 
-[Table of Content](./toc.md) | [Previous Chapter](./07-thread.md) | [Next Chapter: Minor Features](./09-others.md)
+[Table of Content](./toc.md) | [Chương Trước](./07-thread.md) | [Chương Tiếp Theo: Các Tính Năng Nhỏ](./09-others.md)
 
-## Further Readings
+## Đọc Thêm
 
-## Licenses
+## Giấy Phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work was written by [Ou Changkun](https://changkun.de) and licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>. The code of this repository is open sourced under the [MIT license](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
