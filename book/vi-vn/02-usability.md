@@ -4,24 +4,24 @@ type: book-vi-vn
 order: 2
 ---
 
-# Chương 02: Cải Tiến Khả Năng Sử Dụng Ngôn Ngữ
+# Chương 02: Cải tiến khả năng sử dụng ngôn ngữ
 
 [TOC]
 
 Khi chúng ta khai báo, định nghĩa một biến hoặc hằng số, và kiểm soát luồng mã,
-các hàm hướng đối tượng, lập trình mẫu, v.v., trước khi chương trình chạy,
+các hàm hướng đối tượng, lập trình template, v.v., trước thời gian chạy,
 nó có thể xảy ra khi viết mã hoặc khi trình biên dịch biên dịch mã.
 Để đạt được điều này, chúng ta thường nói về **khả năng sử dụng ngôn ngữ**,
-điều này đề cập đến hành vi ngôn ngữ xảy ra trước khi chương trình chạy.
+điều này đề cập đến hành vi ngôn ngữ xảy ra trước thời gian chạy.
 
 ## 2.1 Hằng số
 
 ### nullptr
 
-Mục đích của `nullptr` là để thay thế `NULL`. Trong ngôn ngữ C và C++ có các **hằng số con trỏ null**,
+Mục đích của `nullptr` là thay thế `NULL`. Trong ngôn ngữ C và C++ có **hằng số con trỏ null**,
 có thể được chuyển đổi ngầm định thành giá trị con trỏ null của bất kỳ kiểu con trỏ nào,
 hoặc giá trị con trỏ thành viên null của bất kỳ kiểu con trỏ thành viên nào trong C++.
-`NULL` được cung cấp bởi thư viện chuẩn và được định nghĩa là một hằng số con trỏ null do việc triển khai định nghĩa.
+`NULL` được cung cấp bởi thư viện chuẩn và được định nghĩa là một hằng số con trỏ null do triển khai định nghĩa.
 Trong C, một số thư viện chuẩn định nghĩa `NULL` là `((void*)0)` và một số định nghĩa nó là `0`.
 
 C++ **không cho phép** chuyển đổi ngầm định `void *` sang các kiểu khác, do đó `((void*)0)` không phải là một cách triển khai hợp lệ
@@ -42,7 +42,7 @@ void foo(int);
 
 Khi đó, câu lệnh `foo(NULL);` sẽ gọi hàm `foo(int)`, điều này sẽ khiến mã trở nên khó hiểu.
 
-Để giải quyết vấn đề này, C++11 đã giới thiệu từ khóa `nullptr`, được sử dụng để phân biệt rõ ràng con trỏ null và `0`. Kiểu của `nullptr` là `nullptr_t`, có thể được chuyển đổi ngầm định thành bất kỳ kiểu con trỏ hoặc con trỏ thành viên nào, và có thể so sánh bằng hoặc không bằng với chúng.
+Để giải quyết vấn đề này, C++11 đã giới thiệu từ khóa `nullptr`, được sử dụng để phân biệt rõ ràng con trỏ null, `0`. Kiểu của `nullptr` là `nullptr_t`, có thể được chuyển đổi ngầm định thành bất kỳ kiểu con trỏ hoặc con trỏ thành viên nào, và có thể so sánh bằng hoặc không bằng với chúng.
 
 Bạn có thể thử biên dịch đoạn mã sau bằng clang++:
 
@@ -61,25 +61,25 @@ int main() {
     if (std::is_same<decltype(NULL), std::nullptr_t>::value)
         std::cout << "NULL == nullptr" << std::endl;
 
-    foo(0);          // will call foo(int)
-    // foo(NULL);    // doesn't compile
-    foo(nullptr);    // will call foo(char*)
+    foo(0);          // sẽ gọi foo(int)
+    // foo(NULL);    // không biên dịch được
+    foo(nullptr);    // sẽ gọi foo(char*)
     return 0;
 }
 
 void foo(char *) {
-    std::cout << "foo(char*) is called" << std::endl;
+    std::cout << "foo(char*) được gọi" << std::endl;
 }
 void foo(int i) {
-    std::cout << "foo(int) is called" << std::endl;
+    std::cout << "foo(int) được gọi" << std::endl;
 }
 ```
 
 Kết quả đầu ra là:
 
 ```bash
-foo(int) is called
-foo(char*) is called
+foo(int) được gọi
+foo(char*) được gọi
 ```
 
 Từ kết quả đầu ra, chúng ta có thể thấy rằng `NULL` khác với `0` và `nullptr`.
@@ -117,19 +117,19 @@ constexpr int fibonacci(const int n) {
 
 
 int main() {
-    char arr_1[10];                      // legal
-    char arr_2[LEN];                     // legal
+    char arr_1[10];                      // hợp lệ
+    char arr_2[LEN];                     // hợp lệ
 
     int len = 10;
-    // char arr_3[len];                  // illegal
+    // char arr_3[len];                  // không hợp lệ
 
     const int len_2 = len + 1;
     constexpr int len_2_constexpr = 1 + 2 + 3;
-    // char arr_4[len_2];                // illegal, but ok for most of the compilers
-    char arr_4[len_2_constexpr];         // legal
+    // char arr_4[len_2];                // không hợp lệ, nhưng hợp lệ với hầu hết các trình biên dịch
+    char arr_4[len_2_constexpr];         // hợp lệ
 
-    // char arr_5[len_foo()+5];          // illegal
-    char arr_6[len_foo_constexpr() + 1]; // legal
+    // char arr_5[len_foo()+5];          // không hợp lệ
+    char arr_6[len_foo_constexpr() + 1]; // hợp lệ
 
     // 1, 1, 2, 3, 5, 8, 13, 21, 34, 55
     std::cout << fibonacci(10) << std::endl;
@@ -144,7 +144,7 @@ Tại sao `char arr_4[len_2]` vẫn không hợp lệ?
 và đối với `len_2`, đây là một hằng số `const`, không phải là một biểu thức hằng,
 vì vậy ngay cả khi hành vi này được hầu hết các trình biên dịch hỗ trợ, nhưng nó vẫn là một hành vi không hợp lệ.
 Chúng ta cần sử dụng tính năng `constexpr` được giới thiệu trong C++11, sẽ được giới thiệu tiếp theo,
-để giải quyết vấn đề này; đối với `arr_5`, trước C++98, trình biên dịch không thể biết rằng `len_foo()`
+để giải quyết vấn đề này; đối với `arr_5`, trước C++11, trình biên dịch không thể biết rằng `len_foo()`
 thực sự trả về một hằng số tại thời điểm chạy, điều này gây ra lỗi không hợp lệ.
 
 > Lưu ý rằng hầu hết các trình biên dịch hiện nay đều có các tối ưu hóa của riêng chúng.
@@ -192,8 +192,8 @@ constexpr int fibonacci(const int n) {
 
 Trong C++ truyền thống, việc khai báo một biến có thể khai báo một biến tạm thời `int`
 mặc dù nó có thể được đặt ở bất kỳ đâu, thậm chí trong một câu lệnh `for`,
-nhưng luôn không có cách nào để khai báo một biến tạm thời trong các câu lệnh `if` và `switch`.
-E.g:
+nhưng không có cách nào để khai báo một biến tạm thời trong các câu lệnh `if` và `switch`.
+Ví dụ:
 
 ```cpp
 #include <iostream>
@@ -203,7 +203,7 @@ E.g:
 int main() {
     std::vector<int> vec = {1, 2, 3, 4};
 
-    // since c++17, can be simplified by using `auto`
+    // kể từ C++17, có thể được đơn giản hóa bằng cách sử dụng `auto`
     const std::vector<int>::iterator itr = std::find(vec.begin(), vec.end(), 2);
     if (itr != vec.end()) {
         *itr = 3;
@@ -214,7 +214,7 @@ int main() {
         *itr = 4;
     }
 
-    // should output: 1, 4, 3, 4. can be simplified using `auto`
+    // kết quả đầu ra: 1, 4, 3, 4. có thể được đơn giản hóa bằng cách sử dụng `auto`
     for (std::vector<int>::iterator element = vec.begin(); element != vec.end(); 
         ++element)
         std::cout << *element << std::endl;
@@ -223,7 +223,7 @@ int main() {
 
 Trong đoạn mã trên, chúng ta có thể thấy rằng biến `itr` được định nghĩa trong phạm vi của toàn bộ hàm `main()`,
 điều này khiến chúng ta phải đổi tên biến khi cần duyệt lại toàn bộ `std::vector`.
-C++17 đã loại bỏ hạn chế này để chúng ta có thể làm điều này trong câu lệnh `if` (hoặc `switch`):
+C++17 đã loại bỏ hạn chế này, cho phép chúng ta khai báo biến trong câu lệnh `if` (hoặc `switch`):
 
 ```cpp
 if (const std::vector<int>::iterator itr = std::find(vec.begin(), vec.end(), 3);
@@ -260,7 +260,7 @@ public:
 };
 
 int main() {
-    // before C++11
+    // trước C++11
     int arr[3] = {1, 2, 3};
     Foo foo(1, 2);
     std::vector<int> vec = {1, 2, 3, 4, 5};
@@ -279,8 +279,9 @@ C++11 trước tiên liên kết khái niệm danh sách khởi tạo với ki�
 và gọi nó là `std::initializer_list`,
 cho phép hàm tạo hoặc các hàm khác sử dụng danh sách khởi tạo
 như một tham số, điều này cung cấp một cầu nối thống nhất
-giữa các phương pháp khởi tạo mảng thông thường và POD,
+giữa các phương pháp khởi tạo mảng thông thường và POD cho việc khởi tạo đối tượng lớp,
 chẳng hạn như:
+
 ```cpp
 #include <initializer_list>
 #include <vector>
@@ -306,9 +307,9 @@ int main() {
 }
 ```
 
-Hàm khởi tạo này được gọi là hàm khởi tạo danh sách, và kiểu với hàm khởi tạo này sẽ được xử lý đặc biệt trong quá trình khởi tạo.
+Hàm tạo này được gọi là hàm tạo danh sách khởi tạo, và kiểu với hàm tạo này sẽ được xử lý đặc biệt trong quá trình khởi tạo.
 
-Ngoài việc xây dựng đối tượng, danh sách khởi tạo cũng có thể được sử dụng như một tham số chính thức của một hàm thông thường, ví dụ:
+Ngoài việc xây dựng đối tượng, danh sách khởi tạo cũng có thể được sử dụng như một tham số hình thức của một hàm thông thường, ví dụ:
 
 ```cpp
 public:
@@ -328,9 +329,10 @@ Foo foo2 {3, 4};
 
 ### Ràng buộc có cấu trúc
 
-Ràng buộc có cấu trúc cung cấp chức năng tương tự như các giá trị trả về nhiều lần trong các ngôn ngữ khác. Trong chương về container, chúng ta sẽ học rằng C++11 đã thêm container std::tuple để xây dựng một tuple bao gồm nhiều giá trị trả về. Nhưng nhược điểm là C++11/14 không cung cấp cách đơn giản để lấy và định nghĩa các phần tử trong tuple từ tuple, mặc dù chúng ta có thể giải nén tuple bằng cách sử dụng std::tie. Nhưng chúng ta vẫn phải rất rõ ràng về số lượng đối tượng mà tuple này chứa, kiểu của từng đối tượng là gì, rất phiền phức.
+Ràng buộc có cấu trúc cung cấp chức năng tương tự như việc trả về nhiều giá trị được cung cấp trong các ngôn ngữ khác. Trong chương về container, chúng ta sẽ tìm hiểu rằng C++11 đã thêm một container `std::tuple` để xây dựng một tuple bao gồm nhiều giá trị trả về. Tuy nhiên, điểm hạn chế là C++11/14 không cung cấp một cách đơn giản để lấy và định nghĩa các phần tử trong tuple từ tuple, mặc dù chúng ta có thể giải nén tuple bằng `std::tie`, nhưng chúng ta vẫn phải biết rõ tuple này chứa bao nhiêu đối tượng, kiểu của từng đối tượng là gì, điều này rất rườm rà.
 
-C++17 hoàn thiện điều này, và ràng buộc có cấu trúc cho phép chúng ta viết mã như sau:
+C++17 đã hoàn thiện tính năng này, và ràng buộc có cấu trúc cho phép chúng ta viết mã như sau:
+
 ```cpp
 #include <iostream>
 #include <tuple>
@@ -346,27 +348,28 @@ int main() {
 }
 ```
 
-Kiểu suy luận `auto` được mô tả trong phần
+Việc suy luận kiểu `auto` được mô tả trong phần
 [suy luận kiểu auto](#auto).
 
-## 2.3 Suy diễn kiểu
+## 2.3 Suy luận kiểu
 
-Trong C và C++ truyền thống, các kiểu của tham số phải được định nghĩa rõ ràng, điều này không giúp chúng ta viết chương trình nhanh chóng, đặc biệt khi chúng ta phải đối mặt với một số lượng lớn các kiểu mẫu phức tạp, chúng ta phải chỉ định kiểu của các biến để tiếp tục viết chương trình. Điều này không chỉ làm chậm hiệu quả phát triển của chúng ta mà còn làm cho mã trở nên dài dòng và khó đọc.
+Trong C và C++ truyền thống, kiểu của các tham số phải được định nghĩa rõ ràng, điều này không giúp chúng ta viết mã nhanh chóng, đặc biệt là khi chúng ta phải đối mặt với một số lượng lớn các kiểu template phức tạp, chúng ta phải chỉ ra kiểu của các biến để tiếp tục viết mã. Điều này không chỉ làm giảm hiệu quả phát triển mà còn khiến mã trở nên dài dòng và khó đọc.
 
-C++11 giới thiệu hai từ khóa `auto` và `decltype` để thực hiện suy diễn kiểu, cho phép trình biên dịch lo lắng về kiểu của biến. Điều này làm cho C++ trở nên giống như các ngôn ngữ lập trình hiện đại khác, theo cách mà chúng ta không cần phải lo lắng về kiểu của biến.
+C++11 giới thiệu hai từ khóa `auto` và `decltype` để thực hiện suy luận kiểu, cho phép trình biên dịch lo lắng về kiểu của biến. Điều này làm cho C++ trở nên giống như các ngôn ngữ lập trình hiện đại khác, theo cách mà chúng ta không cần phải lo lắng về kiểu của biến.
 
 ### auto
 
-`auto` đã tồn tại trong C++ từ lâu, nhưng nó luôn tồn tại như một chỉ báo của kiểu lưu trữ, cùng tồn tại với `register`. Trong C++ truyền thống, nếu một biến không được khai báo là biến `register`, nó sẽ tự động được coi là biến `auto`. Và với việc `register` bị loại bỏ (được sử dụng như một từ khóa dự trữ trong C++17 và sau này, hiện tại nó không còn ý nghĩa), sự thay đổi ngữ nghĩa của `auto` là rất tự nhiên.
+`auto` đã tồn tại trong C++ từ lâu, nhưng nó luôn tồn tại như một chỉ báo của kiểu lưu trữ, cùng tồn tại với `register`. Trong C++ truyền thống, nếu một biến không được khai báo là biến `register`, nó sẽ tự động được coi là biến `auto`. Và với việc `register` không còn được sử dụng (được sử dụng như một từ khóa dự trữ trong C++17 và sau này, hiện tại nó không còn ý nghĩa), việc thay đổi ngữ nghĩa thành `auto` là rất tự nhiên.
 
-Một trong những ví dụ phổ biến và đáng chú ý nhất về suy diễn kiểu sử dụng `auto` là iterator. Bạn có thể thấy cách viết lặp dài dòng trong C++ truyền thống ở phần trước:
+Một trong những ví dụ phổ biến và đáng chú ý nhất về suy luận kiểu sử dụng `auto` là iterator. Bạn có thể thấy cách viết lặp dài dòng trong C++ truyền thống ở phần trước:
 
 ```cpp
-// before C++11
-// cbegin() returns vector<int>::const_iterator
-// and therefore it is type vector<int>::const_iterator
-for(vector<int>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it)
+// trước C++11
+// cbegin() trả về vector<int>::const_iterator
+// và do đó kiểu của nó là vector<int>::const_iterator
+for (vector<int>::const_iterator it = vec.cbegin(); it != vec.cend(); ++it)
 ```
+
 Khi chúng ta có `auto`:
 
 ```cpp
@@ -398,16 +401,16 @@ int main() {
 Một số cách sử dụng phổ biến khác:
 
 ```cpp
-auto i = 5;              // i là int
-auto arr = new auto(10); // arr là int *
+auto i = 5;              // i là kiểu int
+auto arr = new auto(10); // arr là kiểu int *
 ```
 
-Từ C++ 14, `auto` thậm chí có thể được sử dụng như các tham số hàm trong các biểu thức lambda tổng quát, và chức năng này được mở rộng cho các hàm thông thường trong C++ 20. Hãy xem xét ví dụ sau:
+Kể từ C++14, `auto` thậm chí có thể được sử dụng làm tham số hàm trong các biểu thức lambda tổng quát, và tính năng này được mở rộng cho các hàm thông thường trong C++20. Hãy xem xét ví dụ sau:
 
 ```cpp
 auto add14 = [](auto x, auto y) -> int {
     return x + y;
-}
+};
 
 int add20(auto x, auto y) {
     return x + y;
@@ -419,25 +422,34 @@ std::cout << add14(i, j) << std::endl;
 std::cout << add20(i, j) << std::endl;
 ```
 
-> **Lưu ý**: `auto` chưa thể được sử dụng để suy luận kiểu mảng:
+> **Lưu ý**: `auto` hiện tại không thể được sử dụng để suy luận kiểu mảng:
 >
 > ```cpp
 > auto auto_arr2[10] = {arr};   // không hợp lệ, không thể suy luận kiểu mảng
 >
-> 2.6.auto.cpp:30:19: error: 'auto_arr2' được khai báo như mảng của 'auto'
+> 2.6.auto.cpp:30:19: error: 'auto_arr2' được khai báo là mảng của 'auto'
 >     auto auto_arr2[10] = {arr};
 > ```
 
 ### decltype
 
-Từ khóa `decltype` được sử dụng để giải quyết nhược điểm của từ khóa `auto`
-chỉ có thể suy diễn kiểu của biến. Cách sử dụng của nó rất giống với `typeof`:
+Từ khóa `decltype` được sử dụng để giải quyết nhược điểm là từ khóa `auto` chỉ có thể suy luận kiểu của biến. Cách sử dụng của nó rất giống với `typeof`:
 
 ```cpp
-decltype(exTrong đó, `std::is_same<T, U>` được sử dụng để xác định
-hai kiểu `T` và `U` có bằng nhau hay không. Kết quả đầu ra là:type(x+y) z;
+decltype(biểu_thức)
 ```
-Bạn đã thấy trong ví dụ trước rằng `decltype` được sử dụng để suy luận kiểu dữ liệu. Ví dụ sau đây sẽ xác định xem các biến `x, y, z` ở trên có cùng kiểu hay không:
+
+Đôi khi chúng ta có thể cần tính toán kiểu của một biểu thức, ví dụ:
+
+```cpp
+auto x = 1;
+auto y = 2;
+decltype(x+y) z;
+```
+
+Bạn đã thấy trong ví dụ trước rằng
+`decltype` được sử dụng để suy luận kiểu.
+Ví dụ sau đây sẽ xác định xem các biến `x, y, z` ở trên có cùng kiểu hay không:
 
 ```cpp
 if (std::is_same<decltype(x), int>::value)
@@ -452,11 +464,11 @@ Trong đó, `std::is_same<T, U>` được sử dụng để xác định
 hai kiểu `T` và `U` có bằng nhau hay không. Kết quả đầu ra là:
 
 ```
-type x == int
-type z == type x
+kiểu x == int
+kiểu z == kiểu x
 ```
 
-### Suy diễn kiểu trả về
+### Suy luận kiểu trả về
 
 Bạn có thể nghĩ rằng liệu `auto` có thể được sử dụng để suy diễn kiểu trả về của một hàm hay không. Hãy xem xét một ví dụ về hàm cộng, mà chúng ta phải viết trong C++ truyền thống:
 
@@ -467,9 +479,9 @@ R add(T x, U y) {
 }
 ```
 
-> Lưu ý: Không có sự khác biệt giữa typename và class trong danh sách tham số của template. Trước khi từ khóa typename xuất hiện, class được sử dụng để định nghĩa các tham số của template. Tuy nhiên, khi định nghĩa một biến với [kiểu phụ thuộc lồng nhau](https://en.cppreference.com/w/cpp/language/dependent_name#The_typename_disambiguator_for_dependent_names) trong template, bạn cần sử dụng typename để loại bỏ sự mơ hồ.
+> Lưu ý: Không có sự khác biệt giữa `typename` và `class` trong danh sách tham số template. Trước khi từ khóa `typename` xuất hiện, `class` được sử dụng để định nghĩa các tham số template. Tuy nhiên, khi định nghĩa một biến với [kiểu phụ thuộc lồng nhau](https://en.cppreference.com/w/cpp/language/dependent_name#The_typename_disambiguator_for_dependent_names) trong template, bạn cần sử dụng `typename` để loại bỏ sự mơ hồ.
 
-Mã này rất xấu vì lập trình viên phải chỉ rõ kiểu trả về khi sử dụng hàm template này. Nhưng thực tế, chúng ta không biết hàm `add()` sẽ thực hiện loại phép toán nào và sẽ có kiểu trả về gì.
+Mã này rất xấu xí vì lập trình viên phải chỉ định rõ ràng kiểu trả về khi sử dụng hàm template này. Nhưng trên thực tế, chúng ta không biết hàm `add()` sẽ thực hiện loại phép toán nào và sẽ có kiểu trả về gì.
 
 Vấn đề này đã được giải quyết trong C++11. Mặc dù bạn có thể ngay lập tức nghĩ đến việc sử dụng `decltype` để suy diễn kiểu của `x+y`, viết như sau:
 
@@ -477,19 +489,20 @@ Vấn đề này đã được giải quyết trong C++11. Mặc dù bạn có t
 decltype(x+y) add(T x, U y)
 ```
 
-Nhưng thực tế, cách viết này không thể biên dịch được. Điều này là do `x` và `y` chưa được định nghĩa khi trình biên dịch đọc decltype(x+y). Để giải quyết vấn đề này, C++11 cũng giới thiệu một kiểu trả về theo sau, sử dụng từ khóa auto để chỉ định kiểu trả về:
+Nhưng thực tế, cách viết này không thể biên dịch được. Điều này là do `x` và `y` chưa được định nghĩa khi trình biên dịch đọc `decltype(x+y)`. Để giải quyết vấn đề này, C++11 cũng giới thiệu kiểu trả về theo sau, sử dụng từ khóa `auto` để chỉ định kiểu trả về:
 
 ```cpp
 template<typename T, typename U>
-auto add2(T x, U y) -> decltype(x+y){
+auto add2(T x, U y) -> decltype(x+y) {
     return x + y;
 }
 ```
-Tin tốt là từ C++14, chúng ta có thể trực tiếp suy diễn giá trị trả về của một hàm thông thường, vì vậy cách viết sau đây trở nên hợp lệ:
+
+Tin tốt là từ C++14, chúng ta có thể trực tiếp suy diễn kiểu trả về của một hàm thông thường, vì vậy cách viết sau trở nên hợp lệ:
 
 ```cpp
 template<typename T, typename U>
-auto add3(T x, U y){
+auto add3(T x, U y) {
     return x + y;
 }
 ```
@@ -497,31 +510,27 @@ auto add3(T x, U y){
 Bạn có thể kiểm tra xem việc suy diễn kiểu có chính xác hay không:
 
 ```cpp
-// sau c++11
+// sau C++11
 auto w = add2<int, double>(1, 2.0);
 if (std::is_same<decltype(w), double>::value) {
     std::cout << "w là double: ";
 }
 std::cout << w << std::endl;
 
-// sau c++14
+// sau C++14
 auto q = add3<double, int>(1.0, 2);
 std::cout << "q: " << q << std::endl;
 ```
+
 ### decltype(auto)
 
-[`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md") là một cách sử dụng phức tạp hơn một chút của C++14.
+`decltype(auto)` là một cách sử dụng phức tạp hơn một chút, xuất hiện từ C++14.
 
-> Để hiểu được nó, bạn cần biết khái niệm chuyển tiếp tham số
-> trong C++, mà chúng ta sẽ đề cập chi tiết trong chương
-> [Cải tiến Runtime Ngôn ngữ](./03-runtime.md),
+> Để hiểu rõ về nó, bạn cần biết khái niệm chuyển tiếp tham số trong C++, mà chúng ta sẽ đề cập chi tiết trong chương
+> [Cải tiến thời gian chạy của ngôn ngữ](./03-runtime.md),
 > và bạn có thể quay lại nội dung của phần này sau.
 
-Nói một cách đơn giản, [`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md") chủ yếu được sử dụng để suy diễn
-kiểu trả về của một hàm chuyển tiếp hoặc gói,
-mà không yêu cầu chúng ta phải chỉ rõ
-biểu thức tham số của [`decltype`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md").
-Xem xét ví dụ sau, khi chúng ta cần bao bọc hai hàm sau:
+Nói một cách đơn giản, `decltype(auto)` chủ yếu được sử dụng để suy diễn kiểu trả về của một hàm hoặc trình bao bọc chuyển tiếp, mà không yêu cầu chúng ta phải chỉ định rõ ràng biểu thức tham số của `decltype`. Hãy xem xét ví dụ sau, khi chúng ta cần bao bọc hai hàm sau:
 
 ```cpp
 std::string  lookup1();
@@ -539,7 +548,7 @@ std::string& look_up_a_string_2() {
 }
 ```
 
-Với [`decltype(auto)`](command:_github.copilot.openSymbolFromReferences?%5B%7B%22%24mid%22%3A1%2C%22path%22%3A%22%2FUsers%2Fphungvuong%2FDocuments%2Fcoding%2Fmodern-cpp-tutorial%2Fbook%2Fvi-vn%2F02-usability.md%22%2C%22scheme%22%3A%22file%22%7D%2C%7B%22line%22%3A492%2C%22character%22%3A0%7D%5D "book/vi-vn/02-usability.md"), chúng ta có thể để trình biên dịch thực hiện việc chuyển tiếp tham số phiền phức này:
+Với `decltype(auto)`, chúng ta có thể để trình biên dịch thực hiện việc chuyển tiếp tham số phiền phức này:
 
 ```cpp
 decltype(auto) look_up_a_string_1() {
@@ -554,7 +563,7 @@ decltype(auto) look_up_a_string_2() {
 
 ### if constexpr
 
-Như chúng ta đã thấy ở đầu chương này, chúng ta biết rằng C++11 giới thiệu từ khóa `constexpr`, từ khóa này biên dịch các biểu thức hoặc hàm thành kết quả hằng. Một ý tưởng tự nhiên là nếu chúng ta giới thiệu tính năng này vào phán đoán điều kiện, để mã hoàn thành phán đoán nhánh tại thời gian biên dịch, liệu nó có thể làm cho chương trình hiệu quả hơn không? C++17 giới thiệu từ khóa `constexpr` vào câu lệnh `if`, cho phép bạn khai báo điều kiện của một biểu thức hằng trong mã của mình. Xem xét đoạn mã sau:
+Như chúng ta đã thấy ở đầu chương này, chúng ta biết rằng C++11 giới thiệu từ khóa `constexpr`, từ khóa này biên dịch các biểu thức hoặc hàm thành các giá trị hằng số. Một ý tưởng tự nhiên là nếu chúng ta áp dụng tính năng này vào câu lệnh điều kiện, cho phép mã hoàn thành việc đánh giá nhánh tại thời điểm biên dịch, liệu nó có thể làm cho chương trình hiệu quả hơn không? C++17 giới thiệu từ khóa `constexpr` vào câu lệnh `if`, cho phép bạn khai báo điều kiện của một biểu thức hằng trong mã của mình. Hãy xem xét đoạn mã sau:
 
 ```cpp
 #include <iostream>
@@ -572,7 +581,8 @@ int main() {
     std::cout << print_type_info(3.14) << std::endl;
 }
 ```
-Tại thời gian biên dịch, mã thực tế sẽ hoạt động như sau:
+
+Tại thời điểm biên dịch, mã thực tế sẽ hoạt động như sau:
 
 ```cpp
 int print_type_info(const int& t) {
@@ -589,7 +599,8 @@ int main() {
 
 ### Vòng lặp dựa trên phạm vi
 
-Cuối cùng, C++11 giới thiệu một phương pháp lặp dựa trên phạm vi, và chúng ta có thể viết các vòng lặp ngắn gọn như trong Python, và chúng ta có thể đơn giản hóa ví dụ trước:
+Cuối cùng, C++11 giới thiệu một phương thức lặp dựa trên phạm vi, và chúng ta có thể viết các vòng lặp ngắn gọn như trong Python, và chúng ta có thể đơn giản hóa ví dụ trước:
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -608,31 +619,31 @@ int main() {
 }
 ```
 
-## 2.5 Templates
+## 2.5 Template
 
-Templates trong C++ luôn là một nghệ thuật đặc biệt của ngôn ngữ này, và templates thậm chí có thể được sử dụng độc lập như một ngôn ngữ mới. Triết lý của template là đưa tất cả các vấn đề có thể xử lý tại thời gian biên dịch vào thời gian biên dịch, và chỉ xử lý những dịch vụ động cốt lõi tại thời gian chạy, để tối ưu hóa hiệu suất của thời gian chạy. Do đó, templates cũng được nhiều người coi là một trong những phép thuật đen của C++.
+Template trong C++ luôn là một nghệ thuật đặc biệt của ngôn ngữ, và template thậm chí có thể được sử dụng độc lập như một ngôn ngữ mới. Triết lý của template là chuyển tất cả các vấn đề có thể xử lý tại thời điểm biên dịch vào thời điểm biên dịch, và chỉ xử lý những dịch vụ động cốt lõi tại thời điểm chạy, để tối ưu hóa hiệu suất thời gian chạy. Do đó, template cũng được nhiều người coi là một trong những "ma thuật đen" của C++.
 
-### Extern templates
+### Template ngoài
 
-Trong C++ truyền thống, templates chỉ được khởi tạo bởi trình biên dịch khi chúng được sử dụng. Nói cách khác, miễn là một template được định nghĩa đầy đủ xuất hiện trong mã được biên dịch trong mỗi đơn vị biên dịch (file), nó sẽ được khởi tạo. Điều này dẫn đến việc tăng thời gian biên dịch do khởi tạo lặp lại. Ngoài ra, chúng ta không có cách nào để yêu cầu trình biên dịch không kích hoạt việc khởi tạo template.
+Trong C++ truyền thống, template chỉ được khởi tạo bởi trình biên dịch khi chúng được sử dụng. Nói cách khác, miễn là một template được định nghĩa đầy đủ xuất hiện trong mã được biên dịch trong mỗi đơn vị biên dịch (tệp), nó sẽ được khởi tạo. Điều này dẫn đến việc tăng thời gian biên dịch do khởi tạo lặp lại. Ngoài ra, chúng ta không có cách nào để yêu cầu trình biên dịch không kích hoạt việc khởi tạo template.
 
-Để giải quyết vấn đề này, C++11 giới thiệu một template bên ngoài mở rộng cú pháp của trình biên dịch bắt buộc để khởi tạo một template tại một vị trí cụ thể, cho phép chúng ta rõ ràng yêu cầu trình biên dịch khi nào nên khởi tạo template:
+Để giải quyết vấn đề này, C++11 giới thiệu một template ngoài, mở rộng cú pháp của trình biên dịch bắt buộc để khởi tạo một template tại một vị trí cụ thể, cho phép chúng ta rõ ràng yêu cầu trình biên dịch khi nào nên khởi tạo template:
 
 ```cpp
 template class std::vector<bool>;          // bắt buộc khởi tạo
-extern template class std::vector<double>; // không nên khởi tạo trong file hiện tại
+extern template class std::vector<double>; // không nên khởi tạo trong tệp hiện tại
 ```
 
 ### Dấu ">"
 
-Trong trình biên dịch C++ truyền thống, `>>` luôn được coi là toán tử dịch phải. Nhưng thực tế chúng ta có thể dễ dàng viết mã cho template lồng nhau:
+Trong trình biên dịch C++ truyền thống, `>>` luôn được coi là toán tử dịch phải. Nhưng thực tế, chúng ta có thể dễ dàng viết mã cho template lồng nhau:
 
 ```cpp
 std::vector<std::vector<int>> matrix;
 ```
 
 Điều này không được biên dịch dưới trình biên dịch C++ truyền thống,
-và từ C++11 trở đi, các dấu ngoặc nhọn liên tiếp trở nên hợp pháp
+và từ C++11 trở đi, các dấu ngoặc nhọn đóng (">") liên tiếp trở nên hợp lệ
 và có thể được biên dịch thành công.
 Thậm chí cách viết sau đây cũng có thể được biên dịch:
 
@@ -643,12 +654,12 @@ class MagicType {
 };
 
 // trong hàm main:
-std::vector<MagicType<(1>2)>> magic; // hợp pháp, nhưng không khuyến khích
+std::vector<MagicType<(1>2)>> magic; // hợp lệ, nhưng không khuyến khích
 ```
 
-### Template alias kiểu
+### Template bí danh kiểu
 
-Trước khi bạn hiểu template alias kiểu, bạn cần hiểu sự khác biệt giữa "template" và "kiểu". Hãy hiểu kỹ câu này: **Templates được sử dụng để tạo ra các kiểu.** Trong C++ truyền thống, `typedef` có thể định nghĩa một tên mới cho kiểu, nhưng không có cách nào để định nghĩa một tên mới cho template. Bởi vì template không phải là một kiểu. Ví dụ:
+Trước khi hiểu template bí danh kiểu, bạn cần hiểu sự khác biệt giữa "template" và "kiểu". Hãy hiểu kỹ câu này: **Template được sử dụng để tạo ra các kiểu**. Trong C++ truyền thống, `typedef` có thể định nghĩa một tên mới cho một kiểu, nhưng không có cách nào để định nghĩa một tên mới cho template. Bởi vì template không phải là kiểu. Ví dụ:
 
 ```cpp
 template<typename T, typename U>
@@ -658,15 +669,14 @@ public:
     U magic;
 };
 
-```cpp
 // không được phép
 template<typename T>
 typedef MagicType<std::vector<T>, std::string> FakeDarkMagic;
 ```
 
-C++11 sử dụng `using` để giới thiệu cách viết sau, và đồng thời hỗ trợ hiệu quả tương tự như `typedef` truyền thống:
+C++11 sử dụng `using` để giới thiệu cách viết sau, đồng thời hỗ trợ hiệu ứng tương tự như `typedef` truyền thống:
 
-> Thông thường, chúng ta sử dụng `typedef` để định nghĩa cú pháp bí danh: `typedef tên gốc tên mới;`, nhưng cú pháp định nghĩa cho các bí danh như con trỏ hàm lại khác, điều này thường gây ra một mức độ khó khăn nhất định cho việc đọc trực tiếp.
+> Thông thường, chúng ta sử dụng `typedef` để định nghĩa cú pháp bí danh: `typedef tên_gốc tên_mới;`, nhưng cú pháp định nghĩa cho các bí danh như con trỏ hàm lại khác, điều này thường gây khó khăn cho việc đọc trực tiếp.
 
 ```cpp
 typedef int (*process)(void *);
@@ -678,22 +688,23 @@ int main() {
     TrueDarkMagic<bool> you;
 }
 ```
-### Variadic templates
 
-Template luôn là một trong những **Phép Thuật Đen** độc đáo của C++.
+### Template tham số biến đổi
+
+Template luôn là một trong những **Phép thuật đen** độc đáo của C++.
 Trong C++ truyền thống,
 cả template lớp và template hàm chỉ có thể chấp nhận
 một tập hợp cố định các tham số template như đã chỉ định;
 C++11 đã thêm một biểu diễn mới, cho phép bất kỳ số lượng,
-tham số template của bất kỳ loại nào,
+loại tham số template nào,
 và không cần phải cố định số lượng tham số khi định nghĩa.
 
 ```cpp
 template<typename... Ts> class Magic;
 ```
 
-Lớp template Magic có thể chấp nhận một số lượng không giới hạn các typename
-như một tham số chính thức của template, ví dụ như định nghĩa sau:
+Lớp template `Magic` có thể chấp nhận một số lượng không giới hạn các `typename`
+như một tham số hình thức của template, ví dụ như định nghĩa sau:
 
 ```cpp
 class Magic<int,
@@ -710,17 +721,18 @@ Nếu bạn không muốn tạo ra 0 tham số template, bạn có thể tự đ
 template<typename Require, typename... Args> class Magic;
 ```
 
-Tham số template có độ dài biến cũng có thể được điều chỉnh trực tiếp thành hàm template.
-Hàm `printf` trong C truyền thống, mặc dù cũng có thể gọi với số lượng tham số không xác định, nhưng không an toàn với lớp. Ngoài các hàm tham số có độ dài biến định nghĩa an toàn với lớp, C++11 cũng có thể làm cho các hàm giống như printf xử lý tự nhiên các đối tượng không tự chứa. Ngoài việc sử dụng `...` trong các tham số template để chỉ ra độ dài không xác định của các tham số template, các tham số hàm cũng sử dụng cùng một biểu diễn để đại diện cho các tham số có độ dài không xác định, điều này cung cấp một phương tiện thuận tiện để chúng ta đơn giản viết các hàm tham số có độ dài biến, chẳng hạn như:
+Template tham số biến đổi cũng có thể được sử dụng trực tiếp cho hàm template.
+Hàm `printf` trong C truyền thống, mặc dù có thể nhận số lượng tham số không xác định, nhưng không an toàn về kiểu. Ngoài các hàm tham số biến đổi định nghĩa an toàn về kiểu, C++11 cũng có thể làm cho các hàm giống như `printf` xử lý tự nhiên các đối tượng không tự chứa. Ngoài việc sử dụng `...` trong các tham số template để biểu thị số lượng tham số template không xác định, các tham số hàm cũng sử dụng biểu diễn tương tự để biểu thị các tham số có độ dài không xác định, điều này cung cấp một phương tiện thuận tiện để chúng ta có thể dễ dàng viết các hàm tham số biến đổi, chẳng hạn như:
 
 ```cpp
 template<typename... Args> void printf(const std::string &str, Args... args);
 ```
 
-Sau khi chúng ta định nghĩa các tham số template có độ dài biến,
+Vậy sau khi chúng ta đã định nghĩa các tham số template biến đổi,
 làm thế nào để giải nén các tham số?
 
-Trước tiên, chúng ta có thể sử dụng `sizeof...` để tính toán số lượng tham số:
+Trước tiên, chúng ta có thể sử dụng `sizeof...` để tính số lượng tham số:
+
 ```cpp
 #include <iostream>
 template<typename... Ts>
@@ -737,7 +749,7 @@ magic(1);     // 1
 magic(1, ""); // 2
 ```
 
-Thứ hai, các tham số được giải nén. Cho đến nay, không có cách đơn giản nào để xử lý
+Tiếp theo, các tham số được giải nén. Cho đến nay, không có cách đơn giản nào để xử lý
 gói tham số, nhưng có hai phương pháp xử lý kinh điển:
 
 **1. Hàm template đệ quy**

@@ -1,51 +1,52 @@
 ---
-title: Chương 09 Các Tính Năng Nhỏ
+title: "Chương 09: Các tính năng nhỏ"
 type: book-vi-vn
 order: 9
 ---
 
-# Chương 09 Các Tính Năng Nhỏ
+# Chương 09: Các tính năng nhỏ
 
 [TOC]
 
-## 9.1 Kiểu Dữ Liệu Mới
+## 9.1 Kiểu dữ liệu mới
 
 ### `long long int`
 
-`long long int` không phải lần đầu tiên được giới thiệu trong C++11.
-Ngay từ C99, `long long int` đã được bao gồm trong tiêu chuẩn C,
-vì vậy hầu hết các trình biên dịch đã hỗ trợ nó.
-C++11 hiện nay chính thức tích hợp nó vào thư viện chuẩn,
-quy định một kiểu `long long int` với ít nhất 64 bit.
+`long long int` không phải là một kiểu dữ liệu mới được giới thiệu trong C++11.
+Kiểu dữ liệu này đã được đưa vào tiêu chuẩn C99,
+và được hỗ trợ bởi hầu hết các trình biên dịch.
+C++11 chính thức đưa `long long int` vào thư viện chuẩn,
+quy định rằng kiểu dữ liệu này phải có ít nhất 64 bit.
 
-## 9.2 `noexcept` và Các Hoạt Động Của Nó
+## 9.2 `noexcept` và các toán tử liên quan
 
-Một trong những lợi thế lớn của C++ so với C là
-C++ tự định nghĩa một bộ cơ chế xử lý ngoại lệ hoàn chỉnh.
-Tuy nhiên, trước C++11, hầu như không ai sử dụng biểu thức khai báo ngoại lệ sau tên hàm.
-Bắt đầu từ C++11, cơ chế này đã bị loại bỏ,
-vì vậy chúng ta sẽ không thảo luận hoặc giới thiệu cơ chế trước đó.
-Cách hoạt động và cách sử dụng nó, bạn không nên chủ động tìm hiểu.
+Một trong những ưu điểm lớn của C++ so với C là C++ cung cấp
+một cơ chế xử lý ngoại lệ hoàn chỉnh.
+Tuy nhiên, trước C++11, hiếm khi lập trình viên sử dụng
+câu lệnh khai báo ngoại lệ sau tên hàm.
+Kể từ C++11, cơ chế khai báo ngoại lệ cũ đã bị thay thế,
+vì vậy chúng ta sẽ không thảo luận về nó trong chương này.
 
-C++11 đơn giản hóa các khai báo ngoại lệ thành hai trường hợp:
+C++11 đơn giản hóa việc khai báo ngoại lệ thành hai trường hợp:
 
-1. Hàm có thể ném bất kỳ ngoại lệ nào
-2. Hàm không thể ném bất kỳ ngoại lệ nào
+1. Hàm có thể ném ra bất kỳ ngoại lệ nào.
+2. Hàm không thể ném ra bất kỳ ngoại lệ nào.
 
-Và sử dụng `noexcept` để giới hạn hai hành vi này, ví dụ:
+Từ khóa `noexcept` được sử dụng để chỉ định rằng một hàm không thể ném
+ra ngoại lệ. Ví dụ:
 
 ```cpp
-void may_throw();           // Có thể ném bất kỳ ngoại lệ nào
-void no_throw() noexcept;   // Không thể ném bất kỳ ngoại lệ nào
+void may_throw();           // Hàm có thể ném ra ngoại lệ
+void no_throw() noexcept;   // Hàm không thể ném ra ngoại lệ
 ```
 
-Nếu một hàm được sửa đổi với `noexcept` mà ném ngoại lệ,
-trình biên dịch sẽ sử dụng `std::terminate()`
-để ngay lập tức kết thúc chương trình.
+Nếu một hàm được khai báo với `noexcept` mà lại ném ra ngoại lệ,
+chương trình sẽ bị kết thúc bởi hàm `std::terminate()`.
 
-`noexcept` cũng có thể được sử dụng như một toán tử để thao tác một biểu thức.
-Khi biểu thức không có ngoại lệ, nó trả về `true`,
-ngược lại, nó trả về `false`.
+`noexcept` cũng có thể được sử dụng như một toán tử để kiểm tra xem
+một biểu thức có thể ném ra ngoại lệ hay không.
+Nếu biểu thức không thể ném ra ngoại lệ, toán tử này trả về `true`,
+ngược lại trả về `false`.
 
 ```cpp
 #include <iostream>
@@ -67,140 +68,165 @@ int main()
     std::cout << std::boolalpha
         << "may_throw() noexcept? " << noexcept(may_throw()) << std::endl
         << "no_throw() noexcept? " << noexcept(no_throw()) << std::endl
-        << "lmay_throw() noexcept? " << noexcept(non_block_throw()) << std::endl
-        << "lno_throw() noexcept? " << noexcept(block_throw()) << std::endl;
+        << "non_block_throw() noexcept? " << noexcept(non_block_throw()) << std::endl
+        << "block_throw() noexcept? " << noexcept(block_throw()) << std::endl;
     return 0;
 }
 ```
 
-`noexcept` có thể thay đổi chức năng của việc chặn ngoại lệ
-sau khi sửa đổi một hàm. Nếu một ngoại lệ được tạo ra bên trong,
-bên ngoài sẽ không kích hoạt. Ví dụ:
+Khi được sử dụng để khai báo hàm, `noexcept` sẽ chặn mọi ngoại lệ
+bị ném ra từ bên trong hàm.
+Ví dụ:
 
 ```cpp
 try {
     may_throw();
 } catch (...) {
-    std::cout << "bắt được ngoại lệ từ may_throw()" << std::endl;
+    std::cout << "Bắt được ngoại lệ từ may_throw()" << std::endl;
 }
 try {
     non_block_throw();
 } catch (...) {
-    std::cout << "bắt được ngoại lệ từ non_block_throw()" << std::endl;
+    std::cout << "Bắt được ngoại lệ từ non_block_throw()" << std::endl;
 }
 try {
     block_throw();
 } catch (...) {
-    std::cout << "bắt được ngoại lệ từ block_throw()" << std::endl;
+    std::cout << "Bắt được ngoại lệ từ block_throw()" << std::endl;
 }
 ```
 
-Kết quả đầu ra cuối cùng là:
+Kết quả đầu ra:
 
 ```
-bắt được ngoại lệ từ may_throw()
-bắt được ngoại lệ từ non_block_throw()
+Bắt được ngoại lệ từ may_throw()
+Bắt được ngoại lệ từ non_block_throw()
 ```
 
 ## 9.3 Literal
 
-### Raw String Literal
+### Raw string literal
 
-Trong C++ truyền thống, việc viết một chuỗi đầy đủ các ký tự đặc biệt
-rất khó khăn. Ví dụ, một chuỗi chứa HTML ontology
-cần phải thêm một số lượng lớn các ký tự thoát.
-Ví dụ, một đường dẫn tệp trên Windows thường như sau: `C:\\Path\\To\\File`.
+Trong C++ truyền thống, việc viết các chuỗi chứa nhiều ký tự đặc biệt
+rất bất tiện.
+Ví dụ, để viết một chuỗi chứa mã HTML, bạn cần phải sử dụng
+rất nhiều ký tự escape.
+Tương tự, để biểu diễn đường dẫn tệp tin trong Windows,
+bạn cần phải viết `C:\\Path\\To\\File`.
 
-C++11 cung cấp các literal chuỗi gốc,
-có thể được trang trí với `R` ở phía trước một chuỗi,
-và chuỗi gốc được bao bọc trong dấu ngoặc đơn, ví dụ:
+C++11 giới thiệu raw string literal, cho phép bạn viết các chuỗi
+chứa ký tự đặc biệt mà không cần phải escape.
+Để khai báo raw string literal, bạn sử dụng tiền tố `R`
+và đặt chuỗi trong cặp dấu ngoặc đơn `()`.
+Ví dụ:
 
 ```cpp
 #include <iostream>
 #include <string>
 
 int main() {
-    std::string str = R"(C:\Path\To\File)";
-    std::cout << str << std::endl;
-    return 0;
+  std::string str = R"(C:\Path\To\File)";
+  std::cout << str << std::endl;
+  return 0;
 }
 ```
 
-### Literal Tùy Chỉnh
+### User-defined literal
 
-C++11 giới thiệu khả năng tùy chỉnh literals bằng cách
-nạp chồng toán tử hậu tố dấu ngoặc kép:
+C++11 cho phép bạn định nghĩa các literal tùy chỉnh bằng cách nạp chồng
+toán tử hậu tố cho dấu ngoặc kép `""`.
+Ví dụ:
 
 ```cpp
-// Tùy chỉnh literal chuỗi phải được đặt theo danh sách tham số sau
+// Định nghĩa literal tùy chỉnh cho chuỗi
 std::string operator"" _wow1(const char *wow1, size_t len) {
-    return std::string(wow1)+"woooooooooow, amazing";
+  return std::string(wow1) + "woooooooooow, amazing";
 }
 
-std::string operator"" _wow2 (unsigned long long i) {
-    return std::to_string(i)+"woooooooooow, amazing";
+// Định nghĩa literal tùy chỉnh cho số nguyên
+std::string operator"" _wow2(unsigned long long i) {
+  return std::to_string(i) + "woooooooooow, amazing";
 }
 
 int main() {
-    auto str = "abc"_wow1;
-    auto num = 1_wow2;
-    std::cout << str << std::endl;
-    std::cout << num << std::endl;
-    return 0;
+  auto str = "abc"_wow1;
+  auto num = 1_wow2;
+  std::cout << str << std::endl;
+  std::cout << num << std::endl;
+  return 0;
 }
 ```
 
-Literal tùy chỉnh hỗ trợ bốn loại literals:
+C++11 hỗ trợ bốn loại literal tùy chỉnh:
 
-1. Literal số nguyên: Khi nạp chồng, bạn phải sử dụng `unsigned long long`, `const char *`, và các tham số toán tử literal mẫu. Loại đầu tiên được sử dụng trong mã trên;
-2. Literal số thực: Bạn phải sử dụng `long double`, `const char *`, và các literal mẫu khi nạp chồng;
-3. Literal chuỗi: Một bảng tham số dạng `(const char *, size_t)` phải được sử dụng;
-4. Literal ký tự: Tham số chỉ có thể là `char`, `wchar_t`, `char16_t`, `char32_t`.
+1. **Số nguyên:**
+   hàm nạp chồng toán tử hậu tố phải có một trong các kiểu sau:
+   `unsigned long long`, `const char *` hoặc là một hàm template.
+   Ví dụ trên sử dụng kiểu `unsigned long long`.
 
-## 9.4 Căn Chỉnh Bộ Nhớ
+2. **Số thực:**
+   hàm nạp chồng toán tử hậu tố phải có một trong các kiểu sau:
+   `long double`, `const char *` hoặc là một hàm template.
 
-C++ 11 giới thiệu hai từ khóa mới, `alignof` và `alignas`, để hỗ trợ kiểm soát căn chỉnh bộ nhớ.
-Từ khóa `alignof` có thể lấy giá trị phụ thuộc vào nền tảng của kiểu `std::size_t` để truy vấn căn chỉnh của nền tảng.
-Tất nhiên, đôi khi chúng ta không hài lòng với điều này và thậm chí muốn tùy chỉnh căn chỉnh của cấu trúc. Tương tự, C++ 11 giới thiệu `alignas`.
-Để định hình lại căn chỉnh của một cấu trúc. Hãy xem hai ví dụ sau:
+3. **Chuỗi:**
+   hàm nạp chồng toán tử hậu tố phải có danh sách tham số là
+   `(const char *, size_t)`.
+
+4. **Ký tự:**
+   hàm nạp chồng toán tử hậu tố phải có kiểu dữ liệu là một trong các kiểu sau:
+   `char`, `wchar_t`, `char16_t` hoặc `char32_t`.
+
+## 9.4 Căn chỉnh bộ nhớ
+
+C++11 giới thiệu hai từ khóa mới là `alignof` và `alignas`
+để kiểm soát việc căn chỉnh bộ nhớ.
+Toán tử `alignof` trả về kích thước căn chỉnh của một kiểu dữ liệu,
+là một giá trị có kiểu `std::size_t` và phụ thuộc vào nền tảng.
+C++11 cũng giới thiệu specifier `alignas` để chỉ định kích thước căn chỉnh
+cho một biến hoặc kiểu dữ liệu.
+
+Ví dụ:
 
 ```cpp
 #include <iostream>
 
 struct Storage {
-    char      a;
-    int       b;
-    double    c;
-    long long d;
+  char a;
+  int b;
+  double c;
+  long long d;
 };
 
 struct alignas(std::max_align_t) AlignasStorage {
-    char      a;
-    int       b;
-    double    c;
-    long long d;
+  char a;
+  int b;
+  double c;
+  long long d;
 };
 
 int main() {
-    std::cout << alignof(Storage) << std::endl;
-    std::cout << alignof(AlignasStorage) << std::endl;
-    return 0;
+  std::cout << alignof(Storage) << std::endl;
+  std::cout << alignof(AlignasStorage) << std::endl;
+  return 0;
 }
 ```
 
-trong đó `std::max_align_t` yêu cầu cùng một căn chỉnh cho mỗi kiểu số học, vì vậy nó hầu như không có sự khác biệt trong các kiểu số học lớn nhất.
-Ngược lại, kết quả trên hầu hết các nền tảng là `long double`, vì vậy yêu cầu căn chỉnh cho `AlignasStorage` mà chúng ta nhận được ở đây là 8 hoặc 16.
+`std::max_align_t` là một kiểu dữ liệu đặc biệt,
+nó yêu cầu kích thước căn chỉnh bằng với kích thước căn chỉnh lớn nhất
+của tất cả các kiểu dữ liệu cơ bản.
+Trên hầu hết các nền tảng, kích thước căn chỉnh lớn nhất là của kiểu `long double`,
+do đó `AlignasStorage` sẽ có kích thước căn chỉnh là 8 hoặc 16.
 
-## Kết Luận
+## Kết luận
 
-Một số tính năng được giới thiệu trong phần này là những tính năng
-sử dụng các tính năng hiện đại của C++ thường xuyên hơn mà
-chưa được giới thiệu. `noexcept` là tính năng quan trọng nhất.
-Một trong những tính năng của nó là ngăn chặn sự lan truyền của các ngoại lệ,
-hiệu quả cho phép trình biên dịch tối ưu hóa mã của chúng ta đến mức tối đa.
+Chương này đã giới thiệu một số tính năng nhỏ nhưng hữu ích của C++11.
+Trong đó, `noexcept` là một tính năng quan trọng,
+nó cho phép bạn ngăn chặn việc lan truyền ngoại lệ và giúp trình biên dịch
+tối ưu hóa mã nguồn hiệu quả hơn.
 
-[Table of Content](./toc.md) | [Previous Chapter](./08-filesystem.md) | [Next Chapter: Outlook: Introduction of C++20](./10-cpp20.md)
+[Mục lục](./toc.md) | [Chương trước](./08-filesystem.md) | [Chương tiếp theo: C++20](./10-cpp20.md)
 
-## Giấy Phép
+## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy Phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy Phép Creative Commons Ghi Công-Phi Thương Mại-Không Phái Sinh 4.0 Quốc Tế</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Tác phẩm này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
+

@@ -4,109 +4,109 @@
 
 - [**Lời mở đầu**](./00-preface.md)
 - [**Chương 01 Hướng tới C++ hiện đại**](./01-intro.md)
-    + 1.1 Các tính năng không còn được sử dụng
+    + 1.1 Các tính năng không còn được khuyến khích sử dụng
     + 1.2 Tương thích với C
     + Đọc thêm
-- [**Chương 02 Cải tiến Khả năng Sử dụng Ngôn ngữ**](./02-usability.md)
+- [**Chương 02 Cải tiến khả năng sử dụng ngôn ngữ**](./02-usability.md)
     + 2.1 Hằng số
         - nullptr
         - constexpr
-    + 2.2 Biến & Khởi tạo
-        - Câu lệnh Điều kiện
-        - Danh sách Khởi tạo
-        - Ràng buộc cấu trúc
-    + 2.3 Suy luận Kiểu
+    + 2.2 Biến và khởi tạo
+        - if-switch
+        - Danh sách khởi tạo
+        - Ràng buộc có cấu trúc
+    + 2.3 Suy luận kiểu
         - auto
         - decltype
-        - Kiểu trả về cuối
+        - Suy luận kiểu trả về
         - decltype(auto)
-    + 2.4 Kiểm soát Luồng
+    + 2.4 Luồng điều khiển
         - if constexpr
         - Vòng lặp dựa trên phạm vi
-    + 2.5 Mẫu
-        - Mẫu bên ngoài
+    + 2.5 Template
+        - Extern template
         - Dấu ">"
-        - Bí danh mẫu kiểu
-        - Tham số mẫu mặc định
-        - Mẫu biến quy
+        - Template bí danh kiểu
+        - Tham số template mặc định
+        - Template tham số biến đổi
         - Biểu thức gấp
-        - Suy luận tham số mẫu không kiểu
-    + 2.6 Lập trình hướng đối tượng
-        - Hàm tạo ủy quyền
+        - Suy luận tham số template không kiểu
+    + 2.6 Hướng đối tượng
+        - Hàm tạo ủy nhiệm
         - Hàm tạo kế thừa
-        - Ghi đè rõ ràng hàm ảo
+        - Ghi đè hàm ảo rõ ràng
         - override
         - final
-        - Xóa rõ ràng hàm mặc định
-        - Liệt kê kiểu mạnh
-- [**Chương 03 Cải tiến Thời gian Chạy Ngôn ngữ**](./03-runtime.md)
+        - Xóa hàm mặc định rõ ràng
+        - Kiểu liệt kê mạnh
+- [**Chương 03 Cải tiến thời gian chạy của ngôn ngữ**](./03-runtime.md)
     + 3.1 Biểu thức Lambda
         + Cơ bản
-        + Tổng quát
-    + 3.2 Bộ đóng gói đối tượng hàm
+        + Lambda tổng quát
+    + 3.2 Bao bọc đối tượng hàm
         + std::function
-        + std::bind/std::placeholder
+        + std::bind và std::placeholder
     + 3.3 Tham chiếu rvalue
         + lvalue, rvalue, prvalue, xvalue
         + Tham chiếu rvalue và tham chiếu lvalue
-        + Ngữ cảnh di chuyển
+        + Ngữ nghĩa di chuyển
         + Chuyển tiếp hoàn hảo
-- [**Chương 04 Các Container**](./04-containers.md)
-    + 4.1 Các container tuyến tính
+- [**Chương 04: Container**](./04-containers.md)
+    + 4.1 Container tuyến tính
         + `std::array`
         + `std::forward_list`
-    + 4.2 Các container không có thứ tự
+    + 4.2 Container không có thứ tự
         + `std::unordered_set`
         + `std::unordered_map`
-    + 4.3 Bộ `std::tuple`
+    + 4.3 Tuple (`std::tuple`)
         + Thao tác cơ bản
-        + Chỉ mục thời gian chạy `std::variant`
-        + Hợp nhất và lặp
-- [**Chapter 05 Smart Pointers and Memory Management**](./05-pointers.md)
+        + Truy cập phần tử bằng chỉ mục thời gian chạy (`std::variant`)
+        + Nối và duyệt tuple
+- [**Chương 05: Con trỏ thông minh và Quản lý bộ nhớ**](./05-pointers.md)
     + 5.1 RAII và đếm tham chiếu
     + 5.2 `std::shared_ptr`
     + 5.3 `std::unique_ptr`
     + 5.4 `std::weak_ptr`
-- [**Chương 06 Biểu thức Chính quy**](./06-regex.md)
+- [**Chương 06: Biểu thức chính quy**](./06-regex.md)
     + 6.1 Giới thiệu
         + Ký tự thông thường
-        + Ký tự đặc biệt
-        + Số lượng
-    + 6.2 `std::regex` và liên quan
+        + Ký tự đặc biệt (metacharacter)
+        + Bộ định lượng (quantifier)
+    + 6.2 `std::regex` và các thành phần liên quan
         + `std::regex`
         + `std::regex_match`
         + `std::match_results`
-- [**Chương 07 Song song và Đồng thời**](./07-thread.md)
-    + 7.1 Cơ bản về Song song
-    + 7.2 Mutex và Phần tử quan trọng
-    + 7.3 Tương lai
+- [**Chương 07: Lập trình song song và đồng thời**](./07-thread.md)
+    + 7.1 Cơ bản về lập trình song song
+    + 7.2 Mutex và đoạn mã tới hạn
+    + 7.3 Future
     + 7.4 Biến điều kiện
-    + 7.5 Thao tác Nguyên tử và Mô hình Bộ nhớ
-        + Thao tác Nguyên tử
-        + Mô hình Nhất quán
-        + Trật tự Bộ nhớ
-- [**Chương 08 Hệ thống Tệp**](./08-filesystem.md)
+    + 7.5 Thao tác nguyên tử và mô hình bộ nhớ
+        + Thao tác nguyên tử
+        + Mô hình nhất quán
+        + Thứ tự bộ nhớ (memory order)
+- [**Chương 08: Hệ thống tệp**](./08-filesystem.md)
     + 8.1 Tài liệu và liên kết
     + 8.2 `std::filesystem`
-- [**Chương 09 Các tính năng Nhỏ**](./09-others.md)
-    + 9.1 Các kiểu mới
+- [**Chương 09: Các tính năng nhỏ**](./09-others.md)
+    + 9.1 Kiểu dữ liệu mới
         + `long long int`
-    + 9.2 `noexcept` và các thao tác của nó
+    + 9.2 `noexcept` và các toán tử liên quan
     + 9.3 Literal
-        + Raw String Literal
-        + Custom String Literal
-    + 9.4 Căn chỉnh Bộ nhớ
-- [**Chương 10 Triển vọng: Giới thiệu về C++20**](./10-cpp20.md)
-    + 10.1 Khái niệm
-    + 10.2 Phạm vi
+        + Raw string literal
+        + User-defined literal
+    + 9.4 Căn chỉnh bộ nhớ
+- [**Chương 10: C++20**](./10-cpp20.md)
+    + 10.1 Concept
+    + 10.2 Range
     + 10.3 Module
     + 10.4 Coroutine
-    + 10.5 Bộ nhớ Giao dịch
-- [**Phụ lục 1: Tài liệu Học thêm**](./appendix1.md)
-- [**Phụ lục 2: Thực hành tốt nhất C++ hiện đại**](./appendix2.md)
+    + 10.5 Transaction Memory
+- [**Phụ lục 1: Tài liệu học tập thêm**](./appendix1.md)
+- [**Phụ lục 2: Thực hành tốt nhất với C++ hiện đại**](./appendix2.md)
 
-Mục lục | Chương cuối | [Chương tiếp theo: Lời mở đầu](./00-preface.md)
+Mục lục | Chương trước | [Chương tiếp theo: Lời mở đầu](./00-preface.md)
 
 ## Giấy phép
 
-<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Công việc này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Quốc tế Creative Commons Attribution-NonCommercial-NoDerivatives 4.0</a>. Mã nguồn của kho lưu trữ này được mở dưới [Giấy phép MIT](../../LICENSE).
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Giấy phép Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Công việc này được viết bởi [Ou Changkun](https://changkun.de) và được cấp phép theo <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Giấy phép Quốc tế Creative Commons Attribution-NonCommercial-NoDerivatives 4.0</a>. Mã nguồn của kho lưu trữ này được mở theo [giấy phép MIT](../../LICENSE).
